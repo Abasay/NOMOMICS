@@ -1,0 +1,10 @@
+.background {
+    background-image: url('../public/images/about-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 449px;
+    width: 100%;
+    display: grid;
+    place-content: center;
+}
