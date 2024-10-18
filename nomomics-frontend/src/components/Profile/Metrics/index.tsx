@@ -1,0 +1,20 @@
+import React from 'react';
+import Overview from './Overview';
+import Engagements from './Engagements';
+import Followers from './Followers';
+
+const Metrics = () => {
+    return (
+        <div className=' py-10 px-10 flex flex-col gap-10 w-full'>
+            <div className=' w-full flex gap-6'>
+                <Overview />
+                <Engagements />
+            </div>
+            <div className=' w-full'>
+                <Followers />
+            </div>
+        </div>
+    );
+};
+
+export default Metrics;

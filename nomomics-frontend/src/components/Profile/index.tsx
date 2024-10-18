@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import ProfileHeader from './ProfileHeader';
 import Sidebar from './Sidebar';
 import ProfileSettings from './ProfileSettings';
+import PortFolio from './PortFolio';
+import Overview from './Metrics/Overview';
+import Metrics from './Metrics';
 
 const Profile = () => {
     const [active, setActive] = useState<string>('Profile Settings');
@@ -16,8 +19,16 @@ const Profile = () => {
                     sideBarActive={sideBarActive}
                     setSideBarActive={setSideBarActive}
                 />
-                <div>
+                {/* <div className=' w-full'>
                     <ProfileSettings />
+                </div> */}
+                {/* <div className=' w-full'>
+                    <PortFolio />
+                </div> */}
+                <div className=' w-full bg-[#FAFAFA]'>
+                    <div className=' w-full'>
+                        <Metrics />
+                    </div>
                 </div>
             </div>
         </div>
