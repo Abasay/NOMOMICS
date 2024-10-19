@@ -38,7 +38,7 @@ const GenderDoughnutChart = () => {
             <Doughnut data={data} options={options} />
 
             {/* Custom Percentage Labels */}
-            <div className='absolute -top-4 py-2 shadow-lg shadow-gray-600 bg-[#FFFFFF] w-12 h-12 rounded-full left-1/3 transform -translate-x-1/2 text-center'>
+            <div className='absolute top-0 py-2 shadow-lg shadow-gray-600 bg-[#FFFFFF] w-12 h-12 rounded-full left-1/3 transform -translate-x-1/2 text-center'>
                 <span className='text-lg font-semibold text-gray-800'>12%</span>
             </div>
             <div className='absolute bottom-16 py-2 shadow-lg shadow-gray-600 bg-[#FFFFFF] w-12 h-12 rounded-full left-1/5 transform -translate-x-1/2 text-center'>
