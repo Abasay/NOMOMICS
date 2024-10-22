@@ -30,7 +30,7 @@ const app = express();
 
 // Basic middleware
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(EnvVars.CookieProps.Secret));
 
 // Show routes called in console during development
@@ -53,7 +53,7 @@ app.use((
   res: Response,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: NextFunction,
-) => {
+): any => {
   if (EnvVars.NodeEnv !== NodeEnvs.Test.valueOf()) {
     logger.err(err, true);
   }
@@ -86,7 +86,7 @@ app.get('/users', (req: IReq, res: IRes) => {
   if (!jwt) {
     res.redirect('/');
   } else {
-    res.sendFile('users.html', {root: viewsDir});
+    res.sendFile('users.html', { root: viewsDir });
   }
 });
 

@@ -17,8 +17,9 @@ const apiRouter = Router();
 const authRouter = Router();
 
 // Routes
-authRouter.post(Paths.Auth.Login, AuthRoutes.login);
-authRouter.get(Paths.Auth.Logout, AuthRoutes.logout);
+authRouter.post(Paths.Auth.Signup, AuthRoutes.signup as any);
+authRouter.post(Paths.Auth.Login, AuthRoutes.login as any);
+authRouter.get(Paths.Auth.Logout, AuthRoutes.logout as any);
 
 // Add AuthRouter
 apiRouter.use(Paths.Auth.Base, authRouter);
@@ -29,13 +30,13 @@ apiRouter.use(Paths.Auth.Base, authRouter);
 const userRouter = Router();
 
 // User Routes
-userRouter.get(Paths.Users.Get, UserRoutes.getAll);
-userRouter.post(Paths.Users.Add, UserRoutes.add);
-userRouter.put(Paths.Users.Update, UserRoutes.update);
-userRouter.delete(Paths.Users.Delete, UserRoutes.delete);
+userRouter.get(Paths.Users.Get, UserRoutes.getAll as any);
+userRouter.post(Paths.Users.Add, UserRoutes.add as any);
+userRouter.put(Paths.Users.Update, UserRoutes.update as any);
+userRouter.delete(Paths.Users.Delete, UserRoutes.delete as any);
 
 // Add UserRouter
-apiRouter.use(Paths.Users.Base, adminMw, userRouter);
+apiRouter.use(Paths.Users.Base, adminMw as any, userRouter);
 
 
 // **** Export default **** //

@@ -57,11 +57,11 @@ async function update(user: IUser): Promise<void> {
   for (let i = 0; i < db.users.length; i++) {
     if (db.users[i].id === user.id) {
       const dbUser = db.users[i];
-      db.users[i] = {
-        ...dbUser,
-        name: user.name,
-        email: user.email,
-      };
+      // db.users[i] = {
+      //   ...dbUser,
+      //   name: user.name,
+      //   email: user.email,
+      // };
       return orm.saveDb(db);
     }
   }

@@ -2,7 +2,7 @@ import { RouteError } from '@src/common/classes';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 
 import UserRepo from '@src/repos/UserRepo';
-import { IUser } from '@src/models/User';
+import User, { IUser } from '@src/models/User';
 
 
 // **** Variables **** //
@@ -17,6 +17,14 @@ export const USER_NOT_FOUND_ERR = 'User not found';
  */
 function getAll(): Promise<IUser[]> {
   return UserRepo.getAll();
+}
+
+async function getUserById(id: TypeConstructor.ObjectId): Promise<void> {
+  const user = await User.User.findById(id).select('-password');
+  if (!user) {
+    throw new RouteError(HttpStatusCodes.NOT_FOUND, 'User not found');
+  }
+  return user;
 }
 
 /**

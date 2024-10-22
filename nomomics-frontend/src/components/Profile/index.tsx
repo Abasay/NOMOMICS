@@ -22,7 +22,7 @@ const Profile = () => {
     const [sideBarActive, setSideBarActive] =
         useState<string>('Create Profile');
     return (
-        <div className=' mt-4'>
+        <div className=' mt-4 w-full'>
             <ProfileHeader
                 active={active}
                 setActive={setActive}
