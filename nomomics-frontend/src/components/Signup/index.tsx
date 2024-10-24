@@ -29,7 +29,6 @@ const SignUp = () => {
                 >
                     <SignUpForm />
                     {/* <EmailVerify/> */}
-                    {/* <SignInForm/> */}
                 </div>
             </div>
         </div>

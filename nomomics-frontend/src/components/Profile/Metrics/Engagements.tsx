@@ -31,7 +31,7 @@ const EngagementItem: React.FC<EngagementProps> = ({
 
 const Engagements: React.FC = () => {
     return (
-        <div className='p-6 w-full mx-auto bg-white shadow-md rounded-md'>
+        <div className='p-6 w-full max-w-lg mx-auto bg-white shadow-md rounded-md'>
             <span className='text-lg font-semibold block mb-4'>
                 Total Engagements
             </span>

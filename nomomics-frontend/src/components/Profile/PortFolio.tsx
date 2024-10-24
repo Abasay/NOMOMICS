@@ -4,31 +4,31 @@ import React from 'react';
 import dummy from '@/public/images/dummy.jpg';
 
 const PortFolio = () => {
-    const dummyArr = [1, 2, 3, 4, 5, 4, 5, 6];
+    const dummyArr = [1, 2, 3, 6];
 
     return (
-        <div className=' py-10 px-10 pb-48'>
+        <div className=' w-full py-10 px-10 pb-48'>
             <div className=' max-h-[774px] overflow-auto'>
-                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-10 w-full pr-5 mx-auto'>
+                <div className='flex items-center flex-wrap gap-10 w-[90%] mx-auto'>
                     {dummyArr.map((_, index) => {
                         return (
                             <Link
                                 href={'/details'}
-                                className={` relative cursor-pointer `}
+                                className={` relative cursor-pointer min-w-[200px] min-h-[200px] max-h-[300px] max-w-[200px] rounded-lg overflow-hidden`}
                                 key={index}
                             >
                                 <Image
                                     src={dummy}
                                     alt='Dummy'
-                                    width={236}
-                                    height={350}
+                                    width={200}
+                                    height={200}
                                     className=' w-full object-cover rounded-lg'
                                 />
-                                <div className=' h-auto w-full rounded-b-lg text-white px-4 absolute bottom-0 flex flex-col gap-1 bg-black bg-opacity-65 pt-2 tracking-widest font-trebuchet'>
+                                <div className=' w-full rounded-b-lg text-white px-4 absolute bottom-0 flex flex-col gap-1 bg-black bg-opacity-65 text-xs pt-2 tracking-widest font-trebuchet'>
                                     <h3>Spiderman</h3>
                                     <h4>Jone Stone</h4>
                                     <div className=' flex items-center justify-between'>
-                                        <div className=' flex items-center flex-row gap-2'>
+                                        <div className=' flex items-center flex-row gap-3'>
                                             <p>Reviews</p>
                                             <p className=' flex items-center gap-0.5'>
                                                 <span>

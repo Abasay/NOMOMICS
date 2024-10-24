@@ -5,7 +5,7 @@ import Button from '../Common/Button';
 
 const ProfileSettings = () => {
     return (
-        <div className=' flex flex-col px-10 py-10 w-full gap-8 pb-48'>
+        <div className=' flex flex-col w-full border px-10 py-10 gap-8 pb-48'>
             <div className='flex gap-3 items-center w-full '>
                 <Image
                     src={profileImg}

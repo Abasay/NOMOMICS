@@ -14,22 +14,22 @@ const Comics = (props: { title: string }) => {
                 {title}
             </h1>
 
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 w-[90%] mx-auto'>
+            <div className='flex items-center flex-wrap gap-10 w-[90%] mx-auto'>
                 {dummyArr.map((_, index) => {
                     return (
                         <Link
                             href={'/details'}
-                            className={` relative cursor-pointer `}
+                            className={` relative cursor-pointer min-w-[200px] min-h-[250px]`}
                             key={index}
                         >
                             <Image
                                 src={dummy}
                                 alt='Dummy'
-                                width={236}
-                                height={350}
+                                width={200}
+                                height={250}
                                 className=' w-full object-cover rounded-lg'
                             />
-                            <div className=' h-auto w-full rounded-b-lg text-white px-4 absolute bottom-0 flex flex-col gap-1 bg-black bg-opacity-65 pt-2 tracking-widest font-trebuchet'>
+                            <div className=' w-full rounded-b-lg text-white px-4 absolute bottom-0 flex flex-col gap-1 bg-black bg-opacity-65 pt-2 tracking-widest font-trebuchet'>
                                 <h3>Spiderman</h3>
                                 <h4>Jone Stone</h4>
                                 <div className=' flex items-center justify-between'>

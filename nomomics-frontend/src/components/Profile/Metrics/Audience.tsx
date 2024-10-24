@@ -3,7 +3,7 @@ import React from 'react';
 
 const AudienceAge = () => {
     return (
-        <div className='p-6 bg-[#FAFAFA] w-full rounded-lg shadow-md max-w-md'>
+        <div className='p-6 bg-[#FAFAFA] w-full rounded-lg shadow-md max-w-lg min-w-[400px]'>
             {/* Audience Age Header with the Color Bar */}
             <div className='mb-4'>
                 <h3 className='text-lg font-semibold text-gray-700'>

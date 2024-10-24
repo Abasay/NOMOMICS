@@ -28,7 +28,7 @@ const Profile = () => {
                 setActive={setActive}
                 HeaderData={HeaderData}
             />
-            <div className='w-full flex gap-4 bg-[#ffffff]'>
+            <div className=' flex gap-4 bg-[#ffffff]  border-teal-950'>
                 <div className=' w-full max-w-[250px] border-r-2 border-[#909090]'>
                     <Sidebar
                         sideBarActive={sideBarActive}
@@ -37,7 +37,6 @@ const Profile = () => {
                         setActive={setActive}
                     />
                 </div>
-                <div></div>
 
                 {active === 'Profile Settings' && (
                     <div className={`w-full ${styles['fade-in']}`}>
@@ -46,42 +45,38 @@ const Profile = () => {
                 )}
 
                 {active === 'Portfolio Showcase' && (
-                    <div className={`w-full ${styles['fade-in']}`}>
+                    <div className={`w-full  ${styles['fade-in']}`}>
                         <PortFolio />
                     </div>
                 )}
                 {active === 'Metrics' && (
-                    <div className=' w-full bg-[#FAFAFA]'>
-                        <div className={`w-full ${styles['fade-in']}`}>
-                            <Metrics />
-                        </div>
+                    <div className={`w-full ${styles['fade-in']}`}>
+                        <Metrics />
                     </div>
                 )}
 
-                <div className=' w-full bg-[#FAFAFA]'>
-                    {active === 'Earn Overview' && (
-                        <div
-                            className={`w-full py-10 items-center px-8 flex flex-col gap-8 ${styles['fade-in']}`}
-                        >
-                            <div className=' w-full flex items-center gap-8'>
-                                <div className=' w-full'>
-                                    <BalanceOverview
-                                        cashAmount={35000}
-                                        tokenAmount={5000}
-                                        coinAmount={35000}
-                                    />
-                                </div>
-                                <div className=' w-[70%]'>
-                                    <WatchlistCard />
-                                </div>
-                            </div>
+                {active === 'Earn Overview' && (
+                    <div
+                        className={`w-full py-10 items-center px-8 flex flex-col gap-8 ${styles['fade-in']}`}
+                    >
+                        <div className=' w-full flex items-center gap-8'>
                             <div className=' w-full'>
-                                <TransactionTable />
+                                <BalanceOverview
+                                    cashAmount={35000}
+                                    tokenAmount={5000}
+                                    coinAmount={35000}
+                                />
+                            </div>
+                            <div className=' w-[70%]'>
+                                <WatchlistCard />
                             </div>
                         </div>
-                    )}
-                    {active === 'Payment' && <BillingForm />}
-                </div>
+                        <div className=' w-full'>
+                            <TransactionTable />
+                        </div>
+                    </div>
+                )}
+                {active === 'Payment' && <BillingForm />}
             </div>
         </div>
     );

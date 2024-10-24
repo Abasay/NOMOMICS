@@ -6,11 +6,11 @@ import Followers from './Followers';
 const Metrics = () => {
     return (
         <div className=' py-10 px-10 flex flex-col gap-10 w-full'>
-            <div className=' w-full flex gap-6'>
+            <div className=' w-full flex flex-wrap gap-6'>
                 <Overview />
                 <Engagements />
             </div>
-            <div className=' w-full'>
+            <div className=''>
                 <Followers />
             </div>
         </div>

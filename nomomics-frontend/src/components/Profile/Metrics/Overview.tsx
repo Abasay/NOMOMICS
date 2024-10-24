@@ -18,7 +18,7 @@ const Stat: React.FC<StatProps> = ({ label, value, color }) => (
 
 const Overview: React.FC = () => {
     return (
-        <div className='p-6 w-full mx-auto bg-white shadow-md rounded-md'>
+        <div className='p-6 w-full max-w-lg mx-auto bg-white shadow-md rounded-md'>
             <div className='flex justify-between items-center mb-4'>
                 <span className='text-lg font-semibold'>Overview</span>
                 <span className='text-sm text-gray-500'>

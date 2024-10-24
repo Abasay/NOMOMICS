@@ -185,6 +185,20 @@ const Header = () => {
                                                 )}
                                             </li>
                                         ))}
+                                        <div className='hidden max-1024:flex flex-col gap-4'>
+                                            <Link
+                                                href='/signin'
+                                                className='hidden py-2 text-base font-medium text-dark hover:opacity-70 dark:text-white md:block'
+                                            >
+                                                Log In
+                                            </Link>
+                                            <Link
+                                                href='/signup'
+                                                className='ease-in-up hidden rounded-sm bg-primary px-8 py-2 text-base font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9'
+                                            >
+                                                Sign Up
+                                            </Link>
+                                        </div>
                                     </ul>
                                 </nav>
                             </div>
@@ -233,7 +247,7 @@ const Header = () => {
                                 onClick={authToggleHandler}
                                 id='authToggler'
                                 aria-label='Mobile Menu'
-                                className='absolute right-2 top-1/2 translate-y-[-50%] block rounded-lg px-3 md:hidden min-1280:hidden'
+                                className='absolute -right-4 max-1024:hidden top-1/2 translate-y-[-50%] block rounded-lg px-3 min-1280:hidden '
                             >
                                 <span
                                     className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 ${
