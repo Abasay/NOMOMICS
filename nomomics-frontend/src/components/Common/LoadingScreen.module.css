@@ -1,0 +1,32 @@
+/* LoadingScreen.module.css */
+
+.loadingScreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #000; /* Set to the background color of your choice */
+  --tw-bg-opacity: 0.6;
+}
+
+.logoAnimation {
+  width: 150px;
+  animation: logoDance 3s ease-in-out infinite;
+}
+
+@keyframes logoDance {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  25% {
+    transform: translateY(-20px) scale(1.1);
+  }
+  50% {
+    transform: translateY(0) scale(1.2) rotate(360deg);
+  }
+  75% {
+    transform: translateY(20px) scale(1.1);
+  }
+}
