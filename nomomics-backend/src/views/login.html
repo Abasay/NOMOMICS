@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <!-- Head -->
   <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
+    <meta charset="UTF-8" />
+    <title>Welcome to Nomomics</title>
     <link rel="stylesheet" type="text/css" href="/stylesheets/login.css" />
 
     <!-- Handlebars -->
@@ -26,33 +25,33 @@
 
   <!-- Body -->
   <body>
-
     <div class="login-block">
-      <div class="login-header">Login</div>
+      <div class="login-header">Welcome to Nomomics</div>
+
+      <div class="welcome-message">
+        We're delighted to have you here! Please log in to continue.
+      </div>
 
       <div class="login-input">
-        Username:<br/>
-        <input id="email-input" type="text" class="form-control"/>
+        Username:<br />
+        <input id="email-input" type="text" class="form-control" />
       </div>
-      
+
       <div class="login-input">
-        Password:<br/>
-        <input id="pwd-input" type="password" class="form-control"/>
+        Password:<br />
+        <input id="pwd-input" type="password" class="form-control" />
       </div>
 
       <div>
-        <button id="login-btn" class="btn btn-primary">
-          Login
-        </button>
+        <button id="login-btn" class="btn btn-primary">Login</button>
       </div>
 
       <div class="default-login-user">
-        // Default admin user (Email: "sean.maxwell@gmail.com", Password: "Password@1")
+        <!-- Default admin user (Email: "sean.maxwell@gmail.com", Password: "Password@1") -->
       </div>
     </div>
-
   </body>
-  
+
   <script src="scripts/http.js"></script>
   <script src="scripts/login.js"></script>
 </html>

@@ -69,11 +69,11 @@ const Info = (props: { title: string; description: string }) => {
             </div>
           </div>
         </div>
-        <Button
+        {/* <Button
           text='OK'
           className='w-full py-6'
-          onClickFunc={() => console.log('You clicked me')}
-        />
+          onClickFunc={() => }
+        /> */}
       </div>
 
       {/* Account Locked text */}

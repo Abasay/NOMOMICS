@@ -19,12 +19,12 @@ import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import { NodeEnvs } from '@src/common/misc';
 import { RouteError } from '@src/common/classes';
 import { IReq, IRes } from './routes/common/types';
-
+import cors from 'cors';
+import connectDB from './configs/db.config';
 
 // **** Variables **** //
 
 const app = express();
-
 
 // **** Setup **** //
 
@@ -32,11 +32,13 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(EnvVars.CookieProps.Secret));
+app.use(cors());
 
 // Show routes called in console during development
 if (EnvVars.NodeEnv === NodeEnvs.Dev.valueOf()) {
   app.use(morgan('dev'));
 }
+connectDB();
 
 // Security
 if (EnvVars.NodeEnv === NodeEnvs.Production.valueOf()) {
@@ -47,23 +49,26 @@ if (EnvVars.NodeEnv === NodeEnvs.Production.valueOf()) {
 app.use(Paths.Base, BaseRouter);
 
 // Add error handler
-app.use((
-  err: Error,
-  _: Request,
-  res: Response,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  next: NextFunction,
-): any => {
-  if (EnvVars.NodeEnv !== NodeEnvs.Test.valueOf()) {
-    logger.err(err, true);
+app.use(
+  (
+    err: Error,
+    _: Request,
+    res: Response,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    next: NextFunction
+  ): any => {
+    if (EnvVars.NodeEnv !== NodeEnvs.Test.valueOf()) {
+      logger.err(err, true);
+    }
+    let status = HttpStatusCodes.BAD_REQUEST;
+    let additionalMessage;
+    if (err instanceof RouteError) {
+      status = err.status;
+      additionalMessage = err.message2;
+    }
+    return res.status(status).json({ error: err.message, additionalMessage });
   }
-  let status = HttpStatusCodes.BAD_REQUEST;
-  if (err instanceof RouteError) {
-    status = err.status;
-  }
-  return res.status(status).json({ error: err.message });
-});
-
+);
 
 // ** Front-End Content ** //
 
@@ -89,7 +94,6 @@ app.get('/users', (req: IReq, res: IRes) => {
     res.sendFile('users.html', { root: viewsDir });
   }
 });
-
 
 // **** Export default **** //
 

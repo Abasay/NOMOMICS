@@ -4,7 +4,6 @@ const passwordNumberRegex = /^(?=.*[0-9])/;
 const passwordSpecialCharacterRegex = /^(?=.*[!@#$%^&*])/;
 
 export const passwordValidator = (password: string) => {
- 
   if (!passwordLetterRegex.test(password)) {
     return 0;
   }
@@ -17,9 +16,25 @@ export const passwordValidator = (password: string) => {
   if (!passwordSpecialCharacterRegex.test(password)) {
     return 60;
   }
-   if (password.length < 8) {
+  if (password.length < 8) {
     return 80;
   }
   return 100;
 };
 
+export const passwordStrength = (password: string) => {
+  const strength = passwordValidator(password);
+  if (strength < 20) {
+    return 'Password must contain at least one lowercase letter';
+  }
+  if (strength < 40) {
+    return 'Password must contain at least one uppercase letter';
+  }
+  if (strength < 60) {
+    return 'Password must contain at least one number';
+  }
+  if (strength < 80) {
+    return 'Password must contain at least one special character';
+  }
+  return 'valid';
+};

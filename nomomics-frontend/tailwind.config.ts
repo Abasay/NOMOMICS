@@ -1,10 +1,10 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -18,15 +18,14 @@ const config: Config = {
         clash: ['Clash Display', 'sans-serif'],
       },
       colors: {
-        background: "var(--primary)",
-        foreground: "var(--foreground)",
-        onHover: "var(--onHover)",
-        primary: "var(--primary)",
-        secondary: "var(--secondary)",
-        textBodyColor: "var(--text-body)",
-        bgError: "var(--bg-error)",
-        tertiary: "var(--tertiary)"
-
+        background: 'var(--primary)',
+        foreground: 'var(--foreground)',
+        onHover: 'var(--onHover)',
+        primary: 'var(--primary)',
+        secondary: 'var(--secondary)',
+        textBodyColor: 'var(--text-body)',
+        bgError: 'var(--bg-error)',
+        tertiary: 'var(--tertiary)',
       },
       typography: {
         DEFAULT: {
@@ -39,35 +38,35 @@ const config: Config = {
               },
             },
             h1: {
-              lineHeight: "125%",
-              fontSize: "40px",
-              fontWeight: "700",
+              lineHeight: '125%',
+              fontSize: '40px',
+              fontWeight: '700',
             },
             h2: {
-              lineHeight: "125%",
-              fontSize: "32px",
-              fontWeight: "700",
+              lineHeight: '125%',
+              fontSize: '32px',
+              fontWeight: '700',
             },
             h3: {
-              lineHeight: "125%",
-              fontSize: "24px",
-              fontWeight: "700",
+              lineHeight: '125%',
+              fontSize: '24px',
+              fontWeight: '700',
             },
             h4: {
-              lineHeight: "125%",
-              fontSize: "18px",
-              fontWeight: "700",
-            }
-            , h5: {
-              lineHeight: "125%",
-              fontSize: "14px",
-              fontWeight: "700",
+              lineHeight: '125%',
+              fontSize: '18px',
+              fontWeight: '700',
+            },
+            h5: {
+              lineHeight: '125%',
+              fontSize: '14px',
+              fontWeight: '700',
             },
             h6: {
-              lineHeight: "125%",
-              fontSize: "40px",
-              fontWeight: "700",
-            }
+              lineHeight: '125%',
+              fontSize: '40px',
+              fontWeight: '700',
+            },
           },
         },
       },
@@ -77,7 +76,7 @@ const config: Config = {
         'min-400': { min: '400px' },
         'max-md': { max: '768px' },
         'min-1280': { min: '1280px' },
-
+        'min-1024': { min: '1024px' },
       },
     },
   },

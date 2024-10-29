@@ -12,8 +12,21 @@ import SignupSectionHeader from '../Headers/SignupSectionHeader';
 import Button from '../Common/Button';
 import Error from '../Common/Error';
 import styles from '@/styles/common.module.css';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+import { useProfile } from '@/app/contexts/Profile';
+// import Cookies from 'node_modules/@types/js-cookie';
 
-const SignInForm = () => {
+const SignInForm = ({ setIsModalVisible }: { setIsModalVisible: any }) => {
+  const isLoggedIn = Cookies.get('isLoggedIn');
+
+  const router = useRouter();
+
+  if (isLoggedIn) {
+    router.push('/profile');
+  }
+
   const [formData, setFormData] = useState<{
     email: string;
     password: string;
@@ -25,6 +38,9 @@ const SignInForm = () => {
   });
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const [errMsg, setErrMsg] = useState<string>('');
+  const [errMsg1, setErrMsg1] = useState<string>('');
 
   const handleTogglePassword = () => {
     setShowPassword((prev) => !prev);
@@ -38,10 +54,50 @@ const SignInForm = () => {
     });
   };
 
+  const { updateProfile } = useProfile();
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log(formData);
+    const { email, password, rememberMe } = formData;
+
+    const uri = `${process.env.NEXT_PUBLIC_API_URL}/auth/login`;
+    const body = { email, password, rememberMe };
+    try {
+      fetch(uri, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      })
+        .then((res) => res.json())
+        .then((data: any) => {
+          if (data.error) {
+            setErrMsg(data.error);
+            setErrMsg1(data.additionalMessage);
+            if (data.error.includes('is locked')) {
+              setIsModalVisible(true);
+            }
+          }
+
+          if (data.success) {
+            console.log(data);
+            updateProfile(data.data.user);
+            toast.success('Login successful');
+            Cookies.set('isLoggedIn', 'true');
+            setFormData({
+              email: '',
+              password: '',
+              rememberMe: true,
+            });
+            router.push('/profile');
+          } else {
+          }
+        });
+    } catch (error) {
+      console.log(error);
+      toast.error('An error occurred');
+    }
   };
 
   return (
@@ -52,20 +108,20 @@ const SignInForm = () => {
           subTitle='Log in to your account'
         />
         <div className=' mt-6'>
-          <div
-            className={`${
-              formData.email ? styles['slide-in'] : styles['slide-out']
-            }`}
-          >
-            {
-              <Error
-                message={`Incorrect email or password.`}
-                message1='3 login attempts before your account is blocked.'
-                type='login'
-                w='full'
-              />
-            }
-          </div>
+          {errMsg && (
+            <div
+              className={`${errMsg ? styles['slide-in'] : styles['slide-out']}`}
+            >
+              {
+                <Error
+                  message={errMsg}
+                  message1={errMsg1}
+                  type='login'
+                  w='full'
+                />
+              }
+            </div>
+          )}
           <form className=' pt-10 text-lg' onSubmit={handleSubmit}>
             <div className='mb-4'>
               <label className='block mb-2 font-bold'>Email</label>

@@ -56,9 +56,9 @@ const transactions: Transaction[] = [
 
 const TransactionTable: React.FC = () => {
   return (
-    <div className='overflow-x-auto w-full p-4 py-10  max-[1110px]:w-full max-w-2xl'>
+    <div className='overflow-x-auto  p-4 py-10  max-[1110px]:w-full max-w-2xl'>
       {/* <TransactionModal isOpen={true} onClose={false} /> */}
-      <table className='min-w-full table-auto flex justify-between items-center  '>
+      <table className='min-w-[700px] table-auto flex justify-between items-center  '>
         <span>
           <thead className=' text-gray-700'>
             <tr>

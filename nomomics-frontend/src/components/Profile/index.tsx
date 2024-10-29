@@ -15,6 +15,7 @@ import TransactionHistory from './Monetization/TransactionHistory';
 import ConverterForm from './Monetization/Converter';
 import FileUpload from './ContentManagement/FileUpload';
 import Draft from './ContentManagement/Draft';
+import { useProfile } from '@/app/contexts/Profile';
 
 const Profile = () => {
   const [active, setActive] = useState<string>('Profile Settings');
@@ -24,6 +25,7 @@ const Profile = () => {
     'Metrics',
   ]);
   const [sideBarActive, setSideBarActive] = useState<string>('Create Profile');
+
   return (
     <div className=' mt-4 font-inter w-full'>
       <ProfileHeader
@@ -42,39 +44,39 @@ const Profile = () => {
         </div>
 
         {active === 'Profile Settings' && (
-          <div className={`w-full ${styles['fade-in']}`}>
+          <div className={`w-full ${styles['fade-in']} overflow-auto`}>
             <ProfileSettings />
           </div>
         )}
 
         {active === 'Portfolio Showcase' && (
-          <div className={`w-full  ${styles['fade-in']}`}>
+          <div className={`w-full  ${styles['fade-in']} overflow-auto`}>
             <PortFolio />
           </div>
         )}
         {active === 'Metrics' && (
-          <div className={`w-full ${styles['fade-in']}`}>
+          <div className={`w-full ${styles['fade-in']} overflow-auto`}>
             <Metrics />
           </div>
         )}
 
         {active === 'Earn Overview' && (
           <div
-            className={`w-full py-10 items-center px-8 flex flex-col gap-8 ${styles['fade-in']}`}
+            className={`w-full  overflow-auto py-10 items-center px-8 flex flex-col gap-8 ${styles['fade-in']}`}
           >
-            <div className=' w-full flex items-center gap-8'>
-              <div className=' w-full'>
+            <div className=' w-full flex min-w-min flex-wrap items-center gap-8'>
+              <div className='  border'>
                 <BalanceOverview
                   cashAmount={35000}
                   tokenAmount={5000}
                   coinAmount={35000}
                 />
               </div>
-              <div className=' w-[70%]'>
+              <div className=' min-w-[300px] max-w-[400px]'>
                 <WatchlistCard />
               </div>
             </div>
-            <div className=' w-full'>
+            <div className=' min-w-[700px] max-w-lg'>
               <TransactionTable />
             </div>
           </div>

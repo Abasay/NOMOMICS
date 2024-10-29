@@ -2,7 +2,6 @@
  * Express router paths go here.
  */
 
-
 export default {
   Base: '/api',
   Auth: {
@@ -10,6 +9,8 @@ export default {
     Login: '/login',
     Logout: '/logout',
     Signup: '/signup',
+    VerifyEmail: '/verify-email',
+    ResendEmail: '/resend-email',
   },
   Users: {
     Base: '/users',

@@ -7,7 +7,7 @@ const BillingForm: React.FC = () => {
   const [paymentMethod, setPaymentMethod] = useState('card');
 
   return (
-    <div className=' mx-auto bg-white py-10'>
+    <div className=' mx-auto overflow-auto px-3 bg-white py-10'>
       {/* Header */}
       <h2 className='text-lg font-semibold mb-4'>Enjoy unlimited comics</h2>
 
@@ -28,7 +28,7 @@ const BillingForm: React.FC = () => {
       {/* Payment Methods */}
       <div className='mb-6'>
         <label className='block text-gray-700 mb-2'>Payment Method</label>
-        <div className='flex items-center space-x-4'>
+        <div className='flex items-center flex-wrap gap-2 space-x-4'>
           <label className='flex items-center'>
             <input
               type='radio'

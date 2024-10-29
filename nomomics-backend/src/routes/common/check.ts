@@ -1,8 +1,7 @@
 import { ValidationErr } from '@src/common/classes';
-
+import validator from 'validator';
 
 type TReqObj = Record<string, unknown>;
-
 
 /**
  * Check that param/s is a string
@@ -11,7 +10,7 @@ function isStr(reqObj: TReqObj, params: string): string;
 function isStr(reqObj: TReqObj, params: ReadonlyArray<string>): string[];
 function isStr(
   reqObj: TReqObj,
-  params: string | ReadonlyArray<string>,
+  params: string | ReadonlyArray<string>
 ): string | string[] {
   return _checkWrapper(reqObj, params, _checkStr);
 }
@@ -34,7 +33,7 @@ function isNum(reqObj: TReqObj, params: string): number;
 function isNum(reqObj: TReqObj, params: ReadonlyArray<string>): number[];
 function isNum(
   reqObj: TReqObj,
-  params: string | ReadonlyArray<string>,
+  params: string | ReadonlyArray<string>
 ): number | number[] {
   return _checkWrapper(reqObj, params, _checkNum);
 }
@@ -58,7 +57,7 @@ function isBool(reqObj: TReqObj, params: string): boolean;
 function isBool(reqObj: TReqObj, params: ReadonlyArray<string>): boolean[];
 function isBool(
   reqObj: TReqObj,
-  params: string | ReadonlyArray<string>,
+  params: string | ReadonlyArray<string>
 ): boolean | boolean[] {
   return _checkWrapper(reqObj, params, _checkBool);
 }
@@ -84,12 +83,30 @@ function _checkBool(val: unknown): boolean | undefined {
 }
 
 /**
+ *
+ * @param reqObj
+ * @param param
+ * @param validatorFn
+ * @returns
+ */
+
+/*check is a valid email */
+function isValidEmail(reqObj: TReqObj, param: string): string {
+  const val = reqObj[param];
+  if (typeof val === 'string' && validator.isEmail(val)) {
+    return val;
+  } else {
+    throw new ValidationErr(param);
+  }
+}
+
+/**
  * Check that param satisfies the validator function.
  */
 function isValid<T>(
   reqObj: TReqObj,
   param: string,
-  validatorFn: (param: unknown) => param is T,
+  validatorFn: (param: unknown) => param is T
 ): T {
   const val = reqObj[param];
   if (validatorFn(val)) {
@@ -99,7 +116,6 @@ function isValid<T>(
   }
 }
 
-
 // **** Shared Helpers **** //
 
 /**
@@ -108,7 +124,7 @@ function isValid<T>(
 function _checkWrapper<T>(
   reqObj: TReqObj,
   params: string | ReadonlyArray<string>,
-  checkFn: (val: unknown) => T | undefined,
+  checkFn: (val: unknown) => T | undefined
 ): T | T[] {
   // If is array
   if (params instanceof Array) {
@@ -132,7 +148,6 @@ function _checkWrapper<T>(
   throw new ValidationErr(params);
 }
 
-
 // **** Export Default **** //
 
 export default {
@@ -140,4 +155,5 @@ export default {
   isNum,
   isBool,
   isValid,
+  isValidEmail,
 } as const;

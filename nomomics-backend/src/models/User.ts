@@ -2,6 +2,7 @@ import * as ACTIONS from '@src/common/constants';
 import { string } from 'joi';
 import moment from 'moment';
 import mongoose, { Types } from 'mongoose';
+import jwt from 'jsonwebtoken';
 
 // **** Variables **** //
 
@@ -20,25 +21,53 @@ export interface IUser extends mongoose.Document {
   fullName: string;
   email: string;
   role?: string;
+  nickName?: string;
   password: string;
   isAccountVerified: boolean;
   isAccoutLocked: boolean;
   loginAttempts: number;
+  isAdult: boolean;
+  specialOffers: boolean;
+  verificationToken: string;
+  generateJWTVerificationToken: () => Promise<string>;
 }
 
-const UserSchema = new mongoose.Schema<IUser>({
-  fullName: { type: String, required: true },
-  email: { type: String, required: true },
-  role: {
-    type: String,
-    required: true,
-    enum: Object.values(ACTIONS.USER_ROLES),
+const UserSchema = new mongoose.Schema<IUser>(
+  {
+    fullName: { type: String, required: true },
+    nickName: { type: String },
+
+    email: { type: String, required: true },
+    role: {
+      type: String,
+      required: true,
+      enum: Object.values(ACTIONS.USER_ROLES),
+      default: 'Reader',
+    },
+    isAdult: { type: Boolean, default: false },
+    specialOffers: { type: Boolean, default: false },
+    password: { type: String },
+    isAccountVerified: { type: Boolean, default: false },
+    isAccoutLocked: { type: Boolean, default: false },
+    loginAttempts: { type: Number, default: 3 },
+    verificationToken: { type: String, default: '' },
   },
-  password: { type: String },
-  isAccountVerified: { type: Boolean, default: false },
-  isAccoutLocked: { type: Boolean, default: false },
-  loginAttempts: { type: Number, default: 3 },
-});
+  {
+    timestamps: true,
+  }
+);
+
+UserSchema.methods.generateJWTVerificationToken = async function () {
+  const user = this;
+  const token = jwt.sign(
+    { id: user._id, email: user.email },
+    process.env.JWT_SECRET || 'default_secret',
+    { expiresIn: '1h' }
+  );
+  user.verificationToken = token;
+  await user.save();
+  return token;
+};
 
 export const User = mongoose.model<IUser>('User', UserSchema);
 export interface ISessionUser {

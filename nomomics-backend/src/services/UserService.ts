@@ -3,12 +3,11 @@ import HttpStatusCodes from '@src/common/HttpStatusCodes';
 
 import UserRepo from '@src/repos/UserRepo';
 import User, { IUser } from '@src/models/User';
-
+import { ObjectId } from 'mongoose';
 
 // **** Variables **** //
 
 export const USER_NOT_FOUND_ERR = 'User not found';
-
 
 // **** Functions **** //
 
@@ -19,7 +18,7 @@ function getAll(): Promise<IUser[]> {
   return UserRepo.getAll();
 }
 
-async function getUserById(id: TypeConstructor.ObjectId): Promise<void> {
+async function getUserById(id: ObjectId): Promise<IUser> {
   const user = await User.User.findById(id).select('-password');
   if (!user) {
     throw new RouteError(HttpStatusCodes.NOT_FOUND, 'User not found');
@@ -55,7 +54,6 @@ async function _delete(id: number): Promise<void> {
   }
   return UserRepo.delete(id);
 }
-
 
 // **** Export default **** //
 

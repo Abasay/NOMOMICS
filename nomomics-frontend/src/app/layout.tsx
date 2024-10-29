@@ -5,6 +5,8 @@ import './globals.css';
 import { Inter } from 'next/font/google';
 import { Metadata } from 'next';
 import LoadingScreen from '@/components/Common/LoadingScreen';
+import { Toaster } from 'react-hot-toast';
+import { ProfileProvider } from './contexts/Profile';
 
 const roboto = Inter({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
@@ -36,7 +38,32 @@ export default function RootLayout({
         ) : (
           <div className={`${roboto} antialiased`}>
             {/* Your layout structure */}
-            {children}
+            <Toaster
+              position='top-center'
+              reverseOrder={false}
+              gutter={8}
+              containerClassName=''
+              containerStyle={{}}
+              toastOptions={{
+                // Define default options
+                className: '',
+                duration: 5000,
+                style: {
+                  background: '#363636',
+                  color: '#fff',
+                },
+
+                // Default options for specific types
+                success: {
+                  duration: 3000,
+                  // theme: {
+                  //     primary: 'green',
+                  //     secondary: 'black',
+                  // },
+                },
+              }}
+            />
+            <ProfileProvider>{children}</ProfileProvider>
           </div>
         )}
       </body>
