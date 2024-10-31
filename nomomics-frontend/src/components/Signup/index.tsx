@@ -104,7 +104,7 @@ const SignUp = () => {
               />
             )}
 
-          {verifying && <Loader loading={done} />}
+          {verifying && <Loader loading={verifying} />}
 
           {verified && <EmailVerify />}
         </div>
