@@ -133,8 +133,8 @@ const ProfileSettings = () => {
             // alt='login'
             className={
               uploading
-                ? 'imgUpload h-full w-full rounded-full'
-                : 'h-full w-full rounded-full'
+                ? 'imgUpload w-[100px] h-[100px] rounded-full'
+                : 'w-[100px] h-[100px] rounded-full'
             }
           />
           <label htmlFor='profileImg'>
