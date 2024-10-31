@@ -12,6 +12,7 @@ import Loader from './Loader';
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import { useProfile } from '@/app/contexts/Profile';
+import { Cookie } from 'next/font/google';
 
 const SignUp = () => {
   const [showVerify, setShowVerify] = React.useState(false);
@@ -54,6 +55,7 @@ const SignUp = () => {
           const response = await res.json();
           console.log(response);
           updateProfile(response.data.user);
+          Cookies.set('token', response.data.token, { expires: 7 });
         } else {
           toast.error('Invalid token');
           router.push('/signup');

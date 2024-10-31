@@ -102,11 +102,18 @@ async function login(req: IReq, res: IRes) {
 async function verifyEmail(req: IReq, res: IRes) {
   const token = check.isStr(req.body, 'token');
   const user = await AuthService.verifyEmail(token);
+  const newToken = await SessionUtil.signedJwt({
+    id: user._id,
+    email: user.email,
+    fullName: user.fullName,
+    role: user.role,
+  });
   return res.status(HttpStatusCodes.OK).json({
     success: true,
     data: {
       message: 'Email verified successfully',
       user,
+      token: newToken,
     },
   });
 }
