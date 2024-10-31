@@ -194,7 +194,7 @@ const SignInForm = ({ setIsModalVisible }: { setIsModalVisible: any }) => {
         </div>
         <p className='mt-6 text-center'>
           Don&apos;t have an account?{' '}
-          <Link href='/login' className=' hover:text-primary font-bold '>
+          <Link href='/signup' className=' hover:text-primary font-bold '>
             Sign up
           </Link>
         </p>
