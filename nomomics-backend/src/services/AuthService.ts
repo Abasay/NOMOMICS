@@ -76,7 +76,7 @@ async function signup(
 async function login(email: string, password: string): Promise<IUser> {
   // Fetch user
   const user = await User.User.findOne({ email }).select(
-    '-verificationToken -isAccountVerified -isAccoutLocked'
+    '-verificationToken  '
   );
   if (!user) {
     throw new RouteError(

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProfileHeader from './ProfileHeader';
 import Sidebar from './Sidebar';
 import ProfileSettings from './ProfileSettings';
@@ -16,8 +16,43 @@ import ConverterForm from './Monetization/Converter';
 import FileUpload from './ContentManagement/FileUpload';
 import Draft from './ContentManagement/Draft';
 import { useProfile } from '@/app/contexts/Profile';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
 const Profile = () => {
+  const isLoggedIn = Cookies.get('isLoggedIn');
+  const token = Cookies.get('token');
+  const router = useRouter();
+  const { updateProfile } = useProfile();
+
+  if (!isLoggedIn) {
+    router.push('/login');
+  }
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push('/login');
+    }
+    (async () => {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/users/user/get-user`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data = await res.json();
+        updateProfile(data.data.user);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+
   const [active, setActive] = useState<string>('Profile Settings');
   const [HeaderData, setHeaderData] = useState<string[]>([
     'Profile Settings',

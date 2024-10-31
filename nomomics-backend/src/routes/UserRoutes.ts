@@ -5,7 +5,7 @@ import User from '@src/models/User';
 
 import { IReq, IRes } from './common/types';
 import check from './common/check';
-
+import { ObjectId } from 'mongoose';
 
 // **** Functions **** //
 
@@ -35,6 +35,72 @@ async function update(req: IReq, res: IRes) {
   return res.status(HttpStatusCodes.OK).end();
 }
 
+/* Update User Details */
+
+async function updateUserDetails(req: IReq, res: IRes) {
+  const [fullName, nickName, gender, country, language] = check.isStr(
+    req.body,
+    ['fullName', 'nickName', 'gender', 'country', 'language']
+  );
+  const userUpdate = await UserService.updateUserDetails(
+    req.body.id as ObjectId,
+    fullName,
+    gender,
+    country,
+    nickName,
+    language
+  );
+
+  return res
+    .status(HttpStatusCodes.OK)
+    .json({ success: true, data: { ...userUpdate } });
+}
+
+/** Get Comics file Url */
+async function getComicsFileUrl(req: IReq, res: IRes) {
+  const [base64File] = check.isStr(req.body, ['base64File']);
+  const comicsUrl = await UserService.getComicsFileUrl(
+    req.body.id as ObjectId,
+    base64File
+  );
+  return res
+    .status(HttpStatusCodes.OK)
+    .json({ success: true, data: { comicsUrl } });
+}
+
+/** Upload Image */
+async function uploadImage(req: IReq, res: IRes) {
+  const [base64Image] = check.isStr(req.body, ['base64Image']);
+  const imageUrl = await UserService.uploadImage(
+    req.body.id as ObjectId,
+    base64Image
+  );
+  return res
+    .status(HttpStatusCodes.OK)
+    .json({ success: true, data: { imageUrl } });
+}
+
+/**Upload Comics File */
+
+async function uploadComicsFile(req: IReq, res: IRes) {
+  const [base64File] = check.isStr(req.body, ['base64File']);
+  const comicsUrl = await UserService.getComicsFileUrl(
+    req.body.id as ObjectId,
+    base64File
+  );
+  return res
+    .status(HttpStatusCodes.OK)
+    .json({ success: true, data: { comicsUrl } });
+}
+
+/** Get User */
+async function getUser(req: IReq, res: IRes) {
+  // const {id} = req.user
+  const user = await UserService.getUserById(req.body.id as ObjectId);
+  return res.status(HttpStatusCodes.OK).json({ success: true, data: { user } });
+}
+
+/** Upload Image */
 /**
  * Delete one user.
  */
@@ -44,7 +110,6 @@ async function delete_(req: IReq, res: IRes) {
   return res.status(HttpStatusCodes.OK).end();
 }
 
-
 // **** Export default **** //
 
 export default {
@@ -52,4 +117,8 @@ export default {
   add,
   update,
   delete: delete_,
+  updateUserDetails,
+  getComicsFileUrl,
+  uploadImage,
+  getUser,
 } as const;

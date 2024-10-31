@@ -1,0 +1,14 @@
+@keyframes animate {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 0.8;
+  }
+}
+
+.imgUpload {
+  animation: animate 1s forwards;
+  transition: 1s ease-in;
+  animation-iteration-count: infinite;
+}

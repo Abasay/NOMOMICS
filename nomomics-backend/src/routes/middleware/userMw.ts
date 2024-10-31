@@ -11,39 +11,42 @@ import { ISessionUser, UserRoles } from '@src/models/User';
 
 import { IReq, IRes } from '../common/types';
 
-
 // **** Variables **** //
 
 const USER_UNAUTHORIZED_ERR = 'User not authorized to perform this action';
 
 type TSessionData = ISessionUser & JwtPayload;
 
-
 /**
  * See note at beginning of file.
  */
-async function adminMw(
-  req: IReq,
-  res: IRes,
-  next: NextFunction,
-) {
+async function adminMw(req: IReq, res: IRes, next: NextFunction) {
   // Get session data
-  const sessionData = await SessionUtil.getSessionData<TSessionData>(req);
+  const token = req.headers.authorization?.split(' ')[1] || '';
+  console.log(token);
+  if (!token) {
+    return res
+      .status(HttpStatusCodes.UNAUTHORIZED)
+      .json({ error: USER_UNAUTHORIZED_ERR });
+  }
+  // const sessionData = await SessionUtil.getSessionData<TSessionData>(req);
+
+  const decodeToken = (await SessionUtil.decodeJwt(token)) as TSessionData;
+
+  console.log(decodeToken);
   // Set session data to locals
-  if (
-    typeof sessionData === 'object' &&
-    sessionData?.role === UserRoles.Admin
-  ) {
-    res.locals.sessionUser = sessionData;
+  if (typeof decodeToken === 'object' && decodeToken?.role === 'Reader') {
+    // res.locals.sessionUser = sessionData;
+    req.body = { ...req.body, ...decodeToken };
+    console.log();
     return next();
-  // Return an unauth error if user is not an admin
+    // Return an unauth error if user is not an admin
   } else {
     return res
       .status(HttpStatusCodes.UNAUTHORIZED)
       .json({ error: USER_UNAUTHORIZED_ERR });
   }
 }
-
 
 // **** Export Default **** //
 

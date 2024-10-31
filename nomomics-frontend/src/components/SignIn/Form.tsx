@@ -39,6 +39,8 @@ const SignInForm = ({ setIsModalVisible }: { setIsModalVisible: any }) => {
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
+  const [signingIn, setSigningIn] = useState<boolean>(false);
+
   const [errMsg, setErrMsg] = useState<string>('');
   const [errMsg1, setErrMsg1] = useState<string>('');
 
@@ -56,14 +58,15 @@ const SignInForm = ({ setIsModalVisible }: { setIsModalVisible: any }) => {
 
   const { updateProfile } = useProfile();
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     const { email, password, rememberMe } = formData;
 
     const uri = `${process.env.NEXT_PUBLIC_API_URL}/auth/login`;
     const body = { email, password, rememberMe };
     try {
-      fetch(uri, {
+      setSigningIn(true);
+      await fetch(uri, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,6 +75,7 @@ const SignInForm = ({ setIsModalVisible }: { setIsModalVisible: any }) => {
       })
         .then((res) => res.json())
         .then((data: any) => {
+          setSigningIn(false);
           if (data.error) {
             setErrMsg(data.error);
             setErrMsg1(data.additionalMessage);
@@ -83,8 +87,9 @@ const SignInForm = ({ setIsModalVisible }: { setIsModalVisible: any }) => {
           if (data.success) {
             console.log(data);
             updateProfile(data.data.user);
-            toast.success('Login successful');
+            toast.success('Login successful!');
             Cookies.set('isLoggedIn', 'true');
+            Cookies.set('token', data.data.token);
             setFormData({
               email: '',
               password: '',
@@ -96,6 +101,7 @@ const SignInForm = ({ setIsModalVisible }: { setIsModalVisible: any }) => {
         });
     } catch (error) {
       console.log(error);
+      setSigningIn(false);
       toast.error('An error occurred');
     }
   };
@@ -171,8 +177,9 @@ const SignInForm = ({ setIsModalVisible }: { setIsModalVisible: any }) => {
             </div>
             <Button
               className='w-full'
-              text='Sign in'
-              onClickFunc={() => console.log('You clicked me')}
+              text={signingIn ? 'Signing in...' : 'Sign in'}
+              disabled={signingIn}
+              onClickFunc={() => handleSubmit}
             />
           </form>
         </div>

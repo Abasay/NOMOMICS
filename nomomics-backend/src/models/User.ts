@@ -22,6 +22,8 @@ export interface IUser extends mongoose.Document {
   email: string;
   role?: string;
   nickName?: string;
+  gender?: string;
+  language?: string;
   password: string;
   isAccountVerified: boolean;
   isAccoutLocked: boolean;
@@ -29,6 +31,9 @@ export interface IUser extends mongoose.Document {
   isAdult: boolean;
   specialOffers: boolean;
   verificationToken: string;
+  country?: string;
+  profileImage?: string;
+  comics?: Types.ObjectId;
   generateJWTVerificationToken: () => Promise<string>;
 }
 
@@ -51,6 +56,14 @@ const UserSchema = new mongoose.Schema<IUser>(
     isAccoutLocked: { type: Boolean, default: false },
     loginAttempts: { type: Number, default: 3 },
     verificationToken: { type: String, default: '' },
+    gender: { type: String },
+    language: { type: String },
+    country: { type: String },
+    profileImage: { type: String },
+    comics: {
+      type: Types.ObjectId,
+      ref: 'Comics',
+    },
   },
   {
     timestamps: true,

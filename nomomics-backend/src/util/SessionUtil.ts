@@ -4,7 +4,7 @@ import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import { RouteError } from '@src/common/classes';
 import EnvVars from '@src/common/EnvVars';
 import { IReq, IRes } from '@src/routes/common/types';
-
+import { decode } from 'punycode';
 
 // **** Variables **** //
 
@@ -18,7 +18,6 @@ const Errors = {
 const Options = {
   expiresIn: EnvVars.Jwt.Exp,
 };
-
 
 // **** Functions **** //
 
@@ -38,8 +37,10 @@ function _decode<T>(jwt: string): Promise<string | undefined | T> {
   return new Promise((res, rej) => {
     jsonwebtoken.verify(jwt, EnvVars.Jwt.Secret, (err, decoded) => {
       if (!!err) {
-        const err = new RouteError(HttpStatusCodes.UNAUTHORIZED, 
-          Errors.Validation);
+        const err = new RouteError(
+          HttpStatusCodes.UNAUTHORIZED,
+          Errors.Validation
+        );
         return rej(err);
       } else {
         return res(decoded as T);
@@ -49,12 +50,9 @@ function _decode<T>(jwt: string): Promise<string | undefined | T> {
 }
 
 /**
- * Add a JWT to the response 
+ * Add a JWT to the response
  */
-async function addSessionData(
-  res: IRes,
-  data: string | object,
-): Promise<IRes> {
+async function addSessionData(res: IRes, data: string | object): Promise<IRes> {
   if (!res || !data) {
     throw new RouteError(HttpStatusCodes.BAD_REQUEST, Errors.ParamFalsey);
   }
@@ -71,7 +69,7 @@ async function addSessionData(
 function _sign(data: string | object | Buffer): Promise<string> {
   return new Promise((res, rej) => {
     jsonwebtoken.sign(data, EnvVars.Jwt.Secret, Options, (err, token) => {
-      return (err ? rej(err) : res(token ?? ''));
+      return err ? rej(err) : res(token ?? '');
     });
   });
 }
@@ -84,11 +82,12 @@ function clearCookie(res: IRes): IRes {
   return res.clearCookie(Key, Options);
 }
 
-
 // **** Export default **** //
 
 export default {
   addSessionData,
   getSessionData,
   clearCookie,
+  signedJwt: _sign,
+  decodeJwt: _decode,
 } as const;

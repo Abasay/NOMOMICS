@@ -8,6 +8,7 @@ interface ProfileContextProps {
     gender: string;
     country: string;
     language: string;
+    profileImage?: string;
   };
   updateProfile: (
     newProfile: Partial<{
@@ -17,6 +18,7 @@ interface ProfileContextProps {
       gender: string;
       country: string;
       language: string;
+      profileImage?: string;
     }>
   ) => void;
 }
@@ -47,6 +49,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
     gender: '',
     country: '',
     language: '',
+    profileImage: '',
   });
 
   const updateProfile = (newProfile: Partial<typeof profile>) => {

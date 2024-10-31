@@ -1,8 +1,8 @@
-import { Router } from 'express';
+import express, { Router } from 'express';
 
 import Paths from '@src/common/Paths';
 
-import adminMw from './middleware/adminMw';
+import adminMw from './middleware/userMw';
 import AuthRoutes from './AuthRoutes';
 import UserRoutes from './UserRoutes';
 
@@ -31,14 +31,23 @@ apiRouter.use(Paths.Auth.Base, authRouter);
 
 const userRouter = Router();
 
+apiRouter.use(Paths.Users.Base, adminMw as any, userRouter);
+apiRouter.use(express.json({ limit: '50mb' }));
+
 // User Routes
 userRouter.get(Paths.Users.Get, UserRoutes.getAll as any);
-userRouter.post(Paths.Users.Add, UserRoutes.add as any);
-userRouter.put(Paths.Users.Update, UserRoutes.update as any);
-userRouter.delete(Paths.Users.Delete, UserRoutes.delete as any);
+// userRouter.post(Paths.Users.Add, UserRoutes.add as any);
+// userRouter.put(Paths.Users.Update, UserRoutes.update as any);
+// userRouter.delete(Paths.Users.Delete, UserRoutes.delete as any);
+userRouter.put(Paths.Users.UpdateDetails, UserRoutes.updateUserDetails as any);
+userRouter.get(
+  Paths.Users.getComicsFileUrl,
+  UserRoutes.getComicsFileUrl as any
+);
+userRouter.post(Paths.Users.uploadImage, UserRoutes.uploadImage as any);
+userRouter.get(Paths.Users.getUser, UserRoutes.getUser as any);
 
 // Add UserRouter
-apiRouter.use(Paths.Users.Base, adminMw as any, userRouter);
 
 // **** Export default **** //
 

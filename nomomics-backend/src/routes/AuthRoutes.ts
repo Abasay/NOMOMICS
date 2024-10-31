@@ -15,7 +15,7 @@ import { Console } from 'console';
  */
 
 async function signup(req: IReq, res: IRes) {
-  const [email, password, fullName, nickName] = check.isStr(req.body, [
+  const [email, password, fullName] = check.isStr(req.body, [
     'email',
     'password',
     'fullName',
@@ -75,11 +75,20 @@ async function login(req: IReq, res: IRes) {
     fullName: user.fullName,
     role: user.role,
   });
+
+  const signedJwt = await SessionUtil.signedJwt({
+    id: user._id,
+    email: user.email,
+    fullName: user.fullName,
+    role: user.role,
+  });
+
+  console.log(signedJwt);
   // Return
   const { password, ...userWithoutPassword } = user;
   return res.status(HttpStatusCodes.OK).json({
     success: true,
-    data: { user: userWithoutPassword },
+    data: { user: userWithoutPassword, token: signedJwt },
   });
 }
 
