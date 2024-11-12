@@ -10,7 +10,7 @@ const ProfileHeader = (props: {
   const { active, setActive, HeaderData } = props;
   const [track, setTrack] = useState<boolean>(false);
   return (
-    <div className='bg-white h-16 mt-8 border-b-2 border-[#909090] flex items-center mx-auto justify-center w-full'>
+    <div className='bg-white px-3 h-16 mt-8 border-b-2 border-[#909090] flex items-center mx-auto justify-center w-full'>
       <div
         className={`flex font-montserrat text-[#212121] items-center gap-8 justify-center w-full ${styles['slide-in-from-right']} `}
       >
@@ -21,7 +21,7 @@ const ProfileHeader = (props: {
             key={index}
           >
             <h1
-              className={`text-[#1A1A1A] tracking-wider py-1 font-bold text-base ${
+              className={`text-[#1A1A1A] tracking-wider py-1 font-bold max-md:text-sm text-base ${
                 active === data ? 'text-[#1A1A1A]' : 'text-[#909090]'
               } ${styles['slide-in-from-right']}`}
             >

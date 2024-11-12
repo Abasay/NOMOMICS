@@ -16,7 +16,7 @@ const LoadingScreen = () => {
   if (isLoaded) return null; // Hide the loading screen after loading
 
   return (
-    <div className={styles.loadingScreen}>
+    <div className={`${styles.loadingScreen}`}>
       <Image
         src={SignUpLogo}
         alt='Website Logo'

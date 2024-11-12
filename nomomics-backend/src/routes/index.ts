@@ -2,9 +2,10 @@ import express, { Router } from 'express';
 
 import Paths from '@src/common/Paths';
 
-import adminMw from './middleware/userMw';
+import userMw from './middleware/userMw';
 import AuthRoutes from './AuthRoutes';
 import UserRoutes from './UserRoutes';
+import ComicsRoutes from './ComicsRoutes';
 
 // **** Variables **** //
 
@@ -13,10 +14,6 @@ const apiRouter = Router();
 // **** AuthRouter **** //
 
 const authRouter = Router();
-
-authRouter.use(Paths.Auth.Base, authRouter);
-
-// Routes
 authRouter.post(Paths.Auth.Signup, AuthRoutes.signup as any);
 authRouter.post(Paths.Auth.Login, AuthRoutes.login as any);
 authRouter.get(Paths.Auth.Logout, AuthRoutes.logout as any);
@@ -24,21 +21,37 @@ authRouter.post(Paths.Auth.VerifyEmail, AuthRoutes.verifyEmail as any);
 authRouter.post(Paths.Auth.ResendEmail, AuthRoutes.resendEmail as any);
 
 // Add AuthRouter
-
 apiRouter.use(Paths.Auth.Base, authRouter);
+
+// **** Comics Routers **** //
+
+// Unprotected comics router
+const unprotectedComicRouter = Router();
+unprotectedComicRouter.get(
+  Paths.Comics.allComic,
+  ComicsRoutes.allComics as any
+);
+unprotectedComicRouter.get(Paths.Comics.getComic, ComicsRoutes.getComic as any);
+apiRouter.use(Paths.Comics.Base, unprotectedComicRouter);
+
+// Protected comics router
+const protectedComicRouter = Router();
+protectedComicRouter.use(userMw as any);
+protectedComicRouter.post(
+  Paths.Comics.uploadComic,
+  ComicsRoutes.uploadComic as any
+);
+protectedComicRouter.get(
+  Paths.Comics.userComics,
+  ComicsRoutes.userComics as any
+);
+apiRouter.use(Paths.Comics.Base, protectedComicRouter);
 
 // **** UserRouter **** //
 
 const userRouter = Router();
-
-apiRouter.use(Paths.Users.Base, adminMw as any, userRouter);
-apiRouter.use(express.json({ limit: '50mb' }));
-
-// User Routes
+userRouter.use(userMw as any);
 userRouter.get(Paths.Users.Get, UserRoutes.getAll as any);
-// userRouter.post(Paths.Users.Add, UserRoutes.add as any);
-// userRouter.put(Paths.Users.Update, UserRoutes.update as any);
-// userRouter.delete(Paths.Users.Delete, UserRoutes.delete as any);
 userRouter.put(Paths.Users.UpdateDetails, UserRoutes.updateUserDetails as any);
 userRouter.get(
   Paths.Users.getComicsFileUrl,
@@ -46,9 +59,7 @@ userRouter.get(
 );
 userRouter.post(Paths.Users.uploadImage, UserRoutes.uploadImage as any);
 userRouter.get(Paths.Users.getUser, UserRoutes.getUser as any);
-
-// Add UserRouter
+apiRouter.use(Paths.Users.Base, userRouter);
 
 // **** Export default **** //
-
 export default apiRouter;

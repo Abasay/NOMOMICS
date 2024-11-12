@@ -157,7 +157,10 @@ const SignUpForm = (props: {
             }
           </div>
         )}
-        <form className=' text-lg' onSubmit={handleSubmit}>
+        <form
+          className='max-md:text-sm max-480:text-xs text-lg'
+          onSubmit={handleSubmit}
+        >
           <div className='mb-4'>
             <label className='block mb-2 font-bold'>Full Name</label>
             <input
@@ -202,7 +205,7 @@ const SignUpForm = (props: {
               {togglePasswd ? <FaEye size={24} /> : <FaEyeSlash size={24} />}
             </span>
 
-            <p className=' text-sm text-zinc-400 font-extralight'>
+            <p className=' max-md:text-xs text-sm text-zinc-400 font-extralight'>
               At least 8 characters; lower and uppercase letters, numbers and
               symbols
             </p>
@@ -280,14 +283,14 @@ const SignUpForm = (props: {
         <div className='mt-6 text-center text-zinc-600'>
           <p className='mb-2'>Sign up with</p>
           <div className='flex justify-center space-x-8'>
-            <FaFacebook className='text-2xl text-blue-600 cursor-pointer hover:text-blue-800' />
-            <FaGoogle className='text-2xl text-red-500 cursor-pointer hover:text-red-700' />
-            <FaApple className='text-2xl text-gray-800 cursor-pointer hover:text-black' />
+            <FaFacebook className='text-2xl max-md:text-lg text-blue-600 cursor-pointer hover:text-blue-800' />
+            <FaGoogle className='text-2xl max-md:text-lg text-red-500 cursor-pointer hover:text-red-700' />
+            <FaApple className='text-2xl max-md:text-lg text-gray-800 cursor-pointer hover:text-black' />
           </div>
         </div>
         <p className='mt-6 text-center'>
           Do you have an account?{' '}
-          <Link href='/login' className=' hover:text-primary font-bold '>
+          <Link href='/signin' className=' hover:text-primary font-bold '>
             Login
           </Link>
         </p>

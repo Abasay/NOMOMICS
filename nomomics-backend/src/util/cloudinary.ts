@@ -23,16 +23,18 @@ export const uploadBase64ImageToCloudinary = async (
 };
 export const uploadBase64PdfToCloudinary = async (
   base64Pdf: string,
-  folder: string
+  folder: string,
+  fileName: string
 ): Promise<string> => {
   return new Promise((resolve, reject) => {
     cloudinary.uploader.upload(
       base64Pdf,
-      { folder, resource_type: 'raw' },
+      { folder, resource_type: 'raw', public_id: fileName },
       (error, result) => {
         if (error) {
           reject(error);
         } else {
+          console.log(result);
           resolve(result?.secure_url || '');
         }
       }

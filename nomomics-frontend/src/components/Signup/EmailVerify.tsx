@@ -8,7 +8,7 @@ const EmailVerify = () => {
   const router = useRouter();
   return (
     <div className=' '>
-      <div className='flex justify-center h-[80%]  items-center '>
+      <div className='flex justify-center h-[80%] max-md:text-xs items-center '>
         <div className='bg-white flex justify-between items-center flex-col gap-24  p-8 pt-16 rounded-[25px] shadow-lg w-[90%] px-20 min-w-md '>
           <SignupSectionHeader
             title='Success!'

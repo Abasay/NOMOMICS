@@ -128,7 +128,10 @@ const SignInForm = ({ setIsModalVisible }: { setIsModalVisible: any }) => {
               }
             </div>
           )}
-          <form className=' pt-10 text-lg' onSubmit={handleSubmit}>
+          <form
+            className=' pt-10 max-480:text-xs max-md:text-sm text-lg'
+            onSubmit={handleSubmit}
+          >
             <div className='mb-4'>
               <label className='block mb-2 font-bold'>Email</label>
               <input
@@ -159,8 +162,8 @@ const SignInForm = ({ setIsModalVisible }: { setIsModalVisible: any }) => {
                 {showPassword ? <FaEye size={24} /> : <FaEyeSlash size={24} />}
               </span>
             </div>
-            <div className='mb-10 flex w-full justify-between'>
-              <label className='flex items-center text-lg text-zinc-950'>
+            <div className='mb-10 flex w-full flex-wrap  justify-between'>
+              <label className='flex items-center max-480:text-xs max-md:text-sm text-lg text-zinc-950'>
                 <input
                   type='checkbox'
                   name='rememberMe'
@@ -171,7 +174,7 @@ const SignInForm = ({ setIsModalVisible }: { setIsModalVisible: any }) => {
                 />
                 Remember Me
               </label>
-              <span className=' text-zinc-500 text-[14px]'>
+              <span className=' text-zinc-500 max-md:text-xs text-[14px]'>
                 Forgot password?
               </span>
             </div>
@@ -187,9 +190,9 @@ const SignInForm = ({ setIsModalVisible }: { setIsModalVisible: any }) => {
         <div className='mt-6 text-center text-zinc-600'>
           <p className='mb-2'>Sign in with</p>
           <div className='flex justify-center space-x-8'>
-            <FaFacebook className='text-2xl text-blue-600 cursor-pointer hover:text-blue-800' />
-            <FaGoogle className='text-2xl text-red-500 cursor-pointer hover:text-red-700' />
-            <FaApple className='text-2xl text-gray-800 cursor-pointer hover:text-black' />
+            <FaFacebook className='text-2xl max-480:text-sm max-md:text-xl text-blue-600 cursor-pointer hover:text-blue-800' />
+            <FaGoogle className='text-2xl max-480:text-sm max-md:text-xl text-red-500 cursor-pointer hover:text-red-700' />
+            <FaApple className='text-2xl max-480:text-sm max-md:text-xl text-gray-800 cursor-pointer hover:text-black' />
           </div>
         </div>
         <p className='mt-6 text-center'>

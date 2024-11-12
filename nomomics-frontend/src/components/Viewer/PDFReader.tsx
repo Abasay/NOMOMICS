@@ -173,16 +173,27 @@
 
 // export default PdfViewer;
 
+import { useComics } from '@/app/contexts/Comics';
 import { Viewer, Worker } from '@react-pdf-viewer/core';
+import { useParams } from 'next/navigation';
+import { useState } from 'react';
 
 export default function PDFViewer() {
-    return (
-        <main className=' rounded-lg'>
-            <Worker workerUrl='https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js'>
-                <div>
-                    <Viewer fileUrl='/test.pdf' />
-                </div>
-            </Worker>
-        </main>
-    );
+  const { comicId } = useParams();
+
+  const { comics } = useComics();
+
+  const [comic, setComic] = useState(
+    comics.find((comic) => comic._id === comicId)
+  );
+
+  return (
+    <main className=' rounded-lg'>
+      <Worker workerUrl='https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js'>
+        <div>
+          <Viewer fileUrl={comic?.fileUrl || ''} />
+        </div>
+      </Worker>
+    </main>
+  );
 }

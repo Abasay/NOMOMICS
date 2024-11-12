@@ -4,11 +4,11 @@ import heroDetail from '@/public/images/hero-detail.png';
 import Details from '@/components/Comics/Details';
 
 const DetailsPage = () => {
-    return (
-        <div className=''>
-            <Details />
-        </div>
-    );
+  return (
+    <div className='container mx-auto'>
+      <Details />
+    </div>
+  );
 };
 
 export default DetailsPage;

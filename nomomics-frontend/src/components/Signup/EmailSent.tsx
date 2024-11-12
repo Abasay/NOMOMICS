@@ -36,7 +36,7 @@ const EmailSent = ({
     }
   };
   return (
-    <div className='flex justify-center h-[80%]  items-center '>
+    <div className='flex justify-center h-[80%] max-480:text-xs max-md:text-sm  items-center '>
       <div className='bg-white  p-8 pt-16 rounded-[25px] shadow-lg w-[80%] px-16 min-w-md max-md:w-full max-md:px-8 '>
         <SignupSectionHeader
           title='Check your mail'

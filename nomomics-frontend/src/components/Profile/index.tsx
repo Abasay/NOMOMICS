@@ -68,8 +68,8 @@ const Profile = () => {
         setActive={setActive}
         HeaderData={HeaderData}
       />
-      <div className=' flex gap-4 bg-[#ffffff]  border-teal-950'>
-        <div className=' w-full max-w-[300px] border-r-2 border-[#909090]'>
+      <div className=' flex max-md:flex-col gap-4 bg-[#ffffff]  border-teal-950'>
+        <div className=' w-full md:max-w-[300px] md:border-r-2 border-[#909090]'>
           <Sidebar
             sideBarActive={sideBarActive}
             setSideBarActive={setSideBarActive}

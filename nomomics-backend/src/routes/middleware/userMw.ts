@@ -20,7 +20,7 @@ type TSessionData = ISessionUser & JwtPayload;
 /**
  * See note at beginning of file.
  */
-async function adminMw(req: IReq, res: IRes, next: NextFunction) {
+async function userMw(req: IReq, res: IRes, next: NextFunction) {
   // Get session data
   const token = req.headers.authorization?.split(' ')[1] || '';
   console.log(token);
@@ -50,4 +50,4 @@ async function adminMw(req: IReq, res: IRes, next: NextFunction) {
 
 // **** Export Default **** //
 
-export default adminMw;
+export default userMw;

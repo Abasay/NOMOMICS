@@ -53,8 +53,10 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
               </svg>
             </span>
             <div>
-              <div className='text-2xl font-medium '>Cash</div>
-              <div className='text-lg font-semibold'>
+              <div className='max-480:text-sm max-md:text-xl text-2xl font-medium '>
+                Cash
+              </div>
+              <div className='max-480:text-xs max-md:text-sm text-lg font-semibold'>
                 {cashAmount.toLocaleString()}
               </div>
             </div>
@@ -84,8 +86,10 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
             </span>
           </div>
           <div className='text-center'>
-            <div className='text-2xl font-medium'>Token</div>
-            <div className='text-lg font-semibold'>
+            <div className='max-480:text-sm max-md:text-xl text-2xl font-medium '>
+              Tokens
+            </div>
+            <div className='max-480:text-xs max-md:text-sm text-lg font-semibold'>
               {tokenAmount.toLocaleString()}
             </div>
           </div>
@@ -118,8 +122,10 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
             </span>
           </div>
           <div className='text-center'>
-            <div className='text-2xl font-semibold'>Coins</div>
-            <div className='text-lg font-semibold'>
+            <div className='max-480:text-sm max-md:text-xl text-2xl font-medium '>
+              Coins
+            </div>
+            <div className='max-480:text-xs max-md:text-sm text-lg font-semibold'>
               {coinAmount.toLocaleString()}
             </div>
           </div>

@@ -1,0 +1,37 @@
+.slider {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 250px;
+}
+
+.slides {
+  display: flex;
+  animation: slide 10s infinite; /* Adjust timing as needed */
+}
+
+.slide {
+  /* min-width: 100%; */
+  transition: transform 1s;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-50%);
+  }
+  40% {
+    transform: translateX(-100%);
+  }
+  60% {
+    transform: translateX(-150%);
+  }
+  80% {
+    transform: translateX(-200%);
+  }
+  100% {
+    transform: translateX(-250%);
+  }
+}

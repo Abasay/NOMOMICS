@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import UploadedFileList from './FilesUploaded';
 import UploadDetails from './UploadDetaiils';
@@ -6,16 +6,46 @@ import styles from '@/styles/common.module.css';
 import Status from '../Status';
 import statusLogo from '@/public/svgs/status.svg';
 import Image from 'next/image';
+import { pdfToBase64 } from '@/libs/fileConvert';
+import toast from 'react-hot-toast';
+import Swal from 'sweetalert2';
+import Cookies from 'js-cookie';
 
 const FileUpload = () => {
   const [subTitle, setSubTitle] = useState('');
   const [description, setDescription] = useState('');
   const [author, setAuthor] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [uploadedFile, setUploadedFile] = useState<string>('');
   const [showUploadDetails, setShowUploadDetails] = useState<boolean>(false);
+  const [myComics, setMyComics] = useState<any[]>([]);
 
-  const onDrop = (acceptedFiles: File[]) => {
+  const onDrop = async (acceptedFiles: File[]) => {
     setUploadedFiles(acceptedFiles);
+    console.log(acceptedFiles);
+    const convertedFile = (await pdfToBase64(acceptedFiles[0])) as string;
+    setUploadedFile(convertedFile);
+    console.log(convertedFile);
+  };
+
+  const getMyComics = async () => {
+    // fetch my comics
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/comics/comics/user`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+      setMyComics(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -44,6 +74,7 @@ const FileUpload = () => {
           <UploadDetails
             setShowUploadDetails={setShowUploadDetails}
             showUploadDetails={showUploadDetails}
+            comicDetails={{ subTitle, author, description, uploadedFile }}
           />
         </div>
       ) : (
@@ -136,7 +167,17 @@ const FileUpload = () => {
               Next file
             </button>
             <button
-              onClick={() => setShowUploadDetails(!showUploadDetails)}
+              onClick={() => {
+                if (!uploadedFile || !subTitle || !author || !description) {
+                  // toast.error('Please fill all fields.');
+                  Swal.fire({
+                    icon: 'info',
+                    text: 'All fields are required!',
+                  });
+                  return;
+                }
+                setShowUploadDetails(!showUploadDetails);
+              }}
               className='px-4 py-2 bg-yellow-500 hover:bg-yellow-600 rounded-md text-white font-medium'
             >
               {showUploadDetails ? 'Back' : 'Continue'}

@@ -1,16 +1,29 @@
 // components/UploadDetails.tsx
+import { useProfile } from '@/app/contexts/Profile';
+import { imageToBase64 } from '@/libs/fileConvert';
+import Cookies from 'js-cookie';
 import React, { useState } from 'react';
+import { useDropzone } from 'react-dropzone';
+import toast from 'react-hot-toast';
 import { AiFillBackward } from 'react-icons/ai';
 import { FaBackspace } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 
 interface UploadDetailsProps {
   setShowUploadDetails: (value: boolean) => void;
   showUploadDetails: boolean;
+  comicDetails: {
+    subTitle: string;
+    author: string;
+    description: string;
+    uploadedFile: string;
+  };
 }
 
 const UploadDetails: React.FC<UploadDetailsProps> = ({
   setShowUploadDetails,
   showUploadDetails,
+  comicDetails,
 }) => {
   const [title, setTitle] = useState('');
   const [synopsis, setSynopsis] = useState('');
@@ -18,8 +31,10 @@ const UploadDetails: React.FC<UploadDetailsProps> = ({
   const [category, setCategory] = useState('');
   const [location, setLocation] = useState('');
   const [ageLimit, setAgeLimit] = useState('');
+  const [coverImage, setCoverImage] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Handle the form submission
     console.log({
       title,
@@ -29,10 +44,106 @@ const UploadDetails: React.FC<UploadDetailsProps> = ({
       location,
       ageLimit,
     });
+
+    if (
+      !title ||
+      !synopsis ||
+      !genre ||
+      !category ||
+      !location ||
+      !coverImage
+    ) {
+      Swal.fire('All fields are required!');
+      return;
+    }
+
+    try {
+      // toast.loading('Uploading Comic...');
+      setLoading(true);
+      const request = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/comics/comic/upload`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${Cookies.get('token')}`,
+          },
+          body: JSON.stringify({
+            title,
+            synopsis,
+            genre,
+            category,
+            location,
+            ageLimit,
+            ...comicDetails,
+            coverImage,
+          }),
+        }
+      );
+
+      const response = await request.json();
+      toast.dismiss();
+      setLoading(false);
+      if (response.success) {
+        // toast.success('Comic successfully uploaded');
+        Swal.fire({
+          icon: 'success',
+          text: 'Comic successfully uploaded!.',
+        });
+
+        getMyComics();
+      } else {
+        Swal.fire({
+          icon: 'error',
+          text: response.message,
+        });
+      }
+    } catch (error: any) {
+      console.log(error);
+      // toast.error(error.message);
+      Swal.fire({
+        icon: 'error',
+        text: error.message,
+      });
+    }
   };
 
+  const { setMyComics } = useProfile();
+
+  const getMyComics = async () => {
+    // fetch my comics
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/comics/comics/user`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+      setMyComics(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onDrop = async (acceptedFiles: File[]) => {
+    const convertedImage = (await imageToBase64(acceptedFiles[0])) as string;
+    setCoverImage(convertedImage);
+  };
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      'image/png': ['.png', '.jpeg', '.jpg', '.webp'],
+    },
+  });
+
   return (
-    <div className=' bg-white flex flex-col justify-center items-center'>
+    <div className=' bg-white flex max-md:text-sm flex-col justify-center items-center'>
       <div className=' w-full mb-2'>
         <button
           onClick={() => setShowUploadDetails(!showUploadDetails)}
@@ -45,6 +156,25 @@ const UploadDetails: React.FC<UploadDetailsProps> = ({
       <div className='w-full  max-w-md'>
         <h1 className='text-lg font-semibold mb-6'>Upload Details</h1>
 
+        <div
+          {...getRootProps()}
+          className={`border-2 border-dashed p-6 rounded-md text-center cursor-pointer ${
+            isDragActive ? 'border-primary' : 'border-gray-300'
+          }`}
+        >
+          <input {...getInputProps()} />
+          {isDragActive ? (
+            <p>Drop the files here ...</p>
+          ) : (
+            <p>
+              Click or drag image to this area to upload
+              <br />
+              <span className='text-sm text-gray-500'>
+                Formats accepted are .png .jpg .jpeg
+              </span>
+            </p>
+          )}
+        </div>
         <div className='mb-4'>
           <label className='block mb-2'>Title</label>
           <input

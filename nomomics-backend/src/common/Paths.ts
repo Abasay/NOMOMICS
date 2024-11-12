@@ -24,4 +24,11 @@ export default {
     getComicsFileUrl: '/get-comics-file-url',
     getUser: '/get-user',
   },
+  Comics: {
+    Base: '/comics',
+    uploadComic: '/comic/upload',
+    allComic: '/all',
+    userComics: '/comics/user',
+    getComic: '/comic/:id',
+  },
 } as const;

@@ -59,7 +59,8 @@ async function getComicsFileUrl(
   }
   const comicsUrl = await uploadBase64PdfToCloudinary(
     base64File,
-    'Nomomic_Comics'
+    'Nomomic_Comics',
+    'dummy'
   );
   return comicsUrl;
 }

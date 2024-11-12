@@ -30,7 +30,7 @@ const Loader: React.FC<LoaderProps> = ({ loading }) => {
       }}
     >
       <ClipLoader color='#ffffff' loading={loading} size={150} />
-      <h1 className='text-white text-base md:text-xl tracking-wider mt-4'>
+      <h1 className='text-white max-480:text-sm text-base md:text-xl tracking-wider mt-4'>
         Verifying...
       </h1>
     </div>

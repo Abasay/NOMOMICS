@@ -17,7 +17,7 @@ const ConverterForm = () => {
   };
 
   return (
-    <div className='p-4 py-10  bg-white max-w-lg w-full mx-auto'>
+    <div className='p-4 py-10 max-md:text-sm bg-white max-w-lg w-full mx-auto'>
       <div className='flex items-center justify-around mb-4'>
         <label className='flex items-center space-x-2'>
           <input
@@ -43,7 +43,7 @@ const ConverterForm = () => {
         </label>
       </div>
 
-      <h1 className=' text-2xl font-bold mb-2'>
+      <h1 className=' max-480:text-sm max-md:text-xl text-2xl font-bold mb-2'>
         {conversionType === 'coinToToken'
           ? 'Convert to tokens'
           : 'Cash to Tokens'}
@@ -78,7 +78,7 @@ const ConverterForm = () => {
           </svg>
         </span>
         <div>
-          <p className='text-lg font-medium text-center'>
+          <p className='max-480:text-xs max-md:text-sm text-lg font-medium text-center'>
             Total tokens received
           </p>
           <p className='text-sm text-gray-500 '>

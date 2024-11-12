@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import profileImg from '@/public/images/profile.png';
+import profileImg from '@/public/images/default.jpg';
 import Button from '../Common/Button';
 import { useProfile } from '@/app/contexts/Profile';
 import toast from 'react-hot-toast';
@@ -121,9 +121,9 @@ const ProfileSettings = () => {
   };
   console.log(profile);
   return (
-    <div className=' flex flex-col w-full  px-10 py-10 gap-8 pb-48'>
-      <div className='flex gap-3 items-center w-full '>
-        <div className='profileImg relative mx-auto mb-9 h-20 w-20 overflow-hidden rounded-full border border-gray-200 text-center'>
+    <div className=' flex flex-col w-full max-md:text-xs px-10 py-10 gap-8 pb-48'>
+      <div className='flex gap-3 max-md:flex-wrap items-center w-full '>
+        <div className='profileImg relative mx-auto mb-9 min-h-16 flex  min-w-16  max-w-16 max-h-16 overflow-hidden rounded-full border border-gray-200 text-center'>
           <Image
             src={formData.profileImage ? formData.profileImage : profileImg}
             alt='Profile Image'
@@ -133,8 +133,8 @@ const ProfileSettings = () => {
             // alt='login'
             className={
               uploading
-                ? 'imgUpload w-[100px] h-[100px] rounded-full'
-                : 'w-[100px] h-[100px] rounded-full'
+                ? 'imgUpload w-full h-full rounded-full'
+                : 'w-full h-full rounded-full'
             }
           />
           <label htmlFor='profileImg'>
@@ -171,7 +171,7 @@ const ProfileSettings = () => {
               <Button
                 text='Edit'
                 onClickFunc={() => setEditing((prev) => !prev)}
-                className=' w-10'
+                className=' min-w-10'
               />
             )}
           </div>
@@ -180,7 +180,10 @@ const ProfileSettings = () => {
       <div className=' flex flex-col gap-8 w-full overflow-auto scrollbar-hide'>
         <div className=' flex gap-8 justify-between w-full items-center'>
           <div className=' flex flex-col gap-2 w-full min-w-40'>
-            <label htmlFor='firstName' className=' text-[16px] leading-6 '>
+            <label
+              htmlFor='firstName'
+              className=' text-base max-md:text-xs leading-6 '
+            >
               Full Name
             </label>
             <input
@@ -194,7 +197,10 @@ const ProfileSettings = () => {
             />
           </div>
           <div className='flex flex-col gap-2 w-full min-w-40'>
-            <label htmlFor='nickName' className=' text-[16px] leading-6'>
+            <label
+              htmlFor='nickName'
+              className=' text-base max-md:text-xs leading-6'
+            >
               Nick Name
             </label>
             <input
@@ -210,7 +216,10 @@ const ProfileSettings = () => {
         </div>
         <div className=' flex gap-8 justify-between w-full items-center'>
           <div className=' flex flex-col gap-2 w-full min-w-40'>
-            <label htmlFor='gender' className=' text-[16px] leading-6 '>
+            <label
+              htmlFor='gender'
+              className=' text-base max-md:text-xs leading-6 '
+            >
               Gender
             </label>
 
@@ -230,7 +239,10 @@ const ProfileSettings = () => {
             </select>
           </div>
           <div className='flex flex-col gap-2 w-full min-w-40'>
-            <label htmlFor='country' className=' text-[16px] leading-6 '>
+            <label
+              htmlFor='country'
+              className=' text-base max-md:text-xs leading-6 '
+            >
               Country
             </label>
 
@@ -252,7 +264,10 @@ const ProfileSettings = () => {
         </div>
         <div className=' flex gap-8 justify-between w-full items-center'>
           <div className=' flex flex-col gap-2 w-full min-w-40'>
-            <label htmlFor='language' className=' text-[16px] leading-6 '>
+            <label
+              htmlFor='language'
+              className=' text-base max-md:text-xs leading-6 '
+            >
               Language
             </label>
 
@@ -271,7 +286,10 @@ const ProfileSettings = () => {
             </select>
           </div>
           <div className='flex flex-col gap-2 w-full min-w-40'>
-            <label htmlFor='country' className=' text-[16px] leading-6 '>
+            <label
+              htmlFor='country'
+              className=' text-base max-md:text-xs leading-6 '
+            >
               Email Address
             </label>
 

@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import Cookies from 'js-cookie';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from 'react';
 
 interface ProfileContextProps {
   profile: {
@@ -21,6 +28,9 @@ interface ProfileContextProps {
       profileImage?: string;
     }>
   ) => void;
+  myComics: any[];
+  allComics: any[];
+  setMyComics: (comics: any[]) => void;
 }
 
 const ProfileContext = createContext<ProfileContextProps | undefined>(
@@ -52,12 +62,61 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
     profileImage: '',
   });
 
+  const [myComics, setMyComics] = useState<any[]>([]);
+
+  const [allComics, setAllComics] = useState<any[]>([]);
+
   const updateProfile = (newProfile: Partial<typeof profile>) => {
     setProfile((prevProfile) => ({ ...prevProfile, ...newProfile }));
   };
 
+  useEffect(() => {
+    if (Cookies.get('token')) {
+      (async () => {
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/users/user/get-user`,
+            {
+              headers: {
+                Authorization: `Bearer ${Cookies.get('token')}`,
+              },
+            }
+          );
+          const data = await response.json();
+          if (response.ok) {
+            setProfile(data.data.user);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+
+      (async () => {
+        // fetch my comics
+        try {
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/comics/comics/user`,
+            {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${Cookies.get('token')}`,
+              },
+            }
+          );
+
+          const data = await res.json();
+          setMyComics(data.data);
+        } catch (error) {
+          console.log(error);
+        }
+      })();
+    }
+  }, []);
+
   return (
-    <ProfileContext.Provider value={{ updateProfile, profile }}>
+    <ProfileContext.Provider
+      value={{ updateProfile, profile, myComics, allComics, setMyComics }}
+    >
       {children}
     </ProfileContext.Provider>
   );

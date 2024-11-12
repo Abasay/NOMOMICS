@@ -7,10 +7,14 @@ import menuData from './menuData';
 import logo from '@/public/svgs/signup-logo-1.svg';
 import styles from '@/styles/common.module.css';
 import Cookies from 'js-cookie';
+import { useProfile } from '@/app/contexts/Profile';
+import defaultLogo from '@/public/images/default.jpg';
 
 const Header = () => {
   const isLoggedIn = Cookies.get('isLoggedIn');
   const router = useRouter();
+
+  const { profile } = useProfile();
 
   // Navbar toggle
   const [navbarOpen, setNavbarOpen] = useState(false);
@@ -51,8 +55,8 @@ const Header = () => {
 
   return (
     <div>
-      <header
-        className={`header font-montserrat left-0 top-0 z-40 h-[92px] font-semibold text-[16px] text-white tracking-widest leading-6 flex w-full items-center ${
+      <nav
+        className={`header font-montserrat left-0 top-0 z-40 h-[92px] font-semibold max-480:text-sm text-[16px] text-white tracking-widest leading-6 flex w-full items-center ${
           sticky
             ? 'fixed z-[9999] bg-secondary !bg-opacity-80 shadow-sticky backdrop-blur-sm transition dark:bg-gray-dark dark:shadow-sticky-dark'
             : 'absolute bg-secondary'
@@ -114,7 +118,7 @@ const Header = () => {
                         {menuItem.path ? (
                           <Link
                             href={menuItem.path}
-                            className={`flex w-auto py-2 min-w-16 text-base lg:mr-0 lg:inline-flex lg:px-0  ${
+                            className={`flex w-auto py-2 min-w-16 text-base max-480:text-sm lg:mr-0 lg:inline-flex lg:px-0  ${
                               usePathName === menuItem.path
                                 ? ' dark:text-white border-b-4 border-white'
                                 : 'text-dark hover:text-primary dark:text-white/70 dark:hover:text-white'
@@ -126,7 +130,7 @@ const Header = () => {
                           <div>
                             <p
                               onClick={() => handleSubmenu(index)}
-                              className='flex cursor-pointer items-center justify-between py-2 text-base text-dark group-hover:text-primary dark:text-white/70 dark:group-hover:text-white lg:mr-0 lg:inline-flex lg:px-0 lg:py-6'
+                              className='flex cursor-pointer items-center justify-between py-2 text-base max-480:text-sm text-dark group-hover:text-primary dark:text-white/70 dark:group-hover:text-white lg:mr-0 lg:inline-flex lg:px-0 lg:py-6'
                             >
                               {menuItem.title}
                               <span className='pl-3'>
@@ -167,30 +171,43 @@ const Header = () => {
                           <button
                             onClick={() => router.push('/profile')}
                             title='Profile'
-                            className='hidden py-2 text-base font-medium bg-gray-400 h-12 w-12 rounded-full text-dark hover:opacity-70 dark:text-white md:block'
-                          ></button>
+                            className=' py-2 text-base max-480:text-sm font-medium rounded-full text-dark hover:opacity-70 dark:text-white md:block'
+                          >
+                            <Image
+                              src={
+                                profile.profileImage
+                                  ? profile.profileImage
+                                  : defaultLogo
+                              }
+                              alt='Nomomics User profile Picture'
+                              width={140}
+                              height={30}
+                              className='w-8 h-8 rounded-full  '
+                              priority
+                            />
+                          </button>
                           <button
                             onClick={() => {
                               Cookies.remove('isLoggedIn');
                               router.push('/signin');
                             }}
-                            className='ease-in-up hidden rounded-full bg-primary px-8 py-2 text-base font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 h-[80%] w-[80%]  hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9'
+                            className='ease-in-up hidden rounded-full bg-primary px-8 py-2 text-base max-480:text-sm font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 h-[80%] w-[80%]  hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9'
                           >
                             Logout
                           </button>
                         </div>
                       </>
                     ) : (
-                      <div className='hidden max-1024:flex flex-col gap-4'>
+                      <div className='hidden max-md:flex max-1024:flex flex-col gap-4'>
                         <Link
                           href='/signin'
-                          className='hidden py-2 text-base font-medium text-dark hover:opacity-70 dark:text-white md:block'
+                          className=' py-2 text-base max-480:text-sm font-medium text-dark hover:opacity-70 dark:text-white md:block'
                         >
                           Log In
                         </Link>
                         <Link
                           href='/signup'
-                          className='ease-in-up hidden rounded-sm bg-primary px-8 py-2 text-base font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9'
+                          className='ease-in-up  rounded-sm bg-primary px-8 py-2 text-base max-480:text-sm font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9'
                         >
                           Sign Up
                         </Link>
@@ -207,14 +224,27 @@ const Header = () => {
                   <button
                     onClick={() => router.push('/profile')}
                     title='Profile'
-                    className='hidden py-2 text-base font-medium bg-gray-400 h-8 w-8 rounded-full text-dark hover:opacity-70 dark:text-white md:block'
-                  ></button>
+                    className=' py-2 text-base max-480:text-sm font-medium rounded-full text-dark hover:opacity-70 dark:text-white md:block'
+                  >
+                    <Image
+                      src={
+                        profile.profileImage
+                          ? profile.profileImage
+                          : defaultLogo
+                      }
+                      alt='Nomomics User profile Picture'
+                      width={140}
+                      height={30}
+                      className='w-8 h-8 rounded-full  '
+                      priority
+                    />
+                  </button>
                   <button
                     onClick={() => {
                       Cookies.remove('isLoggedIn');
                       router.push('/signin');
                     }}
-                    className='ease-in-up hidden rounded-full bg-primary px-8 py-2 text-base font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 h-[80%] w-[80%]  hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9'
+                    className='ease-in-up hidden rounded-full bg-primary px-8 py-2 text-base max-480:text-sm font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 h-[80%] w-[80%]  hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9'
                   >
                     Logout
                   </button>
@@ -223,24 +253,24 @@ const Header = () => {
                 <div className='max-1280:hidden flex gap-4'>
                   <Link
                     href='/signin'
-                    className='hidden py-2 text-base font-medium text-dark hover:opacity-70 dark:text-white md:block'
+                    className='hidden py-2 text-base max-480:text-sm font-medium text-dark hover:opacity-70 dark:text-white md:block'
                   >
                     Log In
                   </Link>
                   <Link
                     href='/signup'
-                    className='ease-in-up hidden rounded-sm bg-primary px-8 py-2 text-base font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9'
+                    className='ease-in-up hidden rounded-sm bg-primary px-8 py-2 text-base max-480:text-sm font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9'
                   >
                     Sign Up
                   </Link>
                 </div>
               )}
 
-              <button
+              {/* <button
                 onClick={authToggleHandler}
                 id='authToggler'
                 aria-label='Mobile Menu'
-                className='absolute right-2 top-1/2 translate-y-[-50%] rounded-lg px-3 md:hidden'
+                className='absolute  right-2 top-1/2 translate-y-[-50%] rounded-lg px-3 md:hidden'
               >
                 <span
                   className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 ${
@@ -257,7 +287,7 @@ const Header = () => {
                     authOpen ? 'top-[-8px] -rotate-45' : ''
                   }`}
                 />
-              </button>
+              </button> */}
 
               <button
                 onClick={authToggleHandler}
@@ -289,14 +319,27 @@ const Header = () => {
                       <button
                         onClick={() => router.push('/profile')}
                         title='Profile'
-                        className=' py-2 text-base font-medium bg-gray-400 h-8 w-8 rounded-full text-dark hover:opacity-70 dark:text-white md:block'
-                      ></button>
+                        className=' py-2 text-base max-480:text-sm font-medium rounded-full text-dark hover:opacity-70 dark:text-white md:block'
+                      >
+                        <Image
+                          src={
+                            profile.profileImage
+                              ? profile.profileImage
+                              : defaultLogo
+                          }
+                          alt='Nomomics User profile Picture'
+                          width={140}
+                          height={39}
+                          className='w-8 h-8 rounded-full'
+                          priority
+                        />
+                      </button>
                       <button
                         onClick={() => {
                           Cookies.remove('isLoggedIn');
                           router.push('/signin');
                         }}
-                        className='ease-in-up  rounded-full bg-primary px-8 py-2 text-base font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 h-[80%] w-[80%]  hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9'
+                        className='ease-in-up  rounded-full bg-primary px-8 py-2 text-base max-480:text-sm font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 h-[80%] w-[80%]  hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9'
                       >
                         Logout
                       </button>
@@ -305,13 +348,63 @@ const Header = () => {
                     <>
                       <Link
                         href='/signin'
-                        className='py-2 text-base hover:text-primary font-medium text-dark hover:opacity-70'
+                        className='py-2 text-base max-480:text-sm hover:text-primary font-medium text-dark hover:opacity-70'
                       >
                         Log In
                       </Link>
                       <Link
                         href='/signup'
-                        className='ease-in-up rounded-sm py-2 text-base font-medium shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover hover:text-primary'
+                        className='ease-in-up rounded-sm py-2 text-base max-480:text-sm font-medium shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover hover:text-primary'
+                      >
+                        Sign Up
+                      </Link>
+                    </>
+                  )}
+                </div>
+              )}
+              {authOpen && (
+                <div className='border-[.5px] min-1279:hidden max-1281:hidden border-body-color/50 absolute top-full flex flex-col bg-white opacity-100 px-5  text-black transition-all ease-in-out duration-500 delay-0'>
+                  {isLoggedIn ? (
+                    <div className='flex gap-2 py-4 items-center'>
+                      <button
+                        onClick={() => router.push('/profile')}
+                        title='Profile'
+                        className=' py-2 text-base max-480:text-sm font-medium rounded-full text-dark hover:opacity-70 dark:text-white md:block'
+                      >
+                        <Image
+                          src={
+                            profile.profileImage
+                              ? profile.profileImage
+                              : defaultLogo
+                          }
+                          alt='Nomomics User profile Picture'
+                          width={140}
+                          height={39}
+                          className='w-8 h-8 rounded-full'
+                          priority
+                        />
+                      </button>
+                      <button
+                        onClick={() => {
+                          Cookies.remove('isLoggedIn');
+                          router.push('/signin');
+                        }}
+                        className='ease-in-up  rounded-full bg-primary px-8 py-2 text-base max-480:text-sm font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 h-[80%] w-[80%]  hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9'
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <Link
+                        href='/signin'
+                        className='py-2 text-base max-480:text-sm hover:text-primary font-medium text-dark hover:opacity-70'
+                      >
+                        Log In
+                      </Link>
+                      <Link
+                        href='/signup'
+                        className='ease-in-up rounded-sm py-2 text-base max-480:text-sm font-medium shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover hover:text-primary'
                       >
                         Sign Up
                       </Link>
@@ -322,7 +415,7 @@ const Header = () => {
             </div>
           </div>
         </div>
-      </header>
+      </nav>
     </div>
   );
 };

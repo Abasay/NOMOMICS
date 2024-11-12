@@ -3,20 +3,22 @@ import Header from '@/components/Headers';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-    title: 'NOMOMICS',
-    description: 'Nomomics | Profile Page',
+  title: 'NOMOMICS',
+  description: 'Nomomics | Profile Page',
 };
 
 export default function ProfileLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <html lang='en'>
-            <Header />
-            <body className={` `}>{children}</body>
-            <Footer />
-        </html>
-    );
+  return (
+    <html lang='en'>
+      <body className={` `}>
+        <Header />
+        {children}
+        <Footer />
+      </body>
+    </html>
+  );
 }

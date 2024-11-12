@@ -3,6 +3,7 @@ import dummy from '@/public/images/dummy.jpg';
 import Image from 'next/image';
 
 import { StaticImageData } from 'next/image';
+import { useProfile } from '@/app/contexts/Profile';
 
 interface FileItem {
   id: number;
@@ -21,33 +22,46 @@ const UploadedFileList: React.FC = () => {
   const removeFile = (id: number) => {
     setFiles(files.filter((file) => file.id !== id));
   };
+  const { myComics } = useProfile();
+  console.log(myComics);
 
+  if (myComics.length === 0) {
+    return <p>No Comics</p>;
+  }
   return (
     <div className='p-6 bg-[#FAFAFA] flex flex-col justify-between h-full max-w-md mx-auto'>
       <div className='w-full'>
         <h2 className='text-lg font-semibold mb-4'>Uploaded file</h2>
 
         <div className='space-y-4'>
-          {files.map((file) => (
-            <div key={file.id} className='flex items-center space-x-4'>
-              <Image
-                src={file.imageUrl}
-                alt={file.title}
-                width={64}
-                height={64}
-                className='w-16 h-16 rounded-md object-cover'
-              />
-              <div className='flex-1'>
-                <p className='text-md font-medium'>{file.title}</p>
-                <button
-                  onClick={() => removeFile(file.id)}
-                  className='text-red-500 text-sm font-semibold'
-                >
-                  Remove
-                </button>
-              </div>
-            </div>
-          ))}
+          {myComics?.length > 0 ? (
+            myComics?.map(
+              (file: { _id: string; coverImage: string; title: string }) => {
+                return (
+                  <div key={file._id} className='flex items-center space-x-4'>
+                    <Image
+                      src={file.coverImage}
+                      alt={file.title}
+                      width={64}
+                      height={64}
+                      className='w-16 h-16 rounded-md object-cover'
+                    />
+                    <div className='flex-1'>
+                      <p className='text-md font-medium'>{file.title}</p>
+                      <button
+                        // onClick={() => removeFile(file.id)}
+                        className='text-red-500 text-sm font-semibold'
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                );
+              }
+            )
+          ) : (
+            <p>No comics uploaded</p>
+          )}
         </div>
       </div>
 

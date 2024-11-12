@@ -15,7 +15,7 @@ const Sidebar = (props: {
 }) => {
   const { sideBarActive, setSideBarActive, setHeaderData, setActive } = props;
   return (
-    <div className=' w-full flex flex-col  px-10 py-10 '>
+    <div className=' w-full  flex flex-wrap md:items-start max-md:justify-center  max-md:flex-row max-md:px-2 max-md:gap-4 flex-col max-md:py-4 px-10 py-10 '>
       {Object.keys(SideBarData).map((data: string, index) => (
         <div
           className='relative cursor-pointer py-2'
@@ -30,7 +30,7 @@ const Sidebar = (props: {
           }}
         >
           <h1
-            className={` font-bold tracking-wider text-base transition-all delay-0 duration-500 ${
+            className={` font-bold tracking-wider max-md:text-xs text-base transition-all delay-0 duration-500 ${
               sideBarActive === data ? 'text-[#1A1A1A]' : 'text-[#909090]'
             }`}
           >
