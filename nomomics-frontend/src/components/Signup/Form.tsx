@@ -18,6 +18,7 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import Error from '../Common/Error';
 import styles from '@/styles/common.module.css';
+import { useAuth } from '@/app/contexts/Auth';
 
 const SignUpForm = (props: {
   setShowVerify: any;
@@ -26,6 +27,8 @@ const SignUpForm = (props: {
 }) => {
   const { setShowVerify, credentials, setCredentials } = props;
   const isLoggedIn = Cookies.get('isLoggedIn');
+
+  const { accountType, signupMethod } = useAuth();
 
   const router = useRouter();
 
@@ -97,6 +100,8 @@ const SignUpForm = (props: {
       },
       body: JSON.stringify({
         ...formData,
+        role: accountType,
+        signupMethod,
       }),
     };
 
@@ -121,6 +126,7 @@ const SignUpForm = (props: {
         setCredentials({
           email: formData.email,
           password: formData.password,
+          fullName: formData.fullName,
         });
         setShowVerify(true);
       } else {

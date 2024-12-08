@@ -12,32 +12,57 @@ const Sidebar = (props: {
   setSideBarActive: Dispatch<SetStateAction<string>>;
   setHeaderData: Dispatch<SetStateAction<string[]>>;
   setActive: Dispatch<SetStateAction<string>>;
+  isCreator: boolean;
 }) => {
-  const { sideBarActive, setSideBarActive, setHeaderData, setActive } = props;
+  const {
+    sideBarActive,
+    setSideBarActive,
+    setHeaderData,
+    setActive,
+    isCreator,
+  } = props;
+
+  const [userSideBar, setUserSideBar] = React.useState<{
+    [key: string]: string[];
+  }>({
+    'Create Profile': ['Profile Settings'],
+    'Content Management': ['Notification'],
+    Monetizaton: ['Payment', 'History', 'Convert'],
+    // Analysis: ['Users', 'Readers'],
+    // 'Motion Comics': ['motions', 'comics'],
+  });
+
   return (
     <div className=' w-full  flex flex-wrap md:items-start max-md:justify-center  max-md:flex-row max-md:px-2 max-md:gap-4 flex-col max-md:py-4 px-10 py-10 '>
-      {Object.keys(SideBarData).map((data: string, index) => (
-        <div
-          className='relative cursor-pointer py-2'
-          key={index}
-          onClick={() => {
-            setSideBarActive(data);
-            setHeaderData([]);
-            setTimeout(() => {
-              setHeaderData(SideBarData[data]);
-              setActive(SideBarData[data][0]);
-            }, 20);
-          }}
-        >
-          <h1
-            className={` font-bold tracking-wider max-md:text-xs text-base transition-all delay-0 duration-500 ${
-              sideBarActive === data ? 'text-[#1A1A1A]' : 'text-[#909090]'
-            }`}
+      {Object.keys(isCreator ? SideBarData : userSideBar).map(
+        (data: string, index) => (
+          <div
+            className='relative cursor-pointer py-2'
+            key={index}
+            onClick={() => {
+              setSideBarActive(data);
+              setHeaderData([]);
+              setTimeout(() => {
+                if (isCreator) {
+                  setHeaderData(SideBarData[data]);
+                  setActive(SideBarData[data][0]);
+                } else {
+                  setHeaderData(userSideBar[data]);
+                  setActive(userSideBar[data][0]);
+                }
+              }, 20);
+            }}
           >
-            {data}
-          </h1>
-        </div>
-      ))}
+            <h1
+              className={` font-bold tracking-wider max-md:text-xs text-base transition-all delay-0 duration-500 ${
+                sideBarActive === data ? 'text-[#1A1A1A]' : 'text-[#909090]'
+              }`}
+            >
+              {data}
+            </h1>
+          </div>
+        )
+      )}
     </div>
   );
 };

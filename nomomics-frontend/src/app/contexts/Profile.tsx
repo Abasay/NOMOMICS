@@ -16,7 +16,12 @@ interface ProfileContextProps {
     country: string;
     language: string;
     profileImage?: string;
+    dob?: string;
+    phoneNumber?: string;
+    location?: string;
   };
+  formData: any;
+  setFormData: (data: any) => void;
   updateProfile: (
     newProfile: Partial<{
       fullName: string;
@@ -65,6 +70,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
   const [myComics, setMyComics] = useState<any[]>([]);
 
   const [allComics, setAllComics] = useState<any[]>([]);
+  const [formData, setFormData] = useState<any>({});
 
   const updateProfile = (newProfile: Partial<typeof profile>) => {
     setProfile((prevProfile) => ({ ...prevProfile, ...newProfile }));
@@ -85,6 +91,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
           const data = await response.json();
           if (response.ok) {
             setProfile(data.data.user);
+            setFormData(data.data.user);
           }
         } catch (error) {
           console.error(error);
@@ -113,9 +120,40 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
     }
   }, []);
 
+  useEffect(() => {
+    if (Cookies.get('token')) {
+      (async () => {
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/users/user/get-user`,
+            {
+              headers: {
+                Authorization: `Bearer ${Cookies.get('token')}`,
+              },
+            }
+          );
+          const data = await response.json();
+          if (response.ok) {
+            setProfile(data.data.user);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+    }
+  }, []);
+
   return (
     <ProfileContext.Provider
-      value={{ updateProfile, profile, myComics, allComics, setMyComics }}
+      value={{
+        updateProfile,
+        profile,
+        myComics,
+        allComics,
+        setMyComics,
+        formData,
+        setFormData,
+      }}
     >
       {children}
     </ProfileContext.Provider>

@@ -26,6 +26,7 @@ const config: Config = {
         textBodyColor: 'var(--text-body)',
         bgError: 'var(--bg-error)',
         tertiary: 'var(--tertiary)',
+        marketPlace: 'var(--text-market)',
       },
       typography: {
         DEFAULT: {

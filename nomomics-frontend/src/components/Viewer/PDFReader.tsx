@@ -175,25 +175,73 @@
 
 import { useComics } from '@/app/contexts/Comics';
 import { Viewer, Worker } from '@react-pdf-viewer/core';
-import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import Image from 'next/image';
+import { useParams, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 export default function PDFViewer() {
   const { comicId } = useParams();
 
   const { comics } = useComics();
 
+  const episodeNumber = useSearchParams().get('episode');
+
   const [comic, setComic] = useState(
-    comics.find((comic) => comic._id === comicId)
+    comics
+      .find((comic) => comic._id === comicId)
+      ?.episodes.find(
+        (episode) => episode.episodeNumber === Number(episodeNumber)
+      )
   );
 
-  return (
-    <main className=' rounded-lg'>
-      <Worker workerUrl='https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js'>
-        <div>
-          <Viewer fileUrl={comic?.fileUrl || ''} />
-        </div>
-      </Worker>
-    </main>
-  );
+  useEffect(() => {
+    setComic(
+      comics
+        .find((comic) => comic._id === comicId)
+        ?.episodes.find(
+          (episode) => episode.episodeNumber === Number(episodeNumber)
+        )
+    );
+  }, [episodeNumber]);
+  if (!comic) {
+    Swal.fire({
+      icon: 'error',
+      text: 'Not found',
+    });
+
+    return;
+  }
+
+  console.log(comic);
+
+  if (comic.filesType === 'pdf') {
+    return (
+      <main className=' rounded-lg'>
+        <Worker workerUrl='https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js'>
+          <div>
+            {comic?.episodeFileUrl.map((url, index) => (
+              <Viewer fileUrl={url || ''} />
+            ))}
+          </div>
+        </Worker>
+      </main>
+    );
+  } else {
+    return (
+      <main className=' rounded-lg'>
+        {comic?.episodeFileUrl.map((fileUrl, index) => (
+          <div key={index} className='flex justify-center border items-center'>
+            <Image
+              src={fileUrl}
+              alt={`Page ${index + 1}`}
+              width={600}
+              height={800}
+              className=' w-full h-full'
+            />
+          </div>
+        ))}
+      </main>
+    );
+  }
 }

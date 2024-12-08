@@ -24,12 +24,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 4000); // Adjust duration if necessary
-    return () => clearTimeout(timer);
-  }, []);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => setLoading(false), 4000); // Adjust duration if necessary
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   return (
     <html lang='en'>

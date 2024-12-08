@@ -11,6 +11,7 @@ export default {
     Signup: '/signup',
     VerifyEmail: '/verify-email',
     ResendEmail: '/resend-email',
+    googleSignup: '/google-signup',
   },
   Users: {
     Base: '/users/user',
@@ -27,8 +28,13 @@ export default {
   Comics: {
     Base: '/comics',
     uploadComic: '/comic/upload',
+    uploadToMarketPlace: '/comic/upload-to-market-place',
     allComic: '/all',
     userComics: '/comics/user',
     getComic: '/comic/:id',
+    checkComic: '/check-comic',
+    uploadComicAsPic: '/upload-comic-as-pic',
+    uploadComicAsPdf: '/upload-comic-as-pdf',
+    marketPlaceComics: '/market-place',
   },
 } as const;

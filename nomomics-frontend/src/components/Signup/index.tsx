@@ -13,9 +13,16 @@ import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import { useProfile } from '@/app/contexts/Profile';
 import { Cookie } from 'next/font/google';
+import Landing from './Landing';
+import { useAuth } from '@/app/contexts/Auth';
+import SignUpOptions from './SignupOptions';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const SignUp = () => {
   const [showVerify, setShowVerify] = React.useState(false);
+  const [showLanding, setShowLanding] = React.useState(true);
+
+  const { accountType, signupMethod } = useAuth();
 
   const [verifying, setVerifying] = React.useState(false);
   const [verified, setVerified] = React.useState(false);
@@ -24,6 +31,7 @@ const SignUp = () => {
   const [credentials, setCredentials] = React.useState({
     email: '',
     password: '',
+    fullName: '',
   });
 
   const pathName = usePathname();
@@ -32,39 +40,39 @@ const SignUp = () => {
 
   const { updateProfile } = useProfile();
 
-  React.useEffect(() => {
-    if (pathName.includes('/signup/verify') && !done) {
-      setVerifying(true);
-      (async () => {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/verify-email`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ token }),
-          }
-        );
+  // React.useEffect(() => {
+  //   if (pathName.includes('/signup/verify') && !done) {
+  //     setVerifying(true);
+  //     (async () => {
+  //       const res = await fetch(
+  //         `${process.env.NEXT_PUBLIC_API_URL}/auth/verify-email`,
+  //         {
+  //           method: 'POST',
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //           },
+  //           body: JSON.stringify({ token }),
+  //         }
+  //       );
 
-        if (res.ok) {
-          setVerifying(false);
-          setVerified(true);
-          setDone(true); // Update done to prevent multiple calls
-          Cookies.set('isLoggedIn', 'true', { expires: 7 });
-          const response = await res.json();
-          console.log(response);
-          updateProfile(response.data.user);
-          Cookies.set('token', response.data.token, { expires: 7 });
-        } else {
-          toast.error('Invalid token');
-          router.push('/signup');
-        }
-      })();
-    } else if (!done) {
-      router.push('/signup');
-    }
-  }, [pathName, done]); // Adding 'done' as a dependency
+  //       if (res.ok) {
+  //         setVerifying(false);
+  //         setVerified(true);
+  //         setDone(true); // Update done to prevent multiple calls
+  //         Cookies.set('isLoggedIn', 'true', { expires: 7 });
+  //         const response = await res.json();
+  //         console.log(response);
+  //         updateProfile(response.data.user);
+  //         Cookies.set('token', response.data.token, { expires: 7 });
+  //       } else {
+  //         toast.error('Invalid token');
+  //         router.push('/signup');
+  //       }
+  //     })();
+  //   } else if (!done) {
+  //     router.push('/signup');
+  //   }
+  // }, [pathName, done]); // Adding 'done' as a dependency
 
   const token = pathName.split('/').pop();
   console.log(token);
@@ -89,16 +97,26 @@ const SignUp = () => {
             true ? styles['fade-in'] : styles['fade-out']
           } w-full`}
         >
-          {showVerify && (
+          {showVerify && !verified && (
             <EmailSent
               email={credentials.email}
               password={credentials.password}
+              fullName={credentials.fullName}
+              setVerified={setVerified}
             />
           )}
-          {!verified &&
-            !showVerify &&
-            !verifying &&
-            !pathName.includes('/signup/verify') && (
+          {showLanding && <Landing setShowLanding={setShowLanding} />}
+          {!showLanding && !signupMethod && (
+            <GoogleOAuthProvider
+              clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''}
+            >
+              <SignUpOptions />
+            </GoogleOAuthProvider>
+          )}
+          {!showVerify &&
+            accountType &&
+            !showLanding &&
+            signupMethod === 'email' && (
               <SignUpForm
                 setShowVerify={setShowVerify}
                 credentials={credentials}

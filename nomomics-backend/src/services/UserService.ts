@@ -90,7 +90,10 @@ async function updateUserDetails(
   gender: string,
   country: string,
   nickName: string,
-  language: string
+  language: string,
+  dob: string,
+  phoneNumber: string,
+  location: string
 ): Promise<IUser> {
   const user = await User.User.findById(id);
   if (!user) {
@@ -101,6 +104,9 @@ async function updateUserDetails(
   user.language = language;
   user.nickName = nickName;
   user.country = country;
+  user.dob = dob;
+  user.phoneNumber = phoneNumber;
+  user.location = location;
   await user.save();
   return user;
 }

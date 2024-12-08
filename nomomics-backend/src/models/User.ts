@@ -34,6 +34,10 @@ export interface IUser extends mongoose.Document {
   country?: string;
   profileImage?: string;
   comics?: Types.ObjectId;
+  signupMethod?: string;
+  phoneNumber?: string;
+  dob?: string;
+  location?: string;
   generateJWTVerificationToken: () => Promise<string>;
 }
 
@@ -47,7 +51,7 @@ const UserSchema = new mongoose.Schema<IUser>(
       type: String,
       required: true,
       enum: Object.values(ACTIONS.USER_ROLES),
-      default: 'Reader',
+      default: 'User',
     },
     isAdult: { type: Boolean, default: false },
     specialOffers: { type: Boolean, default: false },
@@ -64,6 +68,10 @@ const UserSchema = new mongoose.Schema<IUser>(
       type: Types.ObjectId,
       ref: 'Comics',
     },
+    signupMethod: { type: String },
+    phoneNumber: { type: String },
+    dob: { type: String },
+    location: { type: String },
   },
   {
     timestamps: true,

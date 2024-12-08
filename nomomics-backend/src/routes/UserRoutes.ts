@@ -38,22 +38,52 @@ async function update(req: IReq, res: IRes) {
 /* Update User Details */
 
 async function updateUserDetails(req: IReq, res: IRes) {
-  const [fullName, nickName, gender, country, language] = check.isStr(
-    req.body,
-    ['fullName', 'nickName', 'gender', 'country', 'language']
-  );
-  const userUpdate = await UserService.updateUserDetails(
+  const [
+    fullName,
+    nickName,
+    gender,
+    country,
+    language,
+    dob,
+    phoneNumber,
+    location,
+  ] = check.isStr(req.body, [
+    'fullName',
+    'nickName',
+    'gender',
+    'country',
+    'language',
+  ]);
+  const updatedUser = await UserService.updateUserDetails(
     req.body.id as ObjectId,
     fullName,
     gender,
     country,
     nickName,
-    language
+    language,
+    dob,
+    phoneNumber,
+    location
   );
+
+  // Convert Mongoose document to a plain object
+  const safeUserUpdate = updatedUser.toObject
+    ? updatedUser.toObject()
+    : updatedUser;
+
+  // Remove sensitive and unnecessary fields
+  const {
+    password,
+    verificationToken,
+    loginAttempts,
+    isAccountVerified,
+    isAccoutLocked,
+    ...filteredUser
+  } = safeUserUpdate;
 
   return res
     .status(HttpStatusCodes.OK)
-    .json({ success: true, data: { ...userUpdate } });
+    .json({ success: true, data: { user: filteredUser } });
 }
 
 /** Get Comics file Url */
@@ -78,19 +108,6 @@ async function uploadImage(req: IReq, res: IRes) {
   return res
     .status(HttpStatusCodes.OK)
     .json({ success: true, data: { imageUrl } });
-}
-
-/**Upload Comics File */
-
-async function uploadComicsFile(req: IReq, res: IRes) {
-  const [base64File] = check.isStr(req.body, ['base64File']);
-  const comicsUrl = await UserService.getComicsFileUrl(
-    req.body.id as ObjectId,
-    base64File
-  );
-  return res
-    .status(HttpStatusCodes.OK)
-    .json({ success: true, data: { comicsUrl } });
 }
 
 /** Get User */

@@ -10,23 +10,38 @@ import { pdfToBase64 } from '@/libs/fileConvert';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import Cookies from 'js-cookie';
+import { useProfile } from '@/app/contexts/Profile';
+import EpisodeCoverImage from './EpisodeCoverImage';
 
-const FileUpload = () => {
-  const [subTitle, setSubTitle] = useState('');
+const FileUpload = ({ filesType }: { filesType: string }) => {
+  const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [author, setAuthor] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [uploadedFile, setUploadedFile] = useState<string>('');
+  const [files, setFiles] = useState<string[]>([]);
   const [showUploadDetails, setShowUploadDetails] = useState<boolean>(false);
-  const [myComics, setMyComics] = useState<any[]>([]);
+  const [exist, setExist] = useState<boolean>(false);
+  const [episode, setEpisode] = useState('1');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [episodeCoverImage, setEpisodeCoverImage] = useState<string>('');
 
   const onDrop = async (acceptedFiles: File[]) => {
     setUploadedFiles(acceptedFiles);
     console.log(acceptedFiles);
+    const convertedFiles = await Promise.all(
+      acceptedFiles.map(async (file) => {
+        const convertedFile = (await pdfToBase64(file)) as string;
+        return convertedFile;
+      })
+    );
+
+    setFiles(convertedFiles);
     const convertedFile = (await pdfToBase64(acceptedFiles[0])) as string;
     setUploadedFile(convertedFile);
     console.log(convertedFile);
   };
+  const { myComics, setMyComics } = useProfile();
 
   const getMyComics = async () => {
     // fetch my comics
@@ -42,7 +57,7 @@ const FileUpload = () => {
       );
 
       const data = await res.json();
-      setMyComics(data);
+      setMyComics(data.data);
     } catch (error) {
       console.log(error);
     }
@@ -50,14 +65,180 @@ const FileUpload = () => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: {
-      'video/mp4': ['.mp4'],
-      'video/3gpp': ['.3gp'],
-      'video/x-matroska': ['.mkv'],
-      'application/pdf': ['.pdf'],
-      'image/png': ['.png'],
-    },
+    accept:
+      filesType === 'pdf'
+        ? {
+            // 'video/mp4': ['.mp4'],
+            // 'video/3gpp': ['.3gp'],
+            // 'video/x-matroska': ['.mkv'],
+            'application/pdf': ['.pdf'],
+            // 'image/png': ['.png'],
+          }
+        : {
+            'image/png': ['.png', '.jpg', '.jpeg'],
+          },
   });
+
+  useEffect(() => {
+    const findComic = myComics.find(
+      (comic) => comic.title === title && comic.author === author
+    );
+
+    setExist(findComic ? true : false);
+
+    if (findComic) {
+      setEpisode(findComic.episodes.length + 1);
+    }
+  }, [title, author]);
+
+  const handleUploadFilesForUrls = async (file: string): Promise<string> => {
+    let url;
+    try {
+      const url =
+        filesType === 'pdf' ? '/upload-comic-as-pdf' : '/upload-comic-as-pic';
+      const request = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/comics${url}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${Cookies.get('token')}`,
+          },
+          body: JSON.stringify({
+            base64File: file,
+            // id: Cookies.get('id'),
+            title: title,
+          }),
+        }
+      );
+
+      const response = await request.json();
+      if (response.success) {
+        return response.data.url;
+      } else {
+        return 'An error occurred';
+      }
+    } catch (error) {
+      console.log(error);
+      // throw new Error(error)
+      return 'An error occurred';
+    }
+  };
+  const handleSubmit = async () => {
+    // Handle the form submission
+
+    setLoading(true);
+    Swal.fire({
+      title: 'Uploading Comic',
+      html: 'Please wait...',
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    const filesUrl = await Promise.all(
+      files.map(async (file) => {
+        return await handleUploadFilesForUrls(file);
+      })
+    );
+
+    console.log(filesUrl);
+
+    if (Array.isArray(filesUrl)) {
+      try {
+        // toast.loading('Uploading Comic...');
+
+        const comicToUpload = myComics.find(
+          (comic) => comic.title === title && comic.author === author
+        );
+
+        const reqBody =
+          comicToUpload?.location === 'marketplace'
+            ? {
+                episode,
+                title,
+                author,
+                description: description || comicToUpload?.description,
+                synopsis: comicToUpload?.synopsis,
+                genre: comicToUpload?.genre,
+                category: comicToUpload?.category,
+                location: comicToUpload?.location,
+                ageLimit: comicToUpload?.ageLimit,
+                coverImage: episodeCoverImage,
+                subTitle: comicToUpload?.subTitle,
+                filesType,
+                files: filesUrl,
+                price: comicToUpload?.price,
+              }
+            : {
+                episode,
+                title,
+                author,
+                description: description || comicToUpload?.description,
+                synopsis: comicToUpload?.synopsis,
+                genre: comicToUpload?.genre,
+                category: comicToUpload?.category,
+                location: comicToUpload?.location,
+                ageLimit: comicToUpload?.ageLimit,
+                coverImage: episodeCoverImage,
+                subTitle: comicToUpload?.subTitle,
+                filesType,
+                files: filesUrl,
+              };
+        const request = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/comics/comic/upload`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${Cookies.get('token')}`,
+            },
+            body: JSON.stringify({
+              // uploadedFile: filesUrl,
+              episode,
+              title,
+              author,
+              description: description || comicToUpload?.description,
+              synopsis: comicToUpload?.synopsis,
+              genre: comicToUpload?.genre,
+              category: comicToUpload?.category,
+              location: comicToUpload?.location,
+              ageLimit: comicToUpload?.ageLimit,
+              coverImage: episodeCoverImage,
+              subTitle: comicToUpload?.subTitle,
+              filesType,
+              files: filesUrl,
+            }),
+          }
+        );
+
+        const response = await request.json();
+        toast.dismiss();
+        setLoading(false);
+        if (response.success) {
+          // toast.success('Comic successfully uploaded');
+          Swal.fire({
+            icon: 'success',
+            text: 'Comic successfully uploaded!.',
+          });
+
+          getMyComics();
+        } else {
+          Swal.fire({
+            icon: 'error',
+            text: response.message,
+          });
+        }
+      } catch (error: any) {
+        console.log(error);
+        // toast.error(error.message);
+        Swal.fire({
+          icon: 'error',
+          text: error.message,
+        });
+      }
+    }
+  };
 
   return (
     <div className='p-6 py-10 w-full font-inter flex gap-6 bg-white rounded-lg transition-all delay-0 duration-500 ease-in-out mx-auto'>
@@ -74,7 +255,14 @@ const FileUpload = () => {
           <UploadDetails
             setShowUploadDetails={setShowUploadDetails}
             showUploadDetails={showUploadDetails}
-            comicDetails={{ subTitle, author, description, uploadedFile }}
+            comicDetails={{
+              title,
+              author,
+              description,
+              uploadedFile,
+              files,
+              filesType,
+            }}
           />
         </div>
       ) : (
@@ -117,32 +305,15 @@ const FileUpload = () => {
 
           <div className='mt-6 space-y-4'>
             <div>
-              <label htmlFor='subTitle' className='block text-sm font-medium '>
-                Sub-Title
+              <label htmlFor='title' className='block text-sm font-medium '>
+                Title
               </label>
               <input
                 type='text'
-                id='subTitle'
-                value={subTitle}
-                onChange={(e) => setSubTitle(e.target.value)}
-                placeholder='Type your Sub-title'
-                className='mt-1 block  w-full p-2 border-2 transition-all delay-0 duration-300 ease-in-out focus:border-primary rounded-md outline-none'
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor='description'
-                className='block text-sm font-medium '
-              >
-                Description
-              </label>
-              <input
-                type='text'
-                id='description'
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder='Type your Sub-title'
+                id='title'
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder='TItle of the Comic'
                 className='mt-1 block  w-full p-2 border-2 transition-all delay-0 duration-300 ease-in-out focus:border-primary rounded-md outline-none'
               />
             </div>
@@ -156,32 +327,97 @@ const FileUpload = () => {
                 id='author'
                 value={author}
                 onChange={(e) => setAuthor(e.target.value)}
-                placeholder='Type your Sub-title'
+                placeholder='Type the Author'
                 className='mt-1 block  w-full p-2 border-2 transition-all delay-0 duration-300 ease-in-out focus:border-primary rounded-md outline-none'
               />
             </div>
+
+            {!exist && (
+              <div>
+                <label
+                  htmlFor='description'
+                  className={`block text-sm font-medium  ${
+                    !exist ? styles['fade-in'] : styles['fade-out']
+                  }`}
+                >
+                  Description
+                </label>
+                <input
+                  type='text'
+                  id='description'
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder='A description of the comic'
+                  className='mt-1 block  w-full p-2 border-2 transition-all delay-0 duration-300 ease-in-out focus:border-primary rounded-md outline-none'
+                />
+              </div>
+            )}
+
+            {exist && (
+              <div>
+                <label
+                  htmlFor='description'
+                  className={`block text-sm font-medium  ${
+                    exist ? styles['fade-in'] : styles['fade-out']
+                  }`}
+                >
+                  Episode number
+                </label>
+                <input
+                  type='number'
+                  id='episode'
+                  value={episode}
+                  onChange={(e) => setEpisode(e.target.value as any)}
+                  placeholder='What episode number is this?'
+                  className='mt-1 block  w-full p-2 border-2 transition-all delay-0 duration-300 ease-in-out focus:border-primary rounded-md outline-none'
+                />
+                <EpisodeCoverImage
+                  coverImage={episodeCoverImage}
+                  setCoverImage={setEpisodeCoverImage}
+                />
+              </div>
+            )}
           </div>
 
           <div className='mt-6 flex justify-end gap-8'>
             <button className='px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md text-gray-700 font-medium'>
               Next file
             </button>
-            <button
-              onClick={() => {
-                if (!uploadedFile || !subTitle || !author || !description) {
-                  // toast.error('Please fill all fields.');
-                  Swal.fire({
-                    icon: 'info',
-                    text: 'All fields are required!',
-                  });
-                  return;
-                }
-                setShowUploadDetails(!showUploadDetails);
-              }}
-              className='px-4 py-2 bg-yellow-500 hover:bg-yellow-600 rounded-md text-white font-medium'
-            >
-              {showUploadDetails ? 'Back' : 'Continue'}
-            </button>
+            {!exist ? (
+              <button
+                onClick={() => {
+                  if (!uploadedFile || !title || !author || !description) {
+                    // toast.error('Please fill all fields.');
+                    Swal.fire({
+                      icon: 'info',
+                      text: 'All fields are required!',
+                    });
+                    return;
+                  }
+                  setShowUploadDetails(!showUploadDetails);
+                }}
+                className='px-4 py-2 bg-yellow-500 hover:bg-yellow-600 rounded-md text-white font-medium'
+              >
+                {showUploadDetails ? 'Back' : 'Continue'}
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  if (!uploadedFile || !title || !author || !episode) {
+                    // toast.error('Please fill all fields.');
+                    Swal.fire({
+                      icon: 'info',
+                      text: 'All fields are required!',
+                    });
+                    return;
+                  }
+                  handleSubmit();
+                }}
+                className='px-4 py-2 bg-yellow-500 hover:bg-yellow-600 rounded-md text-white font-medium'
+              >
+                {loading ? 'Uploading...' : 'Upload'}
+              </button>
+            )}
           </div>
         </div>
       )}

@@ -1,3 +1,4 @@
+import { Comic, ComicsContextProps, MarketPlaceComic } from '@/types/comic';
 import Cookies from 'js-cookie';
 import { useParams } from 'next/navigation';
 import React, {
@@ -7,28 +8,6 @@ import React, {
   ReactNode,
   useEffect,
 } from 'react';
-
-interface Comic {
-  _id: string;
-  title: string;
-  author: string;
-  coverImage: string;
-  fileUrl: string;
-  synopsis: string;
-  description: string;
-  createdAt: string;
-  // Add other comic properties here
-}
-
-interface ComicsContextProps {
-  comics: Comic[];
-  addComic: (comic: Comic) => void;
-  removeComic: (id: string) => void;
-  getComics: () => void;
-  getComic: (id: string) => void;
-  loadingComic: boolean;
-  comic: Comic | null;
-}
 
 const ComicsContext = createContext<ComicsContextProps | undefined>(undefined);
 
@@ -59,6 +38,62 @@ export const ComicsProvider: React.FC<ComicsProviderProps> = ({ children }) => {
 
   const [comic, setComic] = useState<Comic | null>(null);
   const [loadingComic, setLoadingComic] = useState(true);
+
+  const [marketPlaceComics, setMarketPlaceComics] = useState<
+    MarketPlaceComic[]
+  >([]);
+  const [marketPlaceComic, setMarketPlaceComic] =
+    useState<MarketPlaceComic | null>(null);
+  const [loadingMarketPlaceComic, setLoadingMarketPlaceComic] = useState(true);
+
+  const getMarketPlaceComics = async () => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/comics/market-place`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+      setMarketPlaceComics(data.data.comics);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingMarketPlaceComic(false);
+    }
+  };
+
+  const getMarketPlaceComic = async (id: string) => {
+    if (marketPlaceComics.length > 0) {
+      setMarketPlaceComic(
+        marketPlaceComics.find((comic) => comic._id === id) || null
+      );
+      setLoadingMarketPlaceComic(false);
+      return;
+    }
+
+    try {
+      setLoadingMarketPlaceComic(true);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/marketplace-comics/comic/${id}`
+      );
+
+      const data = await res.json();
+      if (data.success) {
+        setMarketPlaceComic(data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setTimeout(() => {
+        setLoadingMarketPlaceComic(false);
+      }, 1000);
+    }
+  };
 
   const addComic = (comic: Comic) => {
     setComics((prevComics) => [...prevComics, comic]);
@@ -122,6 +157,7 @@ export const ComicsProvider: React.FC<ComicsProviderProps> = ({ children }) => {
   };
 
   useEffect(() => {
+    getMarketPlaceComics();
     (async () => {
       // fetch my comics
       try {
@@ -147,6 +183,11 @@ export const ComicsProvider: React.FC<ComicsProviderProps> = ({ children }) => {
         getComics,
         loadingComic,
         comic,
+        marketPlaceComics,
+        getMarketPlaceComics,
+        getMarketPlaceComic,
+        loadingMarketPlaceComic,
+        marketPlaceComic,
       }}
     >
       {children}

@@ -77,9 +77,9 @@ const Prologue = () => {
         className={`rounded-xl flex py-11 max-md:flex-col  gap-10 bg-white mx-auto w-[90%] font-comic ${styles['fade-in']}`}
         //use the stles[fade-in] to animate the component when fetching is complete
       >
-        <div className=' w-[60%] max-md:px-8 max-md:w-full -mt-11 rounded-tl-xl drop-shadow-xl px-24 py-10 bg-[#FAE8E6] flex flex-col gap-10 font-comic items-center justify-center'>
+        <div className=' w-[60%] max-md:px-8 max-md:w-full -mt-11 rounded-tl-xl drop-shadow-xl px-16 py-10 bg-[#FAE8E6] flex flex-col gap-10 font-comic items-center justify-center'>
           <div className=' flex flex-col gap-5 items-center justify-center'>
-            <h3 className='max-md:text-2xl max-480:text-xl text-5xl tracking-widest'>
+            <h3 className='max-md:text-2xl text-center max-480:text-xl text-4xl tracking-widest'>
               {comic.title}
             </h3>
             <h4 className='text-3xl max-md:text-xl max-480:text-lg tracking-widest'>
@@ -91,7 +91,7 @@ const Prologue = () => {
               {comic?.synopsis}
             </p>
           </div>
-          <Link href={`/read/${comic._id}`} className=' w-36'>
+          <Link href={`/read/${comic._id}?episode=1`} className=' w-36'>
             <Button1
               text='Episode 1'
               className=' bg-secondary w-32'
@@ -230,20 +230,28 @@ const Prologue = () => {
         </div>
 
         <div className=' w-[40%] scroll-smooth  scrollbar-hide max-md:overflow-x-auto max-md:w-full flex flex-col max-md:flex-row gap-10 mt-0 pt-0'>
-          {comics.map((episode, idx) => {
+          {comic.episodes.map((episode, idx) => {
             return (
-              <div className=' flex gap-6 max-1280:flex-col items-center'>
+              <Link
+                href={`/read/${comic._id}?episode=${episode.episodeNumber}`}
+                key={idx}
+                className=' flex gap-6 max-1280:flex-col items-center'
+              >
                 <Image
-                  src={episode.coverImage}
+                  src={episode.episodeCoverImage}
                   alt='Dummy Episode'
                   width={145}
                   height={91}
                   className=' max-1280:w-[80%] rounded-lg'
                 />
                 <div className=' flex gap-2 flex-col items-start'>
-                  <p className=' font-bold  text-xl'>Episode 2</p>
+                  <p className=' font-bold  text-xl'>
+                    Episode {episode.episodeNumber}
+                  </p>
                   <span className=' text-sm'>
-                    {new Date(episode.createdAt).toLocaleDateString()}
+                    {new Date(
+                      episode.dateUploaded ? episode.dateUploaded : Date.now()
+                    ).toLocaleDateString()}
                   </span>
                   <div className=' flex gap-3'>
                     <p className=' flex gap-2 items-center'>
@@ -329,7 +337,7 @@ const Prologue = () => {
                     </p>
                   </div>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>

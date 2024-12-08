@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ButtonBack from '../Common/ButtonBack';
 import ButtonNext from '../Common/ButtonNext';
 import Viewer from '../Viewer';
@@ -8,9 +8,14 @@ import Episodes from '../Comics/Episodes';
 import Comment from '../Comments';
 import { useComics } from '@/app/contexts/Comics';
 import Swal from 'sweetalert2';
-import { notFound } from 'next/navigation';
+import { notFound, useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 const ReadComic = () => {
+  const [nextEpisode, setNextEpisode] = useState<number>(0);
+
+  const { loadingComic, comic } = useComics();
+
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const scrollLeft = () => {
@@ -25,7 +30,29 @@ const ReadComic = () => {
     }
   };
 
-  const { loadingComic, comic } = useComics();
+  const router = useRouter();
+  const episodeNumber = useSearchParams().get('episode');
+
+  useEffect(() => {
+    if (comic) {
+      setNextEpisode(
+        comic.episodes.findIndex(
+          (episode) => episode.episodeNumber === Number(episodeNumber)
+        )
+      );
+    }
+  }, [comic]);
+
+  useEffect(() => {
+    if (comic)
+      setNextEpisode(
+        comic.episodes.findIndex(
+          (episode) => episode.episodeNumber === Number(episodeNumber)
+        )
+      );
+  }, [episodeNumber]);
+
+  console.log(nextEpisode);
 
   if (loadingComic) {
     return (
@@ -69,7 +96,12 @@ const ReadComic = () => {
     );
   }
 
-  if (!comic) {
+  if (
+    !comic ||
+    !comic.episodes.find(
+      (e) => Number(e.episodeNumber) === Number(episodeNumber)
+    )
+  ) {
     Swal.fire({
       icon: 'error',
       title: 'Oops...',
@@ -78,6 +110,7 @@ const ReadComic = () => {
 
     return notFound();
   }
+
   return (
     <div className=' relative mt-20'>
       {/* Header */}
@@ -85,24 +118,53 @@ const ReadComic = () => {
         <div className='container mx-auto relative'>
           <div className=' w-full py-12 max-md:text-sm   flex flex-col gap-10 font-comic items-center justify-center'>
             <div className=' flex flex-col gap-5 items-center justify-center'>
-              <h3 className=' text-5xl max-md:text-3xl tracking-widest'>
+              <h3 className=' text-5xl font-semibold max-md:text-2xl max-480:text-xl max-md:text-center tracking-widest'>
                 {comic?.title}
               </h3>
-              <h4 className='text-3xl max-md:text-sm tracking-widest'>
-                Prologue
+              <h4 className='text-2xl max-md:text-sm tracking-widest'>
+                By: {comic?.author}
               </h4>
             </div>
           </div>
-          <ButtonBack
-            className='w-36 max-md:text-sm max-md:w-28 max-md:py-2 max-md:px-2 max-md:bottom-5 max-md:left-2 max- px-4 py-3 bg-secondary absolute bottom-12 left-12'
-            text='Episode 1'
-            onClickFunc={() => console.log('U clicked 1')}
-          />
-          <ButtonNext
-            className='w-36 max-md:text-sm max-md:w-28 max-md:py-2 max-md:px-2 px-4 py-3 max-md:bottom-5 max-md:right-2 absolute bottom-12 right-9 bg-secondary'
-            text='Episode 2'
-            onClickFunc={() => console.log('U clicked 1')}
-          />
+          {comic.episodes[nextEpisode - 1] ? (
+            <Link
+              href={`/read/${comic._id}?episode=${
+                comic.episodes[nextEpisode - 1].episodeNumber
+              }`}
+            >
+              <ButtonBack
+                className='w-36 max-md:text-sm max-md:w-28 max-md:py-2 max-md:px-2 max-md:bottom-5 max-md:left-2 max- px-4 py-3 bg-secondary absolute bottom-12 left-12'
+                text={`Episode ${comic.episodes[nextEpisode - 1].episodeNumber}
+                `}
+                onClickFunc={() => console.log('')}
+              />
+            </Link>
+          ) : (
+            <Link className='' href={`/details/${comic._id}`}>
+              <ButtonBack
+                className='w-36 max-md:text-sm max-md:w-28 max-md:py-2 max-md:px-2 max-md:bottom-5 max-md:left-2 max- px-4 py-3 bg-secondary absolute bottom-12 left-12'
+                text='prologue'
+                onClickFunc={() => console.log('')}
+              />
+            </Link>
+          )}
+
+          {nextEpisode !== -1 && comic.episodes[nextEpisode + 1] && (
+            <Link
+              href={`/read/${comic._id}?episode=${
+                comic.episodes[nextEpisode + 1].episodeNumber
+              }`}
+            >
+              {' '}
+              <ButtonNext
+                className='w-36 max-md:text-sm max-md:w-28 max-md:py-2 max-md:px-2 px-4 py-3 max-md:bottom-5 max-md:right-2 absolute bottom-12 right-9 bg-secondary'
+                text={`Episode ${
+                  comic.episodes[nextEpisode + 1].episodeNumber
+                }`}
+                onClickFunc={() => console.log('')}
+              />
+            </Link>
+          )}
         </div>
       </div>
 

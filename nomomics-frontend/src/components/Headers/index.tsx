@@ -189,6 +189,7 @@ const Header = () => {
                           <button
                             onClick={() => {
                               Cookies.remove('isLoggedIn');
+                              Cookies.remove('token');
                               router.push('/signin');
                             }}
                             className='ease-in-up hidden rounded-full bg-primary px-8 py-2 text-base max-480:text-sm font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 h-[80%] w-[80%]  hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9'
@@ -242,6 +243,7 @@ const Header = () => {
                   <button
                     onClick={() => {
                       Cookies.remove('isLoggedIn');
+                      Cookies.remove('token');
                       router.push('/signin');
                     }}
                     className='ease-in-up hidden rounded-full bg-primary px-8 py-2 text-base max-480:text-sm font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 h-[80%] w-[80%]  hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9'
@@ -337,6 +339,7 @@ const Header = () => {
                       <button
                         onClick={() => {
                           Cookies.remove('isLoggedIn');
+                          Cookies.remove('token');
                           router.push('/signin');
                         }}
                         className='ease-in-up  rounded-full bg-primary px-8 py-2 text-base max-480:text-sm font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 h-[80%] w-[80%]  hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9'
@@ -387,6 +390,7 @@ const Header = () => {
                       <button
                         onClick={() => {
                           Cookies.remove('isLoggedIn');
+                          Cookies.remove('token');
                           router.push('/signin');
                         }}
                         className='ease-in-up  rounded-full bg-primary px-8 py-2 text-base max-480:text-sm font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 h-[80%] w-[80%]  hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9'

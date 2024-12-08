@@ -35,7 +35,10 @@ async function userMw(req: IReq, res: IRes, next: NextFunction) {
 
   console.log(decodeToken);
   // Set session data to locals
-  if (typeof decodeToken === 'object' && decodeToken?.role === 'Reader') {
+  if (
+    typeof decodeToken === 'object' &&
+    (decodeToken?.role === 'User' || decodeToken?.role === 'Creator')
+  ) {
     // res.locals.sessionUser = sessionData;
     req.body = { ...req.body, ...decodeToken };
     console.log();

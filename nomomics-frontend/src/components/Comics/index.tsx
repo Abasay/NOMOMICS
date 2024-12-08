@@ -5,6 +5,7 @@ import dummy from '@/public/images/dummy.jpg';
 import Button1 from '../Common/Button1';
 import Link from 'next/link';
 import { useComics } from '@/app/contexts/Comics';
+import LoadingSkeleton from './LoadingSkeleton';
 
 const Comics = (props: { title: string }) => {
   const { title } = props;
@@ -12,21 +13,7 @@ const Comics = (props: { title: string }) => {
   const { comics } = useComics();
 
   if (comics.length === 0) {
-    return (
-      <div className='container mx-auto flex flex-col gap-8 pt-20'>
-        <h1 className='max-md:text-2xl max-480:text-xl text-4xl font-comic tracking-widest font-bold w-[90%] mx-auto'>
-          {title}
-        </h1>
-        <div className='grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-10 w-[90%] mx-auto max-md:w-[95%]'>
-          {dummyArr.map((_, index) => (
-            <div
-              key={index}
-              className='relative cursor-pointer min-w-[150px] max-[380px]:min-w-[50px] max-md:min-h-[100px] max-w-[170px] min-h-[150px] bg-gray-300 animate-pulse rounded-lg'
-            ></div>
-          ))}
-        </div>
-      </div>
-    );
+    return <LoadingSkeleton />;
   }
   return (
     <div className='container mx-auto flex  flex-col gap-8 pt-20'>

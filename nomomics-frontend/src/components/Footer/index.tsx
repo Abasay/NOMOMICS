@@ -7,7 +7,7 @@ import logo from '@/public/svgs/signup-logo-1.svg';
 const Footer = () => {
   return (
     <>
-      <footer className='relative z-10 bg-secondary font-inter text-white pt-16 dark:bg-gray-dark md:pt-20 lg:pt-24'>
+      <footer className='relative z-10 bg-secondary font-inter text-white pt-10 dark:bg-gray-dark md:pt-16 lg:pt-16'>
         <div className='container mx-auto'>
           <div className=' flex flex-row flex-wrap gap-8 justify-between w-[90%] mx-auto'>
             <div className=' max-w-[250px] px-4 '>

@@ -2,6 +2,7 @@ import { RouteError } from '@src/common/classes';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import Comic from '@src/models/comic.model';
 import Comics from '@src/models/Comics';
+import ComicMarket from '@src/models/marketplace.comic';
 import User from '@src/models/User';
 import {
   uploadBase64ImageToCloudinary,
@@ -27,7 +28,7 @@ async function getComicsFileUrl(
 }
 
 async function UploadAComic(
-  uploadedFile: string,
+  files: string,
   title: string,
   subTitle: string,
   description: string,
@@ -38,34 +39,155 @@ async function UploadAComic(
   location: string,
   owner: string,
   coverImage: string,
-  ageLimit: boolean
+  ageLimit: boolean,
+  episode: number,
+  filesType: string
 ) {
-  const comicsUrl = await uploadBase64PdfToCloudinary(
-    uploadedFile,
-    owner,
-    title + '.pdf'
-  );
+  let comic;
+
+  comic = await Comic.findOne({ title, author });
+  // const comicsUrl = (await uploadBase64PdfToCloudinary(
+  //   files,
+  //   owner,
+  //   title.split('')[0] + '.pdf'
+  // )) as string;
   const coverImageUrl = await uploadBase64ImageToCloudinary(coverImage, owner);
 
   // console.log(coverImage);
-  const comic = await Comic.create({
-    fileUrl: comicsUrl,
-    author,
-    title,
-    subTitle,
-    description,
-    synopsis,
-    category,
-    genre,
-    location,
-    coverImage: coverImageUrl,
-    ageLimit,
-    owner,
-  });
 
-  return comic;
+  if (comic) {
+    await comic.updateOne({
+      $push: {
+        episodes: {
+          episodeNumber: episode,
+          episodeTitle: title,
+          episodeFileUrl: [...files],
+          episodeCoverImage: coverImageUrl,
+          filesType,
+        },
+      },
+    });
+  } else {
+    comic = await Comic.create({
+      fileUrl: [...files],
+      author,
+      title,
+      subTitle,
+      description,
+      synopsis,
+      category,
+      genre,
+      location,
+      coverImage: coverImageUrl,
+      ageLimit,
+      owner,
+      episodes: [
+        {
+          episodeNumber: episode,
+          episodeTitle: title,
+          episodeFileUrl: [...files],
+          episodeCoverImage: coverImageUrl,
+          filesType,
+        },
+      ],
+    });
+  }
+
+  return {
+    ...comic.toObject(),
+    episodes: [
+      ...comic.episodes,
+      {
+        episodeNumber: episode,
+        episodeTitle: title,
+        episodeFileUrl: [...files],
+        episodeCoverImage: coverImageUrl,
+        filesType,
+      },
+    ],
+  };
+}
+
+async function UploadAComicToMarketPlace(
+  files: string,
+  title: string,
+  subTitle: string,
+  description: string,
+  category: string,
+  author: string,
+  synopsis: string,
+  genre: string,
+  location: string,
+  owner: string,
+  coverImage: string,
+  ageLimit: boolean,
+  episode: number,
+  filesType: string,
+  price: number
+) {
+  let comic;
+
+  comic = await ComicMarket.findOne({ title, author });
+
+  const coverImageUrl = await uploadBase64ImageToCloudinary(coverImage, owner);
+
+  // console.log(coverImage);
+
+  if (comic) {
+    await comic.updateOne({
+      $push: {
+        episodes: {
+          episodeNumber: episode,
+          episodeTitle: title,
+          episodeFileUrl: [...files],
+          episodeCoverImage: coverImageUrl,
+          filesType,
+        },
+      },
+    });
+  } else {
+    comic = await ComicMarket.create({
+      fileUrl: [...files],
+      author,
+      title,
+      subTitle,
+      description,
+      synopsis,
+      category,
+      genre,
+      location,
+      coverImage: coverImageUrl,
+      ageLimit,
+      owner,
+      episodes: [
+        {
+          episodeNumber: episode,
+          episodeTitle: title,
+          episodeFileUrl: [...files],
+          episodeCoverImage: coverImageUrl,
+          filesType,
+        },
+      ],
+      price,
+    });
+  }
+
+  return {
+    ...comic.toObject(),
+    episodes: [
+      ...comic.episodes,
+      {
+        episodeNumber: episode,
+        episodeTitle: title,
+        episodeFileUrl: [...files],
+        episodeCoverImage: coverImageUrl,
+        filesType,
+      },
+    ],
+  };
 }
 export default {
   getComicsFileUrl,
   UploadAComic,
+  UploadAComicToMarketPlace,
 } as const;

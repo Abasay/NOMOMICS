@@ -15,11 +15,10 @@ import { Console } from 'console';
  */
 
 async function signup(req: IReq, res: IRes) {
-  const [email, password, fullName] = check.isStr(req.body, [
-    'email',
-    'password',
-    'fullName',
-  ]);
+  const [email, password, fullName, role, signupMethod] = check.isStr(
+    req.body,
+    ['email', 'password', 'fullName', 'role', 'signupMethod']
+  );
 
   if (!check.isValidEmail(req.body, 'email')) {
     return res.status(HttpStatusCodes.BAD_REQUEST).json({
@@ -39,7 +38,9 @@ async function signup(req: IReq, res: IRes) {
     password,
     fullName,
     isAdult,
-    specialOffers
+    specialOffers,
+    role,
+    signupMethod
   );
   // Setup Admin Cookie
   const cookieSession = await SessionUtil.addSessionData(res, {
@@ -58,6 +59,38 @@ async function signup(req: IReq, res: IRes) {
     success: true,
     data: {
       message: 'Signup successful',
+    },
+  });
+}
+
+/**
+ * Signup with Google
+ */
+
+async function signupWithGoogle(req: IReq, res: IRes) {
+  // const [email] = check.isValidEmail(req.body, 'email');
+  const [role, idToken] = check.isStr(req.body, ['role', 'idToken']);
+
+  console.log(role, idToken);
+
+  const user = await AuthService.signupWithGoogle(idToken, role);
+
+  const userObj = user.toObject();
+
+  const { password, ...userWithoutPassword } = userObj;
+
+  const newToken = await SessionUtil.signedJwt({
+    id: user._id,
+    email: user.email,
+    fullName: user.fullName,
+    role: user.role,
+  });
+  return res.status(HttpStatusCodes.OK).json({
+    success: true,
+    data: {
+      message: 'Signup successful',
+      token: newToken,
+      userWithoutPassword,
     },
   });
 }
@@ -100,8 +133,12 @@ async function login(req: IReq, res: IRes) {
  */
 
 async function verifyEmail(req: IReq, res: IRes) {
-  const token = check.isStr(req.body, 'token');
-  const user = await AuthService.verifyEmail(token);
+  const [otp, email, fullName] = check.isStr(req.body, [
+    'otp',
+    'email',
+    'fullName',
+  ]);
+  const user = await AuthService.verifyEmail(otp, email, fullName);
   const newToken = await SessionUtil.signedJwt({
     id: user._id,
     email: user.email,
@@ -154,4 +191,5 @@ export default {
   signup,
   verifyEmail,
   resendEmail,
+  signupWithGoogle,
 } as const;

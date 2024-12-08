@@ -1,15 +1,53 @@
 import React from 'react';
 import SignupSectionHeader from '../Headers/SignupSectionHeader';
 import toast from 'react-hot-toast';
+import Button from '../Common/Button';
+import { useProfile } from '@/app/contexts/Profile';
+import Cookies from 'js-cookie';
 
 const EmailSent = ({
   email,
   password,
+  fullName,
+  setVerified,
 }: {
   email: string;
   password: string;
+  fullName: string;
+  setVerified: (value: boolean) => void;
 }) => {
   const [resending, setResending] = React.useState(false);
+  const inputsRef = React.useRef<(HTMLInputElement | null)[]>([]);
+
+  const { updateProfile } = useProfile();
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    idx: number
+  ) => {
+    const { value } = e.target;
+    if (Number.isNaN(Number(value))) {
+      toast.error('Please enter a valid number');
+      e.target.value = '';
+
+      return;
+    }
+    if (value.length > 1) {
+      e.target.value = value.charAt(0);
+    }
+    if (value.length === 1 && idx < inputsRef.current.length - 1) {
+      inputsRef.current[idx + 1]?.focus();
+    }
+  };
+
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    idx: number
+  ) => {
+    if (e.key === 'Backspace' && idx > 0 && !inputsRef.current[idx]?.value) {
+      inputsRef.current[idx - 1]?.focus();
+    }
+  };
   const resendLink = async () => {
     try {
       setResending(true);
@@ -33,17 +71,101 @@ const EmailSent = ({
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setResending(false);
+    }
+  };
+
+  const handleSubmit = async () => {
+    const otp = inputsRef.current.map((input) => input?.value).join('');
+
+    if (otp.length < 6) {
+      toast.error('Please fill all the fields');
+      return;
+    }
+
+    try {
+      const request = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/verify-email`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ otp, email, password, fullName }),
+        }
+      );
+      const response = await request.json();
+
+      if (request.ok) {
+        toast.success(response.data.message);
+        setVerified(true);
+        // console.log(response);
+        updateProfile(response.data.user);
+        Cookies.set('token', response.data.token, { expires: 7 });
+        Cookies.set('isLoggedIn', 'true', { expires: 7 });
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      toast.error('An error occurred please try again');
     }
   };
   return (
     <div className='flex justify-center h-[80%] max-480:text-xs max-md:text-sm  items-center '>
-      <div className='bg-white  p-8 pt-16 rounded-[25px] shadow-lg w-[80%] px-16 min-w-md max-md:w-full max-md:px-8 '>
+      <div className='bg-white  p-8 pt-16 rounded-[25px] shadow-lg w-[80%] mx-auto px-16 min-w-md max-md:w-full max-md:px-8 '>
         <SignupSectionHeader
-          title='Check your mail'
-          subTitle='We have sent a link to setup your account'
+          title='Verification Code'
+          subTitle='We have sent the verification code to your email address'
         />
-        <div className=' my-10 flex flex-col gap-10 items-center'>
-          <span>
+        <div className='flex flex-col gap-2 container mx-auto max-w-[480px]'>
+          <div className='flex flex-col gap-1'>
+            <h2 className='text-[24px] leading-[32px] font-medium text-[#0E0E0E]'>
+              Verify your Email
+            </h2>
+            <span className='text-base leading-[24px] text-[#3C3C3C]'>
+              Enter the 6 digit code sent to your email address
+            </span>
+          </div>
+          {/**code */}
+          <div className='flex flex-col gap-6 mt-4 w-full'>
+            <div className='flex justify-center max-w-[500px] mx-auto flex-wrap gap-4 sm:gap-2'>
+              {Array(6)
+                .fill('')
+                .map((_, idx) => (
+                  <input
+                    key={idx}
+                    ref={(el: any) => (inputsRef.current[idx] = el)}
+                    className='
+          focus:outline-none 
+          h-[60px] w-[60px] 
+          sm:h-[50px] sm:w-[50px] 
+          text-zinc-700 placeholder-inputcolor 
+          rounded-[12px] text-[20px] sm:text-[16px] 
+          border-[1px] border-[#8A8A8A] 
+          gap-[8px] text-center font-[500]
+        '
+                    maxLength={1}
+                    type='text'
+                    inputMode='numeric'
+                    pattern='[0-9]*'
+                    onChange={(e) => handleChange(e, idx)}
+                    onKeyDown={(e) => handleKeyDown(e, idx)}
+                  />
+                ))}
+            </div>
+          </div>
+          <Button
+            text='Verify OTP'
+            className='mb-2 mt-3'
+            onClickFunc={() => {
+              // e.preventDefault();
+              handleSubmit();
+            }}
+          />
+        </div>
+        <div className=' my-10 flex gap-1 justify-center items-center'>
+          {/* <span>
             <svg
               width='150'
               height='150'
@@ -60,8 +182,8 @@ const EmailSent = ({
                 fill='#FBA700'
               />
             </svg>
-          </span>
-          <span>Didn&apos;t receive the email</span>
+          </span> */}
+          <span>Didn&apos;t get the otp?</span>
           <button
             onClick={resendLink}
             disabled={resending}

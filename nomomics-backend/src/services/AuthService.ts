@@ -8,8 +8,31 @@ import { RouteError } from '@src/common/classes';
 
 import User, { IUser } from '@src/models/User';
 import { generateVerifyEmailTemplate } from '@src/views/verifyEmail';
+import { generateSixDigitToken } from '@src/util';
+import Token from '@src/models/Token';
+import check from '@src/routes/common/check';
+import { OAuth2Client, TokenPayload } from 'google-auth-library';
 // import sendMail from '@src/util/sendEmail';
 const sendMail = require('@src/util/sendEmail');
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIET_SECRET as string);
+
+// Define an interface for the response
+interface GoogleUserInfo extends TokenPayload {}
+
+async function verifyIdToken(idToken: string): Promise<GoogleUserInfo | null> {
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIET_SECRET as string,
+    });
+    console.log('Ticket:', ticket.getPayload());
+    return ticket.getPayload() as GoogleUserInfo;
+  } catch (error) {
+    console.error('Error verifying token:', error);
+    return null;
+  }
+}
 
 // **** Variables **** //
 
@@ -35,7 +58,9 @@ async function signup(
   password: string,
   fullName: string,
   isAdult: boolean,
-  specialOffers: boolean
+  specialOffers: boolean,
+  role: string,
+  signupMethod: string
 ): Promise<IUser> {
   // Check if user already exists
   console.log('Checking if user exists');
@@ -52,10 +77,21 @@ async function signup(
     password: pwdHash,
     isAdult,
     specialOffers,
+    role,
+    signupMethod,
   });
 
-  const token = await user.generateJWTVerificationToken();
-  const mail = generateVerifyEmailTemplate(user.fullName, token);
+  const otp = generateSixDigitToken();
+
+  const token = await Token.create({
+    email: email,
+    fullName: fullName,
+    otp: otp,
+    dateExpire: new Date(Date.now() + 5 * 60000),
+    role: 'User',
+  });
+
+  const mail = generateVerifyEmailTemplate(user.fullName, otp);
   const sendEmail = await sendMail({
     from: process.env.MY_GMAIL || '',
     to: user.email,
@@ -63,6 +99,39 @@ async function signup(
     html: mail,
   });
   // Return
+  return user;
+}
+
+async function signupWithGoogle(idToken: string, role: string): Promise<IUser> {
+  // Check if user already exists
+
+  //GOOGLE AUTHENTICATION
+  const verifyUserWithGoogle = await verifyIdToken(idToken);
+
+  if (!verifyUserWithGoogle) {
+    throw new RouteError(HttpStatusCodes.UNAUTHORIZED, 'Invalid Google Token');
+  }
+
+  const { name, picture, email } = verifyUserWithGoogle;
+
+  const userExists = await User.User.findOne({ email });
+  console.log('Checking if user exists');
+  if (userExists) {
+    throw new RouteError(HttpStatusCodes.CONFLICT, 'User already exists');
+  }
+  // Create user
+
+  const user = await User.User.create({
+    email,
+    fullName: name,
+    password: '',
+    isAdult: true,
+    specialOffers: false,
+    profileImage: picture,
+    role: role,
+    signupMethod: 'Google',
+  });
+
   return user;
 }
 
@@ -144,15 +213,32 @@ async function login(email: string, password: string): Promise<IUser> {
  * @returns
  */
 
-async function verifyEmail(token: string): Promise<IUser> {
+async function verifyEmail(
+  otp: string,
+  email: string,
+  fullName: string
+): Promise<IUser> {
   // Fetch user
-  const user = await User.User.findOne({ verificationToken: token }).select(
+  const user = await User.User.findOne({ email }).select(
     '-verificationToken -isAccountVerified -isAccoutLocked'
   );
   console.log('User:', user);
   if (!user) {
-    throw new RouteError(HttpStatusCodes.NOT_FOUND, 'Token not found');
+    throw new RouteError(HttpStatusCodes.NOT_FOUND, 'User not found');
   }
+
+  const token = await Token.findOne({
+    email: email,
+    fullName: fullName,
+    otp: otp,
+    // dateExpire: { $gt: new Date() },
+  });
+
+  if (!token)
+    throw new RouteError(HttpStatusCodes.NOT_FOUND, 'Token not found');
+
+  if (token.dateExpire < new Date())
+    throw new RouteError(HttpStatusCodes.NOT_FOUND, 'Token expired');
   // Verify email
   user.isAccountVerified = true;
   user.verificationToken = '';
@@ -189,8 +275,27 @@ async function resendVerificationEmail(
     throw new RouteError(HttpStatusCodes.CONFLICT, 'Account already verified');
   }
   // Generate new token
-  const token = await user.generateJWTVerificationToken();
-  const mail = generateVerifyEmailTemplate(user.fullName, token);
+  const otp = generateSixDigitToken();
+  let token = await Token.findOne({ email: email });
+
+  if (token && token?.dateExpire > new Date())
+    throw new RouteError(HttpStatusCodes.CONFLICT, 'Token already sent.');
+
+  if (!token) {
+    token = await Token.create({
+      email: email,
+      username: user.fullName,
+      otp: otp,
+      dateExpire: new Date(Date.now() + 5 * 60000),
+      role: 'User',
+    });
+  } else {
+    token.otp = otp;
+    token.dateExpire = new Date(Date.now() + 5 * 60000);
+    await token.save();
+  }
+
+  const mail = generateVerifyEmailTemplate(user.fullName, otp);
   const sendEmail = await sendMail({
     from: process.env.MY_GMAIL || '',
     to: user.email,
@@ -207,4 +312,5 @@ export default {
   signup,
   verifyEmail,
   resendVerificationEmail,
+  signupWithGoogle,
 } as const;

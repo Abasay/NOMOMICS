@@ -25,8 +25,8 @@ const UploadedFileList: React.FC = () => {
   const { myComics } = useProfile();
   console.log(myComics);
 
-  if (myComics.length === 0) {
-    return <p>No Comics</p>;
+  if (myComics?.length === 0) {
+    return <p>You have not uploaded any comics.</p>;
   }
   return (
     <div className='p-6 bg-[#FAFAFA] flex flex-col justify-between h-full max-w-md mx-auto'>

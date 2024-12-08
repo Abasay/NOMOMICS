@@ -18,6 +18,7 @@ import Draft from './ContentManagement/Draft';
 import { useProfile } from '@/app/contexts/Profile';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import ContentManagement from './ContentManagement';
 
 const Profile = () => {
   const isLoggedIn = Cookies.get('isLoggedIn');
@@ -26,12 +27,12 @@ const Profile = () => {
   const { updateProfile } = useProfile();
 
   if (!isLoggedIn) {
-    router.push('/login');
+    router.push('/signin');
   }
 
   useEffect(() => {
     if (!isLoggedIn) {
-      router.push('/login');
+      router.push('/signin');
     }
     (async () => {
       try {
@@ -46,6 +47,9 @@ const Profile = () => {
           }
         );
         const data = await res.json();
+        setIsCreator(data.data.user.role === 'Creator');
+        // if (data.data.user.role === 'Creator')
+        //   setHeaderData(['Profile Settings', 'Portfolio Showcase', 'Metrics']);
         updateProfile(data.data.user);
       } catch (error) {
         console.log(error);
@@ -54,11 +58,13 @@ const Profile = () => {
   }, []);
 
   const [active, setActive] = useState<string>('Profile Settings');
+  const [isCreator, setIsCreator] = useState<boolean>(false);
   const [HeaderData, setHeaderData] = useState<string[]>([
     'Profile Settings',
     'Portfolio Showcase',
     'Metrics',
   ]);
+
   const [sideBarActive, setSideBarActive] = useState<string>('Create Profile');
 
   return (
@@ -75,27 +81,28 @@ const Profile = () => {
             setSideBarActive={setSideBarActive}
             setHeaderData={setHeaderData}
             setActive={setActive}
+            isCreator={isCreator}
           />
         </div>
 
         {active === 'Profile Settings' && (
           <div className={`w-full ${styles['fade-in']} overflow-auto`}>
-            <ProfileSettings />
+            <ProfileSettings isCreator={isCreator} />
           </div>
         )}
 
-        {active === 'Portfolio Showcase' && (
+        {active === 'Portfolio Showcase' && isCreator && (
           <div className={`w-full  ${styles['fade-in']} overflow-auto`}>
             <PortFolio />
           </div>
         )}
-        {active === 'Metrics' && (
+        {active === 'Metrics' && isCreator && (
           <div className={`w-full ${styles['fade-in']} overflow-auto`}>
             <Metrics />
           </div>
         )}
 
-        {active === 'Earn Overview' && (
+        {active === 'Earn Overview' && isCreator && (
           <div
             className={`w-full  overflow-auto py-10 items-center px-8 flex flex-col gap-8 ${styles['fade-in']}`}
           >
@@ -118,9 +125,9 @@ const Profile = () => {
         )}
         {active === 'Payment' && <BillingForm />}
         {active === 'History' && <TransactionHistory />}
-        {active === 'Convert' && <ConverterForm />}
-        {active === 'Upload' && <FileUpload />}
-        {active === 'Draft' && <Draft />}
+        {active === 'Convert' && isCreator && <ConverterForm />}
+        {active === 'Upload' && isCreator && <ContentManagement />}
+        {active === 'Draft' && isCreator && <Draft />}
       </div>
     </div>
   );

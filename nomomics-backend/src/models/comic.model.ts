@@ -2,7 +2,7 @@ import { Schema, model, Document } from 'mongoose';
 import { ObjectId } from 'mongodb';
 
 interface IComic extends Document {
-  fileUrl: string;
+  // fileUrl: string;
   title: string;
   subTitle: string;
   description: string;
@@ -14,17 +14,19 @@ interface IComic extends Document {
   location: string;
   coverImage: string;
   owner: ObjectId;
-  // episodes:{
-  //   episodeNumber: number;
-  //   episodeTitle: string;
-  //   episodeDescription: string;
-  //   episodeFileUrl: string;
-  // }[]
+  episodes: {
+    episodeNumber: number;
+    episodeTitle: string;
+    // episodeDescription: string;
+    episodeFileUrl: string[];
+    episodeCoverImage: string;
+    dateUploaded?: Date;
+    filesType: string;
+  }[];
 }
 
 const ComicSchema = new Schema<IComic>(
   {
-    fileUrl: { type: String, required: true },
     title: { type: String, required: true },
     subTitle: { type: String, required: true },
     description: { type: String, required: true },
@@ -34,11 +36,18 @@ const ComicSchema = new Schema<IComic>(
     category: { type: String, required: true },
     ageLimit: { type: Boolean, required: true },
     location: { type: String, required: true },
+    coverImage: { type: String, required: true },
     owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    coverImage: {
-      type: String,
-      required: true,
-    },
+    episodes: [
+      {
+        episodeNumber: { type: Number, required: true },
+        episodeTitle: { type: String, required: true },
+        episodeFileUrl: [{ type: String, required: true }],
+        episodeCoverImage: { type: String, required: true },
+        dateUploaded: { type: Date, default: Date.now },
+        filesType: { type: String, required: true },
+      },
+    ],
   },
   {
     timestamps: true,

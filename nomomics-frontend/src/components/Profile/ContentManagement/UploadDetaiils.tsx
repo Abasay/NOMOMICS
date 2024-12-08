@@ -13,10 +13,12 @@ interface UploadDetailsProps {
   setShowUploadDetails: (value: boolean) => void;
   showUploadDetails: boolean;
   comicDetails: {
-    subTitle: string;
+    title: string;
     author: string;
     description: string;
     uploadedFile: string;
+    files: string[];
+    filesType: string;
   };
 }
 
@@ -25,7 +27,6 @@ const UploadDetails: React.FC<UploadDetailsProps> = ({
   showUploadDetails,
   comicDetails,
 }) => {
-  const [title, setTitle] = useState('');
   const [synopsis, setSynopsis] = useState('');
   const [genre, setGenre] = useState('');
   const [category, setCategory] = useState('');
@@ -33,35 +34,17 @@ const UploadDetails: React.FC<UploadDetailsProps> = ({
   const [ageLimit, setAgeLimit] = useState('');
   const [coverImage, setCoverImage] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [subTitle, setSubTitle] = useState<string>('');
+  const [price, setPrice] = useState<string>('');
 
-  const handleSubmit = async () => {
-    // Handle the form submission
-    console.log({
-      title,
-      synopsis,
-      genre,
-      category,
-      location,
-      ageLimit,
-    });
-
-    if (
-      !title ||
-      !synopsis ||
-      !genre ||
-      !category ||
-      !location ||
-      !coverImage
-    ) {
-      Swal.fire('All fields are required!');
-      return;
-    }
-
+  const handleUploadFilesForUrls = async (file: string): Promise<string> => {
+    let url;
     try {
-      // toast.loading('Uploading Comic...');
-      setLoading(true);
+      const { title, filesType } = comicDetails;
+      const url =
+        filesType === 'pdf' ? '/upload-comic-as-pdf' : '/upload-comic-as-pic';
       const request = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/comics/comic/upload`,
+        `${process.env.NEXT_PUBLIC_API_URL}/comics${url}`,
         {
           method: 'POST',
           headers: {
@@ -69,42 +52,140 @@ const UploadDetails: React.FC<UploadDetailsProps> = ({
             Authorization: `Bearer ${Cookies.get('token')}`,
           },
           body: JSON.stringify({
-            title,
-            synopsis,
-            genre,
-            category,
-            location,
-            ageLimit,
-            ...comicDetails,
-            coverImage,
+            base64File: file,
+            // id: Cookies.get('id'),
+            title: title,
           }),
         }
       );
 
       const response = await request.json();
-      toast.dismiss();
-      setLoading(false);
       if (response.success) {
-        // toast.success('Comic successfully uploaded');
-        Swal.fire({
-          icon: 'success',
-          text: 'Comic successfully uploaded!.',
-        });
-
-        getMyComics();
+        return response.data.url;
       } else {
         Swal.fire({
           icon: 'error',
-          text: response.message,
+          text: response.message || 'An error occurred',
         });
+        throw new Error(response.message) || 'An error occurred';
+        return 'An error occurred';
       }
     } catch (error: any) {
       console.log(error);
-      // toast.error(error.message);
+      // throw new Error(error)
       Swal.fire({
         icon: 'error',
-        text: error.message,
+        text: error.message || 'An error occurred',
       });
+      throw new Error(error.message) || 'An error occurred';
+      return 'An error occurred';
+    }
+  };
+
+  const handleSubmit = async () => {
+    // Handle the form submission
+    console.log({
+      synopsis,
+      genre,
+      category,
+      location,
+      ageLimit,
+    });
+
+    const { files } = comicDetails;
+
+    if (!synopsis || !genre || !category || !location || !coverImage) {
+      Swal.fire('All fields are required!');
+      return;
+    }
+
+    Swal.fire({
+      title: 'Uploading Comic',
+      html: 'Please wait...',
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+    setLoading(true);
+
+    const filesUrl = await Promise.all(
+      files.map(async (file) => {
+        return await handleUploadFilesForUrls(file);
+      })
+    );
+
+    // console.log(filesUrl);
+
+    if (Array.isArray(filesUrl)) {
+      try {
+        // toast.loading('Uploading Comic...');
+        const reqBody =
+          location === 'marketplace'
+            ? {
+                synopsis,
+                genre,
+                category,
+                location,
+                ageLimit,
+                ...comicDetails,
+                files: filesUrl,
+                coverImage,
+                subTitle,
+                episode: 1,
+                price,
+              }
+            : {
+                synopsis,
+                genre,
+                category,
+                location,
+                ageLimit,
+                ...comicDetails,
+                files: filesUrl,
+                coverImage,
+                subTitle,
+                episode: 1,
+              };
+        const url =
+          location === 'marketplace'
+            ? `${process.env.NEXT_PUBLIC_API_URL}/comics/comic/upload-to-market-place`
+            : `${process.env.NEXT_PUBLIC_API_URL}/comics/comic/upload`;
+        const request = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${Cookies.get('token')}`,
+          },
+          body: JSON.stringify({
+            ...reqBody,
+          }),
+        });
+
+        const response = await request.json();
+        toast.dismiss();
+        setLoading(false);
+        if (response.success) {
+          // toast.success('Comic successfully uploaded');
+          Swal.fire({
+            icon: 'success',
+            text: 'Comic successfully uploaded!.',
+          });
+
+          getMyComics();
+        } else {
+          Swal.fire({
+            icon: 'error',
+            text: response.message,
+          });
+        }
+      } catch (error: any) {
+        console.log(error);
+        // toast.error(error.message);
+        Swal.fire({
+          icon: 'error',
+          text: error.message,
+        });
+      }
     }
   };
 
@@ -175,20 +256,25 @@ const UploadDetails: React.FC<UploadDetailsProps> = ({
             </p>
           )}
         </div>
-        <div className='mb-4'>
-          <label className='block mb-2'>Title</label>
+
+        <div className=' mt-2'>
+          <label htmlFor='title' className='block text-sm font-medium '>
+            Sub Title
+          </label>
           <input
             type='text'
-            className='w-full p-2 border  text-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500'
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            id='title'
+            value={subTitle}
+            onChange={(e) => setSubTitle(e.target.value)}
+            placeholder='Type your Sub-title'
+            className='mt-1 block  w-full p-2 border-2 transition-all delay-0 duration-300 ease-in-out focus:border-primary rounded-md outline-none'
           />
         </div>
 
         <div className='mb-4'>
           <label className='block mb-2'>Synopsis</label>
           <textarea
-            className='w-full p-2 border  text-gray-400  rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500'
+            className='w-full p-2 border  text-gray-900  rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500'
             value={synopsis}
             onChange={(e) => setSynopsis(e.target.value)}
           />
@@ -220,7 +306,7 @@ const UploadDetails: React.FC<UploadDetailsProps> = ({
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value=''>Select Category</option>
-            <option value='fiction'>Friction</option>
+            <option value='fiction'>Fiction</option>
             <option value='horror'>Horror</option>
             <option value='humor'>Humor</option>
             <option value='sci-fi'>Science-Friction</option>
@@ -241,6 +327,19 @@ const UploadDetails: React.FC<UploadDetailsProps> = ({
           </select>
         </div>
 
+        {location === 'marketplace' && (
+          <div className='mb-4'>
+            <label className='block mb-2'>Price</label>
+            <input
+              type='number'
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder='Enter Comic Price'
+              className='w-full p-2 border  text-gray-900  rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500'
+            />
+          </div>
+        )}
+
         <div className='mb-4'>
           <label className='block mb-2'>Age Limit (+18)</label>
           <select
@@ -258,7 +357,7 @@ const UploadDetails: React.FC<UploadDetailsProps> = ({
           onClick={handleSubmit}
           className='w-full py-2 bg-yellow-500 text-gray-900 font-bold rounded-md hover:bg-yellow-400 transition'
         >
-          Publish
+          {loading ? 'Uploading...' : 'Upload'}
         </button>
       </div>
     </div>
