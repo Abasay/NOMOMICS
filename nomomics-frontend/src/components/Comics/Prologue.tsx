@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect } from 'react';
 import Button from '../Common/Button';
 import Image from 'next/image';
