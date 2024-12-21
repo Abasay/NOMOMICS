@@ -6,18 +6,18 @@ import PDFToImageViewer from './PDFReader';
 import MyPDFViewer from './PDFReader';
 
 const Viewer = () => {
-    return (
-        <>
-            {/* <PDFViewer /> */}
-            {/* <ReadPDF /> */}
-            {/* <PDFViewer1  /> */}
-            {/* <PDFToImageViewer pdfUrl='https://arxiv.org/pdf/quant-ph/0410100.pdf' /> */}
-            {/* <PDFViewer fileUrl='/text.pdf' /> */}
-            <div className=' w-full '>
-                <PDFViewer />
-            </div>
-        </>
-    );
+	return (
+		<>
+			{/* <PDFViewer /> */}
+			{/* <ReadPDF /> */}
+			{/* <PDFViewer1  /> */}
+			{/* <PDFToImageViewer pdfUrl='https://arxiv.org/pdf/quant-ph/0410100.pdf' /> */}
+			{/* <PDFViewer fileUrl='/text.pdf' /> */}
+			<div className=' w-full my-5 '>
+				<PDFViewer />
+			</div>
+		</>
+	);
 };
 
 export default Viewer;

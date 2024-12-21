@@ -21,7 +21,7 @@ const Comics = (props: { title: string }) => {
         {title}
       </h1>
 
-      <div className='grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-10 w-[90%] mx-auto max-md:w-[95%]'>
+      <div className='grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-10 w-[90%] mx-auto max-md:w-[95%] max-480:flex scrollbar-hide max-480:gap-3 max-480:overflow-scroll max-480:scroll-smooth'>
         {comics.map(
           (
             _: {
@@ -36,7 +36,7 @@ const Comics = (props: { title: string }) => {
           ) => (
             <Link
               href={'/details/' + _._id}
-              className='relative cursor-pointer min-w-[150px] max-[380px]:min-w-[50px] max-md:min-h-[100px] max-w-[170px] min-h-[150px]'
+              className='relative cursor-pointer min-w-[180px] max-[380px]:min-w-[50px] max-md:min-h-[250px] max-w-[250px] min-h-[200px]'
               key={index}
             >
               <Image
@@ -44,7 +44,7 @@ const Comics = (props: { title: string }) => {
                 alt={_.title}
                 width={200}
                 height={250}
-                className='w-full object-cover rounded-lg'
+                className='w-full h-full rounded-lg'
               />
               <div className='w-full rounded-b-lg text-xs text-white px-2 absolute bottom-0 flex flex-col gap-1 bg-black bg-opacity-65 pt-2 tracking-widest font-trebuchet'>
                 <h3 className=' text-sm'>{_.title}</h3>

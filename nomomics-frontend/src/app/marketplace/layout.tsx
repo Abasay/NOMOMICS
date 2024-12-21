@@ -3,22 +3,20 @@ import Header from '@/components/Headers';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'NOMOMICS',
-  description: 'Nomomics | Market Place Page',
+	title: 'NOMOMICS',
+	description: 'Nomomics | Market Place Page',
 };
 
 export default function MarketPlaceLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang='en'>
-      <body className={` `}>
-        <Header />
-        {children}
-        <Footer />
-      </body>
-    </html>
-  );
+	return (
+		<>
+			<Header />
+			{children}
+			<Footer />
+		</>
+	);
 }

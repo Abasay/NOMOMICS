@@ -3,22 +3,20 @@ import Header from '@/components/Headers';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'NOMOMICS',
-  description: 'Nomomics | Read Comics',
+	title: 'NOMOMICS',
+	description: 'Nomomics | Read Comics',
 };
 
 export default function ReelLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang='en'>
-      <body className={` `}>
-        {' '}
-        <Header />
-        {children} <Footer />
-      </body>
-    </html>
-  );
+	return (
+		<>
+			{' '}
+			<Header />
+			{children} <Footer />
+		</>
+	);
 }
