@@ -34,6 +34,7 @@
     "react-reader": "^2.0.11",
     "react-spinners": "^0.14.1",
     "reactjs-pdf-reader": "^1.0.12",
+    "sharp": "^0.33.5",
     "slate": "^0.103.0",
     "slate-history": "^0.109.0",
     "slate-react": "^0.110.1",
