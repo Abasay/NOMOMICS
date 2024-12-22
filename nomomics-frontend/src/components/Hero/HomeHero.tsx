@@ -23,7 +23,7 @@ const HomeHero = () => {
 		<div
 			className={`  relative min-h-[386px] max-h-[500px] mt-20 py-8 px-4 lg:px-16 md:px-8 sm:px-8 `}
 		>
-			<div className=' container absolute top-16 z-40 bg-none mx-auto flex items-start '>
+			<div className=' container absolute top-16 z-40 bg-none mx-auto flex items-start justify-center '>
 				<div
 					className={` flex flex-col max-md:gap-4 gap-8 lg:w-[67%] md:w-[80%] max-md:w-full  text-white ${styles['fade-in']} `}
 				>
