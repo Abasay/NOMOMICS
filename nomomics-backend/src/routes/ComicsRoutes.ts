@@ -207,38 +207,52 @@ async function getComic(req: IReq, res: IRes) {
 	const { id, episodeId } = req.params;
 	console.log(id, episodeId);
 	const comic = await Comic.findById(id);
-	let comments;
+	let comments, episodeIdExists;
 
 	if (comic) {
-		console.log(comic?.episodes);
-		const episodeIdExists = comic?.episodes.find(
+		if (episodeId)
+			episodeIdExists = comic?.episodes.find(
+				(e) =>
+					Number(e.episodeNumber) ===
+					Number(episodeId)
+			);
+		else episodeIdExists = comic?.episodes[0];
+
+		const searchEpisode = comic?.episodes.find(
 			(e) => Number(e.episodeNumber) === Number(episodeId)
 		);
 
-		if (!episodeIdExists) {
+		if (!searchEpisode && episodeId) {
 			return res.status(HttpStatusCodes.NOT_FOUND).json({
 				success: false,
 				message: 'Episode not found',
 			});
 		}
 
-		comments = await Comment.Comment.find({
-			comicId: id,
-			episodeId: episodeIdExists._id,
-			parentCommentId: null,
-		}).populate([
-			{
-				path: 'replies',
-				populate: {
+		if (!episodeIdExists && episodeId) {
+			return res.status(HttpStatusCodes.NOT_FOUND).json({
+				success: false,
+				message: 'Episode not found',
+			});
+		} else if (episodeIdExists) {
+			comments = await Comment.Comment.find({
+				comicId: id,
+				episodeId: episodeIdExists._id,
+				parentCommentId: null,
+			}).populate([
+				{
+					path: 'replies',
+					populate: {
+						path: 'userId',
+						select: 'name fullName nickName profileImage',
+					},
+				},
+				{
 					path: 'userId',
 					select: 'name fullName nickName profileImage',
 				},
-			},
-			{
-				path: 'userId',
-				select: 'name fullName nickName profileImage',
-			},
-		]);
+			]);
+		}
 	}
 
 	if (!comic) {
