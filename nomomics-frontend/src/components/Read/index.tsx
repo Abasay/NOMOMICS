@@ -157,6 +157,10 @@ const ReadComic = () => {
 								By:{' '}
 								{comic?.author}
 							</h4>
+							<h5 className='text-xl max-md:text-sm tracking-widest font-semibold'>
+								Episode{' '}
+								{episodeNumber}
+							</h5>
 						</div>
 					</div>
 					{comic.episodes[nextEpisode - 1] ? (

@@ -218,11 +218,7 @@ export const ComicsProvider: React.FC<ComicsProviderProps> = ({ children }) => {
 				);
 
 				const data = await res.json();
-				setHomeComic(
-					data.data.comics[
-						data.data.comics.length - 1
-					]
-				);
+				setHomeComic(data.data.comics[0]);
 				setComics(data.data.comics);
 			} catch (error) {
 				console.log(error);

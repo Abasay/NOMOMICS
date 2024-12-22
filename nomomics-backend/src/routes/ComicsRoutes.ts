@@ -168,7 +168,7 @@ async function uploadComicPdfsToCloudinary(req: IReq, res: IRes) {
 }
 
 async function allComics(req: IReq, res: IRes) {
-	const comics = await Comic.find({});
+	const comics = await Comic.find({}).sort({ createdAt: -1 });
 
 	return res.status(HttpStatusCodes.OK).json({
 		success: true,
@@ -221,20 +221,19 @@ async function getComic(req: IReq, res: IRes) {
 		const searchEpisode = comic?.episodes.find(
 			(e) => Number(e.episodeNumber) === Number(episodeId)
 		);
+		console.log(typeof episodeId, episodeIdExists);
 
-		if (!searchEpisode && episodeId) {
+		if (
+			searchEpisode === undefined &&
+			String(episodeId) !== 'null'
+		) {
 			return res.status(HttpStatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'Episode not found',
+				message: 'Ooops, Episode not found',
 			});
 		}
 
-		if (!episodeIdExists && episodeId) {
-			return res.status(HttpStatusCodes.NOT_FOUND).json({
-				success: false,
-				message: 'Episode not found',
-			});
-		} else if (episodeIdExists) {
+		if (episodeIdExists) {
 			comments = await Comment.Comment.find({
 				comicId: id,
 				episodeId: episodeIdExists._id,
@@ -265,7 +264,7 @@ async function getComic(req: IReq, res: IRes) {
 	return res.status(HttpStatusCodes.OK).json({
 		success: true,
 		data: comic,
-		comments,
+		comments: comments ? comments : [],
 	});
 }
 
