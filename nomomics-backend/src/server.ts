@@ -21,6 +21,7 @@ import { RouteError } from '@src/common/classes';
 import { IReq, IRes } from './routes/common/types';
 import cors from 'cors';
 import connectDB from './configs/db.config';
+import startCronJobs from './cron-jobs/index';
 
 // **** Variables **** //
 
@@ -49,6 +50,7 @@ if (EnvVars.NodeEnv === NodeEnvs.Dev.valueOf()) {
 	app.use(morgan('dev'));
 }
 connectDB();
+startCronJobs();
 
 // Security
 if (EnvVars.NodeEnv === NodeEnvs.Production.valueOf()) {
