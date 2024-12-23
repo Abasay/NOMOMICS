@@ -69,11 +69,14 @@ async function signup(req: IReq, res: IRes) {
 
 async function signupWithGoogle(req: IReq, res: IRes) {
 	// const [email] = check.isValidEmail(req.body, 'email');
-	const [role, idToken] = check.isStr(req.body, ['role', 'idToken']);
+	const [role, googleIdToken] = check.isStr(req.body, [
+		'role',
+		'googleIdToken',
+	]);
 
-	console.log(role, idToken);
+	// console.log(role, googleIdToken);
 
-	const user = await AuthService.signupWithGoogle(idToken, role);
+	const user = await AuthService.signupWithGoogle(googleIdToken, role);
 
 	const userObj = user.toObject();
 

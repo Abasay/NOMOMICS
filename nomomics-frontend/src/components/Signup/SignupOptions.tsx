@@ -20,6 +20,7 @@ const SignUpOptions = () => {
 		flow: 'auth-code',
 		onSuccess: async (codeResponse) => {
 			console.log(codeResponse);
+			setSignupMethod('Google');
 			await fetch(
 				`${process.env.NEXT_PUBLIC_API_URL}/auth/google-signup`,
 				{
@@ -99,9 +100,6 @@ const SignUpOptions = () => {
 						className='flex font-semibold text-base gap-12 items-center justify-start pl-14 w-full border border-[#B3B3B3] rounded-[30px] py-2 shadow-sm hover:shadow-md'
 						onClick={() => {
 							googleLogin();
-							setSignupMethod(
-								'Google'
-							);
 						}}
 					>
 						<span className=' grid place-content-center h-[25px] w-[25px] rounded-full border border-gray-300 shadow-slate-600'>

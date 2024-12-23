@@ -15,16 +15,18 @@ import { OAuth2Client, TokenPayload } from 'google-auth-library';
 // import sendMail from '@src/util/sendEmail';
 const sendMail = require('@src/util/sendEmail');
 
-const client = new OAuth2Client(process.env.GOOGLE_CLIET_SECRET as string);
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID as string);
 
 // Define an interface for the response
 interface GoogleUserInfo extends TokenPayload {}
 
 async function verifyIdToken(idToken: string): Promise<GoogleUserInfo | null> {
+	// console.log(idToken, process.env.GOOGLE_CLIENT_ID);
+
 	try {
 		const ticket = await client.verifyIdToken({
 			idToken,
-			audience: process.env.GOOGLE_CLIET_SECRET as string,
+			audience: process.env.GOOGLE_CLIENT_ID as string,
 		});
 		console.log('Ticket:', ticket.getPayload());
 		return ticket.getPayload() as GoogleUserInfo;
