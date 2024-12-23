@@ -136,8 +136,8 @@ async function login(req: IReq, res: IRes) {
  */
 
 async function loginWithGoogle(req: IReq, res: IRes) {
-	const [idToken] = check.isStr(req.body, ['idToken']);
-	const user = await AuthService.loginWithGoogle(idToken);
+	const [googleIdToken] = check.isStr(req.body, ['googleIdToken']);
+	const user = await AuthService.loginWithGoogle(googleIdToken);
 	const userObj = user.toObject();
 	const {
 		password,
