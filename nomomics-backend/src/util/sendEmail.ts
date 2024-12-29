@@ -28,4 +28,5 @@ const sendMail = async (mailOptions: any) => {
 	}
 };
 
-module.exports = sendMail;
+// module.exports = sendMail;
+export default sendMail;

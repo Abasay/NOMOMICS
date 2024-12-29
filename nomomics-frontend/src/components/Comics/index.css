@@ -1,51 +1,51 @@
 .slider {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  height: 250px;
+	position: relative;
+	overflow: hidden;
+	width: 100%;
+	height: 180px;
 }
 
 .slides {
-  display: flex;
-  animation: slide 10s infinite; /* Adjust timing as needed */
+	display: flex;
+	animation: slide 10s infinite; /* Adjust timing as needed */
 }
 
 .slide {
-  /* min-width: 100%; */
-  transition: transform 1s;
+	/* min-width: 100%; */
+	transition: transform 1s;
 }
 
 @keyframes slide {
-  0% {
-    transform: translateX(0);
-  }
-  20% {
-    transform: translateX(-50%);
-  }
-  40% {
-    transform: translateX(-100%);
-  }
-  60% {
-    transform: translateX(-150%);
-  }
-  80% {
-    transform: translateX(-200%);
-  }
-  100% {
-    transform: translateX(-250%);
-  }
+	0% {
+		transform: translateX(0);
+	}
+	20% {
+		transform: translateX(-50%);
+	}
+	40% {
+		transform: translateX(-100%);
+	}
+	60% {
+		transform: translateX(-150%);
+	}
+	80% {
+		transform: translateX(-200%);
+	}
+	100% {
+		transform: translateX(-250%);
+	}
 }
 
 @keyframes bounce-letter {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
 }
 
 .animate-bounce-letter {
-  animation: bounce-letter 1s ease-in-out infinite;
+	animation: bounce-letter 1s ease-in-out infinite;
 }

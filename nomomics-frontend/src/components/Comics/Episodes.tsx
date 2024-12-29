@@ -23,14 +23,14 @@ const Episodes = (props: {
 	return (
 		<Link
 			href={`/read/${comic._id}?episode=${episode.episodeNumber}`}
-			className=' flex gap-6 min-w-[400px] max-1280:flex-col items-center'
+			className=' flex gap-6 min-w-[400px] max-1024:min-w-[200px] max-1024:max-w-[250px] max-w-[400px] min-h-[200px] max-h-[300px] max-1280:flex-col items-center'
 		>
 			<Image
 				src={episode.episodeCoverImage}
 				alt='Dummy Episode'
 				width={145}
 				height={91}
-				className=' max-1280:w-[80%] rounded-lg'
+				className=' w-full max-w-[150px] min-w-[100px] min-h-[100px] max-h-[100px]  rounded-lg'
 			/>
 			<div className=' flex gap-2 flex-col items-start'>
 				<p className=' font-bold  text-xl'>

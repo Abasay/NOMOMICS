@@ -2,6 +2,8 @@
  * Express router paths go here.
  */
 
+import { get } from "http";
+
 export default {
 	Base: '/api',
 	Auth: {
@@ -26,6 +28,8 @@ export default {
 		getComicsFileUrl: '/get-comics-file-url',
 		getUser: '/get-user',
 		metrics: '/metrics',
+		getNotifications: '/get-notifications',
+		readNotification: '/read-notification/:id',
 	},
 	Comics: {
 		Base: '/comics',
@@ -51,5 +55,31 @@ export default {
 		saveComic: '/save-comic',
 		followComic: '/follow-comic',
 		viewComic: '/view-comic',
+		unapprovedComics: '/unapproved-comics',
+	},
+
+	Admins: {
+		Base: '/admins',
+		Login: '/login',
+		Signup: '/signup',
+		getProfile: '/profile',
+		VerifyEmail: '/verify-email',
+		ResendEmail: '/resend-email',
+		approveComic: '/approve-comic',
+		approveComicEpisode: '/approve-comic-episode',
+		approveUser: '/approve-user',
+		getUnapprovedComics: '/get-unapproved-comics',
+		getUnapprovedEpisodes: '/get-unapproved-episodes',
+		getUnapprovedUsers: '/get-unapproved-users',
+		getAllUsers: '/get-all-users',
+		getAllComics: '/get-all-comics',
+		getAllEpisodes: '/get-all-episodes',
+		getAllComments: '/get-all-comments',
+		getAllLikes: '/get-all-likes',
+		getAllSaves: '/get-all-saves',
+		getAllViews: '/get-all-views',
+		getAllFollowers: '/get-all-followers',
+		getAllNotifications: '/get-all-notifications',
+		getAllMetrics: '/get-all-metrics',
 	},
 } as const;

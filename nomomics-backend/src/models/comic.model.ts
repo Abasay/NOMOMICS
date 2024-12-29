@@ -24,6 +24,7 @@ interface IComic extends Document {
 		dateUploaded?: Date;
 		filesType: string;
 		episodeId: string;
+		isApproved: boolean;
 	}[];
 }
 
@@ -58,6 +59,7 @@ const ComicSchema = new Schema<IComic>(
 				dateUploaded: { type: Date, default: Date.now },
 				filesType: { type: String, required: true },
 				episodeId: { type: String, required: true },
+				isApproved: { type: Boolean, default: false },
 			},
 		],
 	},

@@ -2,6 +2,7 @@
 import { useProfile } from '@/app/contexts/Profile';
 import { imageToBase64 } from '@/libs/fileConvert';
 import Cookies from 'js-cookie';
+import Image from 'next/image';
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import toast from 'react-hot-toast';
@@ -41,6 +42,7 @@ const UploadDetails: React.FC<UploadDetailsProps> = ({
 	const [loading, setLoading] = useState<boolean>(false);
 	const [subTitle, setSubTitle] = useState<string>('');
 	const [price, setPrice] = useState<string>('');
+	const [coverImgFileName, setCoverImageFileName] = useState<string>('');
 
 	const handleUploadFilesForUrls = async (
 		file: string
@@ -246,6 +248,7 @@ const UploadDetails: React.FC<UploadDetailsProps> = ({
 			acceptedFiles[0]
 		)) as string;
 		setCoverImage(convertedImage);
+		setCoverImageFileName(acceptedFiles[0].name);
 	};
 
 	const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -275,30 +278,56 @@ const UploadDetails: React.FC<UploadDetailsProps> = ({
 					Upload Details
 				</h1>
 
-				<div
-					{...getRootProps()}
-					className={`border-2 border-dashed p-6 rounded-md text-center cursor-pointer ${
-						isDragActive
-							? 'border-primary'
-							: 'border-gray-300'
-					}`}
-				>
-					<input {...getInputProps()} />
-					{isDragActive ? (
-						<p>Drop the files here ...</p>
-					) : (
-						<p>
-							Click or drag image to
-							this area to upload
-							<br />
-							<span className='text-sm text-gray-500'>
-								Formats accepted
-								are .png .jpg
-								.jpeg
-							</span>
-						</p>
-					)}
-				</div>
+				{coverImage ? (
+					<Image
+						height={200}
+						width={300}
+						src={coverImage}
+						alt='Comic Cover Image'
+					/>
+				) : (
+					<div
+						{...getRootProps()}
+						className={`border-2 border-dashed p-6 rounded-md text-center cursor-pointer ${
+							isDragActive
+								? 'border-primary'
+								: 'border-gray-300'
+						}`}
+					>
+						<input {...getInputProps()} />
+						{isDragActive ? (
+							<p>
+								Drop the files
+								here ...
+							</p>
+						) : (
+							<p>
+								Click or drag
+								image to this
+								area to upload
+								<br />
+								<span className='text-sm text-gray-500'>
+									Formats
+									accepted
+									are .png
+									.jpg
+									.jpeg
+								</span>
+							</p>
+						)}
+					</div>
+				)}
+				{coverImgFileName && (
+					<div className='mt-4'>
+						<ul className='list-disc list-inside text-sm'>
+							<li>
+								{
+									coverImgFileName
+								}
+							</li>
+						</ul>
+					</div>
+				)}
 
 				<div className=' mt-2'>
 					<label

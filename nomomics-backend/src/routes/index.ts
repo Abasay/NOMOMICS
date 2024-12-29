@@ -7,6 +7,8 @@ import AuthRoutes from './AuthRoutes';
 import UserRoutes from './UserRoutes';
 import ComicsRoutes from './ComicsRoutes';
 import googleAuthHandler from './middleware/googleAuth';
+import AdminRoute from './AdminRoute';
+import adminMW from './middleware/adminMw';
 
 // **** Variables **** //
 
@@ -60,6 +62,13 @@ unprotectedComicRouter.get(
 );
 
 apiRouter.use(Paths.Comics.Base, unprotectedComicRouter);
+
+const adminAuthRouter = Router();
+adminAuthRouter.post(Paths.Admins.Signup, AdminRoute.AdminSignup as any);
+adminAuthRouter.post(Paths.Admins.ResendEmail, AdminRoute.resendEmailVerification as any);
+adminAuthRouter.post(Paths.Admins.Login, AdminRoute.AdminLogin as any);
+adminAuthRouter.post(Paths.Admins.VerifyEmail, AdminRoute.verifyEmail as any);
+apiRouter.use(Paths.Admins.Base, adminAuthRouter);
 
 // Protected comics router
 const protectedComicRouter = Router();
@@ -133,6 +142,10 @@ protectedComicRouter.post(
 	ComicsRoutes.getFollowers as any
 );
 
+protectedComicRouter.get(
+	Paths.Comics.unapprovedComics,
+	ComicsRoutes.getUnapprovedComicsAsEpisodes as any
+);
 protectedComicRouter.post(
 	Paths.Comics.viewComic,
 	ComicsRoutes.viewComic as any
@@ -145,6 +158,14 @@ apiRouter.use(Paths.Comics.Base, protectedComicRouter);
 const userRouter = Router();
 userRouter.use(userMw as any);
 userRouter.get(Paths.Users.Get, UserRoutes.getAll as any);
+userRouter.get(
+	Paths.Users.getNotifications,
+	UserRoutes.getNotifications as any
+);
+userRouter.get(
+	Paths.Users.readNotification,
+	UserRoutes.readNotification as any
+);
 userRouter.put(Paths.Users.UpdateDetails, UserRoutes.updateUserDetails as any);
 userRouter.get(
 	Paths.Users.getComicsFileUrl,
@@ -154,6 +175,15 @@ userRouter.post(Paths.Users.uploadImage, UserRoutes.uploadImage as any);
 userRouter.get(Paths.Users.getUser, UserRoutes.getUser as any);
 userRouter.get(Paths.Users.metrics, ComicsRoutes.metrics as any);
 apiRouter.use(Paths.Users.Base, userRouter);
+
+
+
+
+const adminRouter = Router();
+
+adminRouter.use(adminMW as any);
+adminRouter.get(Paths.Admins.getProfile, AdminRoute.getProfile as any);
+apiRouter.use(Paths.Admins.Base, adminRouter);
 
 // **** Export default **** //
 export default apiRouter;

@@ -12,18 +12,16 @@ import React, { Suspense } from 'react';
 export default function Home() {
 	return (
 		<>
-			<Suspense fallback={<div>Loading...</div>}>
-				<Header />
-				<HomeHero />
-				<AutoSlidingCarousel />
+			<Header />
+			<HomeHero />
+			<AutoSlidingCarousel />
 
-				<Comics title='New Release' />
-				<Events />
-				<Comics title='Most Viewed' />
-				<Comics title='Free Comics' />
-				<About />
-				<Footer />
-			</Suspense>
+			<Comics title='New Release' />
+			<Events />
+			<Comics title='Most Viewed' />
+			<Comics title='Free Comics' />
+			<About />
+			<Footer />
 		</>
 	);
 }

@@ -247,7 +247,7 @@ const ReadComic = () => {
 				</div>
 			</div>
 
-			<div className='container  mt-10 w-[80%] overflow-x-auto  overflow-y-hidden scrollbar-hide scroll-smooth mx-auto'>
+			<div className='container  mt-10 w-[80%] max-480:w-full overflow-x-auto  overflow-y-hidden scrollbar-hide scroll-smooth mx-auto'>
 				<Ads />
 				<Viewer />
 			</div>

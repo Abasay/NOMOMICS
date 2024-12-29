@@ -21,7 +21,7 @@ const HomeHero = () => {
 	if (!homeComic) return <HeroLoadingSkeleton />;
 
 	return (
-		<div className=' relative min-h-[550px] flex flex-col  mx-auto justify-center max-h-[700px]  max-480:min-h-[386px] max-480:max-h-[500px] max-md:min-h-[450px] '>
+		<div className=' relative min-h-[550px] overflow-hidden flex flex-col  mx-auto justify-center max-h-[700px]  max-480:min-h-[386px] max-480:max-h-[500px] max-md:min-h-[450px] '>
 			<div
 				className={`  relative min-h-[386px] flex flex-col container mx-auto justify-center max-h-[500px] mt-20 py-8 px-4 lg:px-16 md:px-8 sm:px-8 `}
 			>

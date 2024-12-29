@@ -12,6 +12,7 @@ import { generateSixDigitToken } from '@src/util';
 import Token from '@src/models/Token';
 import check from '@src/routes/common/check';
 import { OAuth2Client, TokenPayload } from 'google-auth-library';
+import notificationModel from '@src/models/notification.model';
 // import sendMail from '@src/util/sendEmail';
 const sendMail = require('@src/util/sendEmail');
 
@@ -141,6 +142,7 @@ async function signupWithGoogle(idToken: string, role: string): Promise<IUser> {
 		profileImage: picture,
 		role: role,
 		signupMethod: 'Google',
+		isAccountVerified: true,
 	});
 
 	return user;
@@ -294,6 +296,15 @@ async function verifyEmail(
 	user.isAccountVerified = true;
 	user.verificationToken = '';
 	await user.save();
+
+	const notification = await notificationModel.create({
+		creatorId: user._id,
+		type: 'SYSTEM_ALERT',
+		message: 'Account verified successfully',
+		isRead: false,
+	});
+
+	await token.deleteOne();
 	// Return
 	return user;
 }

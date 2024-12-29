@@ -15,6 +15,7 @@ import Like, { ILike } from '@src/models/Likes';
 import saveModel from '@src/models/save.model';
 import followersModel from '@src/models/followers.model';
 import viewModel from '@src/models/view.model';
+import notificationModel from '@src/models/notification.model';
 
 async function getComicsFileUrl(
 	id: ObjectId,
@@ -107,6 +108,15 @@ async function UploadAComic(
 			],
 		});
 	}
+
+	const creatorNotification = await notificationModel.create({
+		creatorId: owner,
+		type: 'NEW_COMIC',
+		message: 'You uploaded a new comic',
+		isRead: false,
+
+		comicId: comic._id,
+	});
 
 	return {
 		...comic.toObject(),
@@ -265,6 +275,26 @@ async function makeAcomment(
 		},
 	]);
 
+	// const notification = await notificationModel.create({
+	// 	creatorId: userId,
+	// 	type: 'NEW_COMMENT',
+	// 	message: 'You commented on this comic',
+	// 	isRead: false,
+	// });
+
+	if (String(comic.owner) !== String(userId)) {
+		const creatorNotification = await notificationModel.create({
+			creatorId: comic.owner,
+			type: 'NEW_LIKE',
+			message: `${
+				user.nickName || user.fullName
+			} commented on your comic`,
+			isRead: false,
+			fromUserId: userId,
+			comicId: comicId,
+		});
+	}
+
 	return comments;
 }
 
@@ -403,6 +433,23 @@ async function likeAComic(
 			authorId: comic.owner,
 		});
 
+	if (String(comic.owner) !== String(userId)) {
+		const notification = await notificationModel.create({
+			creatorId: userId,
+			type: 'NEW_LIKE',
+			message: `You have successfully liked this comic`,
+			isRead: false,
+		});
+		const creatorNotification = await notificationModel.create({
+			creatorId: comic.owner,
+			type: 'NEW_LIKE',
+			message: `Your comic has been liked`,
+			isRead: false,
+			fromUserId: userId,
+			comicId: comicId,
+		});
+	}
+
 	message = episodeId
 		? isLiked
 			? 'You have successfully liked this episode'
@@ -511,6 +558,27 @@ async function viewComic(
 		ipAddress,
 		authorId: comic.owner,
 	});
+
+	if (String(comic.owner) !== String(userId)) {
+		const notification = await notificationModel.create({
+			creatorId: userId,
+			type: 'NEW_LIKE',
+			message: 'You viewed this comic',
+			isRead: false,
+		});
+
+		const creatorNotification = await notificationModel.create({
+			creatorId: comic.owner,
+			type: 'NEW_VIEW',
+			message: `${
+				user.nickName || user.fullName
+			} viewed your comic`,
+			isRead: false,
+			fromUserId: userId,
+			comicId: comicId,
+		});
+	}
+
 	return view;
 }
 

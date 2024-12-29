@@ -111,6 +111,8 @@ const FileUpload = ({
 		}
 	}, [title, author]);
 
+	const [uploading, setUploading] = useState(false);
+
 	const handleUploadFilesForUrls = async (
 		file: string
 	): Promise<string> => {
@@ -282,7 +284,7 @@ const FileUpload = ({
 	};
 
 	return (
-		<div className='p-6 py-10 w-full font-inter flex gap-6 bg-white rounded-lg transition-all delay-0 duration-500 ease-in-out mx-auto'>
+		<div className='p-6 py-10 w-full font-inter flex gap-6 bg-white rounded-lg transition-all delay-0 duration-500 ease-in-out mx-auto max-480:flex-col'>
 			{/* <Status
         message='Upload success'
         icon={<Image width={100} height={200} src={statusLogo} alt='status' />}
@@ -568,6 +570,9 @@ const FileUpload = ({
 									handleSubmit();
 								}}
 								className='px-4 py-2 bg-yellow-500 hover:bg-yellow-600 rounded-md text-white font-medium'
+								disabled={
+									loading
+								}
 							>
 								{loading
 									? 'Uploading...'

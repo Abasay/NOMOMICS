@@ -4,7 +4,7 @@ import eventImg from './hero.png';
 
 const Events = () => {
 	return (
-		<div className='mt-40 relative container w-[90%] rounded-sm grid mx-auto min-h-[234px] max-h-[371px] place-content-center'>
+		<div className='mt-16 relative container w-[90%] rounded-sm grid mx-auto min-h-[234px] max-h-[371px] place-content-center'>
 			{/* Background Image */}
 			<Image
 				src={eventImg}

@@ -3,44 +3,60 @@ import Link from 'next/link';
 import React from 'react';
 import dummy from '@/public/images/dummy.jpg';
 
-const Draft = () => {
+const Draft = ({ drafts }: { drafts: any }) => {
 	const dummyArr = [1, 2, 3, 6];
+
+	if (drafts.length === 0) {
+		return (
+			<div>
+				<h1>
+					No drafts available or No Comics under
+					review
+				</h1>
+			</div>
+		);
+	}
 
 	return (
 		<div className=' w-full py-10 px-10 pb-48'>
 			<div className=' max-h-[774px] overflow-auto'>
 				<div className='flex items-center flex-wrap gap-10 w-[90%] mx-auto'>
-					{dummyArr.map((_, index) => {
+					{drafts.map((_: any, index: number) => {
 						return (
 							<Link
 								href={
 									'/details'
 								}
-								className={` relative cursor-pointer min-w-[200px] min-h-[200px] max-h-[300px] max-w-[200px] rounded-lg overflow-hidden`}
+								className={` relative flex flex-col gap-0 cursor-pointer min-w-[200px] border  min-h-[100px] max-h-[220px] max-w-[200px] rounded-lg overflow-hidden`}
 								key={index}
 							>
 								<Image
 									src={
-										dummy
+										_.episodeCoverImage
 									}
-									alt='Dummy'
+									alt={
+										_.episodeTitle
+									}
 									width={
 										200
 									}
 									height={
 										200
 									}
-									className=' w-full object-cover rounded-lg'
+									className='w-full h-full'
 								/>
-								<div className=' w-full rounded-b-lg text-white px-4 absolute bottom-0 flex flex-col gap-1 bg-black bg-opacity-65 text-xs pt-2 tracking-widest font-trebuchet'>
+								<div className=' w-full  -mt-1 rounded-b-lg text-white px-4  bottom-0 flex flex-col gap-1 bg-black bg-opacity-65 text-xs py-2 tracking-widest font-trebuchet'>
 									<h3>
-										Spiderman
+										{
+											_.episodeTitle
+										}
 									</h3>
 									<h4>
-										Jone
-										Stone
+										{
+											_.author
+										}
 									</h4>
-									<div className=' flex items-center justify-between'>
+									{/* <div className=' flex items-center justify-between'>
 										<div className=' flex items-center flex-row gap-3'>
 											<p>
 												Reviews
@@ -75,7 +91,7 @@ const Draft = () => {
 												Comments
 											</span>
 										</div>
-									</div>
+									</div> */}
 								</div>
 							</Link>
 						);

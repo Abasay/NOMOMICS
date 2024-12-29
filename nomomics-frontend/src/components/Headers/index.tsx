@@ -54,7 +54,7 @@ const Header = () => {
 	const usePathName = usePathname();
 
 	return (
-		<div>
+		<div className=' overflow-hidden'>
 			<nav
 				className={`header font-montserrat left-0 top-0 z-40 h-[92px] font-semibold max-480:text-sm text-[16px] text-white tracking-widest leading-6 flex w-full items-center ${
 					sticky

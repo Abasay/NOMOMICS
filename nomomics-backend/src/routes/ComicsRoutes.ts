@@ -543,6 +543,49 @@ async function metrics(req: IReq, res: IRes) {
 	});
 }
 
+async function getUnapprovedComicsAsEpisodes(req: IReq, res: IRes) {
+	const episodes = await Comic.aggregate([
+		{
+			$unwind: '$episodes', // Flatten the episodes array
+		},
+		{
+			$match: {
+				'episodes.isApproved': false, // Filter for unapproved episodes
+			},
+		},
+		{
+			$sort: {
+				'episodes.date': 1, // Sort episodes by date in ascending order
+			},
+		},
+		{
+			$project: {
+				_id: 0,
+				// title: '$episodes.title', // Assuming episodes have a title field
+				// description: '$episodes.description', // Assuming episodes have a description field
+				// date: '$episodes.date', // Include the date field for sorting
+				// comicTitle: '$title', // Include the comic's title if needed
+				episodeNumber: '$episodes.episodeNumber',
+				episodeTitle: '$episodes.episodeTitle',
+				episodeFileUrl: '$episodes.episodeFileUrl',
+				episodeCoverImage:
+					'$episodes.episodeCoverImage',
+				dateUploaded: '$episodes.dateUploaded',
+				filesType: '$episodes.filesType',
+				episodeId: '$episodes.episodeId',
+				isApproved: '$episodes.isApproved',
+			},
+		},
+	]);
+
+	return res.status(HttpStatusCodes.OK).json({
+		success: true,
+		data: {
+			episodes,
+		},
+	});
+}
+
 // **** Functions **** //
 
 export default {
@@ -567,4 +610,5 @@ export default {
 	getFollowers,
 	viewComic,
 	metrics,
+	getUnapprovedComicsAsEpisodes,
 } as const;
