@@ -10,6 +10,7 @@ interface INotification extends Document {
 		| 'SYSTEM_ALERT'; // Type of notification
 	message: string; // Notification message
 	comicId?: Types.ObjectId; // Optional: Related comic ID
+	episodeId?: String; // Optional: Related episode ID
 	fromUserId?: Types.ObjectId; // Optional: ID of the user triggering the notification
 	isRead: boolean; // Status of the notification
 	createdAt: Date; // Timestamp of creation
@@ -31,11 +32,14 @@ const notificationSchema = new Schema<INotification>(
 				'COMIC_PUBLISHED',
 				'SYSTEM_ALERT',
 				'NEW_COMIC',
+				'COMIC_DISAPPROVED',
+				'COMIC_APPROVED',
 			],
 			required: true,
 		},
 		message: { type: String, required: true }, // Notification message
 		comicId: { type: Types.ObjectId, ref: 'Comic' }, // Related comic, if applicable
+		episodeId: { type: String }, // Related episode, if applicable
 		fromUserId: { type: Types.ObjectId, ref: 'User' }, // User who triggered the notification
 		isRead: { type: Boolean, default: false }, // Read status
 	},

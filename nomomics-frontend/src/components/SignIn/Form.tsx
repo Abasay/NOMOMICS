@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import {
 	FaFacebook,
@@ -22,12 +22,15 @@ import Swal from 'sweetalert2';
 
 const SignInForm = ({ setIsModalVisible }: { setIsModalVisible: any }) => {
 	const isLoggedIn = Cookies.get('isLoggedIn');
+	const token = Cookies.get('token')
 
 	const router = useRouter();
 
-	if (isLoggedIn) {
+	useEffect(()=>{
+		if (isLoggedIn && token) {
 		router.push('/profile');
 	}
+	},[])
 
 	const [formData, setFormData] = useState<{
 		email: string;

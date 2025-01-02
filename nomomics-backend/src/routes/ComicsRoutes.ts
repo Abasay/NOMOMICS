@@ -168,12 +168,25 @@ async function uploadComicPdfsToCloudinary(req: IReq, res: IRes) {
 }
 
 async function allComics(req: IReq, res: IRes) {
-	const comics = await Comic.find({}).sort({ createdAt: -1 });
+	const comics = await Comic.find({
+		'episodes.isApproved': true,
+	}).sort({ createdAt: -1 });
+
+	const newComics = comics.map((comic) => {
+		const episodes = comic.episodes.filter(
+			(episode) => episode.isApproved
+		);
+
+		return {
+			...comic.toJSON(),
+			episodes,
+		};
+	})
 
 	return res.status(HttpStatusCodes.OK).json({
 		success: true,
 		data: {
-			comics,
+			comics:newComics,
 		},
 	});
 }
@@ -261,9 +274,11 @@ async function getComic(req: IReq, res: IRes) {
 		});
 	}
 
+	const approvedEpisodes = comic.episodes.filter(episode => episode.isApproved)
+
 	return res.status(HttpStatusCodes.OK).json({
 		success: true,
-		data: comic,
+		data: {...comic.toJSON(), episodes: approvedEpisodes},
 		comments: comments ? comments : [],
 	});
 }

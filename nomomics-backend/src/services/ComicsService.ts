@@ -79,9 +79,17 @@ async function UploadAComic(
 					episodeCoverImage: coverImageUrl,
 					filesType,
 					episodeId: uuidv1(),
+					approvalStatus: 'PENDING',
 				},
 			},
 		});
+		const creatorNotification = await notificationModel.create({
+		creatorId: owner,
+		type: 'NEW_EPISODE',
+		message: 'You uploaded a new episode for '+ title,
+		isRead: false,
+		comicId: comic._id,
+	});
 	} else {
 		comic = await Comic.create({
 			fileUrl: [...files],
@@ -104,19 +112,21 @@ async function UploadAComic(
 					episodeCoverImage: coverImageUrl,
 					filesType,
 					episodeId: uuidv1(),
+					approvalStatus: 'PENDING',
 				},
 			],
 		});
-	}
-
-	const creatorNotification = await notificationModel.create({
+		
+		const creatorNotification = await notificationModel.create({
 		creatorId: owner,
 		type: 'NEW_COMIC',
 		message: 'You uploaded a new comic',
 		isRead: false,
-
 		comicId: comic._id,
 	});
+
+	}
+
 
 	return {
 		...comic.toObject(),
@@ -128,6 +138,7 @@ async function UploadAComic(
 				episodeFileUrl: [...files],
 				episodeCoverImage: coverImageUrl,
 				filesType,
+				approvalStatus: 'PENDING',
 			},
 		],
 	};

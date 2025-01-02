@@ -105,7 +105,7 @@ const NotificationsPage = ({
 	}
 
 	return (
-		<div className='min-h-screen w-full border border-green-200 py-8'>
+		<div className='min-h-screen w-full  py-8'>
 			<NotificationList
 				notifications={notifications}
 				markAsRead={markAsRead}

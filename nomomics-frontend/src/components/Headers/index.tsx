@@ -99,21 +99,21 @@ const Header = () => {
 									className='absolute right-2 top-1/2 block translate-y-[-50%] rounded-lg px-3   focus:ring-2 lg:hidden'
 								>
 									<span
-										className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 dark:bg-white ${
+										className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300  ${
 											navbarOpen
 												? ' top-[7px] rotate-45'
 												: ' '
 										}`}
 									/>
 									<span
-										className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 dark:bg-white ${
+										className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300  ${
 											navbarOpen
 												? 'opacity-0 '
 												: ' '
 										}`}
 									/>
 									<span
-										className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 dark:bg-white ${
+										className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300  ${
 											navbarOpen
 												? ' top-[-8px] -rotate-45'
 												: ' '
@@ -148,8 +148,8 @@ const Header = () => {
 															className={`flex w-auto py-2 min-w-16 text-base max-480:text-sm lg:mr-0 lg:inline-flex lg:px-0  ${
 																usePathName ===
 																menuItem.path
-																	? ' dark:text-white border-b-4 border-white'
-																	: 'text-dark hover:text-primary dark:text-white/70 dark:hover:text-white'
+																	? '  border-b-4 border-white'
+																	: 'text-dark hover:text-primary /70 dark:hover:text-white'
 															}`}
 														>
 															{
@@ -164,7 +164,7 @@ const Header = () => {
 																		index
 																	)
 																}
-																className='flex cursor-pointer items-center justify-between py-2 text-base max-480:text-sm text-dark group-hover:text-primary dark:text-white/70 dark:group-hover:text-white lg:mr-0 lg:inline-flex lg:px-0 lg:py-6'
+																className='flex cursor-pointer items-center justify-between py-2 text-base max-480:text-sm text-dark group-hover:text-primary /70 dark:group-hover:text-white lg:mr-0 lg:inline-flex lg:px-0 lg:py-6'
 															>
 																{
 																	menuItem.title
@@ -204,7 +204,7 @@ const Header = () => {
 																			key={
 																				index
 																			}
-																			className='block rounded py-2.5 text-sm text-dark hover:text-primary dark:text-white/70 dark:hover:text-white lg:px-3'
+																			className='block rounded py-2.5 text-sm text-dark hover:text-primary /70 dark:hover:text-white lg:px-3'
 																		>
 																			{
 																				submenuItem.title
@@ -228,7 +228,7 @@ const Header = () => {
 															)
 														}
 														title='Profile'
-														className=' py-2 text-base max-480:text-sm font-medium rounded-full text-dark hover:opacity-70 dark:text-white md:block'
+														className=' py-2 text-base max-480:text-sm font-medium rounded-full text-dark hover:opacity-70  md:block'
 													>
 														<Image
 															src={
@@ -272,7 +272,7 @@ const Header = () => {
 											<div className='hidden max-md:flex max-1024:flex flex-col gap-4'>
 												<Link
 													href='/signin'
-													className=' py-2 text-base max-480:text-sm font-medium text-dark hover:opacity-70 dark:text-white md:block'
+													className=' py-2 text-base max-480:text-sm font-medium text-dark hover:opacity-70  md:block'
 												>
 													Log
 													In
@@ -301,7 +301,7 @@ const Header = () => {
 											)
 										}
 										title='Profile'
-										className=' py-2 text-base max-480:text-sm font-medium rounded-full text-dark hover:opacity-70 dark:text-white md:block'
+										className=' py-2 text-base max-480:text-sm font-medium rounded-full text-dark hover:opacity-70  md:block'
 									>
 										<Image
 											src={
@@ -341,7 +341,7 @@ const Header = () => {
 								<div className='max-1280:hidden flex gap-4'>
 									<Link
 										href='/signin'
-										className='hidden py-2 text-base max-480:text-sm font-medium text-dark hover:opacity-70 dark:text-white md:block'
+										className='hidden py-2 text-base max-480:text-sm font-medium text-dark hover:opacity-70  md:block'
 									>
 										Log
 										In
@@ -373,7 +373,7 @@ const Header = () => {
                   }`}
                 />
                 <span
-                  className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 dark:bg-white ${
+                  className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300  ${
                     authOpen ? 'top-[-8px] -rotate-45' : ''
                   }`}
                 />
@@ -421,7 +421,7 @@ const Header = () => {
 													)
 												}
 												title='Profile'
-												className=' py-2 text-base max-480:text-sm font-medium rounded-full text-dark hover:opacity-70 dark:text-white md:block'
+												className=' py-2 text-base max-480:text-sm font-medium rounded-full text-dark hover:opacity-70  md:block'
 											>
 												<Image
 													src={
@@ -492,7 +492,7 @@ const Header = () => {
 													)
 												}
 												title='Profile'
-												className=' py-2 text-base max-480:text-sm font-medium rounded-full text-dark hover:opacity-70 dark:text-white md:block'
+												className=' py-2 text-base max-480:text-sm font-medium rounded-full text-dark hover:opacity-70  md:block'
 											>
 												<Image
 													src={

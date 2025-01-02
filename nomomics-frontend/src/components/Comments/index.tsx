@@ -95,7 +95,7 @@ const CommentComp = () => {
 					height={40}
 					className='w-10 h-10 rounded-full'
 				/>
-				<div className='flex items-center space-x-2 text-[22px] leading-7 tracking-wider '>
+				<div className='flex items-center space-x-2 text-[22px] leading-7 tracking-wider max-md:text-base max-480:text-sm '>
 					<span className='font-bold'>
 						{comment.userId.nickName ||
 							comment.userId.fullName.split(

@@ -138,20 +138,19 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
 			if (response.success) {
 				setMetrics(response.data);
 			} else {
-				Swal.fire({
-					icon: 'error',
-					title: 'An error occurred',
-					text: response.error,
-				});
+				// Swal.fire({
+				// 	icon: 'error',
+				// 	title: 'An error new occurred',
+				// 	text: response.error,
+				// });
+				if(response.error.includes('not authorized')) {
+						Cookies.remove('token')
+						Cookies.remove('isLoggedIn')
+					}
 			}
 		} catch (error: any) {
 			console.log(error);
-
-			Swal.fire({
-				icon: 'error',
-				title: 'An error occurred',
-				text: error.message,
-			});
+			
 		} finally {
 			setLoadingMetrics(false);
 		}
@@ -175,6 +174,11 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
 					if (response.ok) {
 						setProfile(data.data.user);
 						setFormData(data.data.user);
+					} else{
+				if(data.error.includes('not authorized')) {
+						Cookies.remove('token')
+						Cookies.remove('isLoggedIn')
+					}
 					}
 				} catch (error) {
 					console.error(error);
@@ -197,6 +201,11 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
 					);
 
 					const data = await res.json();
+					if(data.error.includes('not authorized')) {
+						Cookies.remove('token')
+						Cookies.remove('isLoggedIn')
+					}
+
 					setMyComics(data.data);
 				} catch (error) {
 					console.log(error);
@@ -224,6 +233,11 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
 					if (response.ok) {
 						setProfile(data.data.user);
 					}
+					if(data.error.includes('not authorized')) {
+						Cookies.remove('token')
+						Cookies.remove('isLoggedIn')
+					}
+
 				} catch (error) {
 					console.error(error);
 				}

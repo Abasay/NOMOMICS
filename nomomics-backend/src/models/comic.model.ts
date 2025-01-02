@@ -25,6 +25,9 @@ interface IComic extends Document {
 		filesType: string;
 		episodeId: string;
 		isApproved: boolean;
+		approvalStatus: string;
+		approvedAt?: Date;
+		approvedBy?: ObjectId;
 	}[];
 }
 
@@ -60,6 +63,14 @@ const ComicSchema = new Schema<IComic>(
 				filesType: { type: String, required: true },
 				episodeId: { type: String, required: true },
 				isApproved: { type: Boolean, default: false },
+				approvalStatus: { type: String, default: 'PENDING' },
+				approvedAt: { type: Date },
+				approvedBy: {
+					type: Schema.Types.ObjectId,
+					ref: 'Admin',
+				},
+				
+
 			},
 		],
 	},

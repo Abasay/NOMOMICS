@@ -183,6 +183,10 @@ const adminRouter = Router();
 
 adminRouter.use(adminMW as any);
 adminRouter.get(Paths.Admins.getProfile, AdminRoute.getProfile as any);
+adminRouter.get(Paths.Admins.getAllComics, AdminRoute.getAllComics as any);
+adminRouter.get(Paths.Admins.getAllUsers, AdminRoute.getAllUsers as any);
+adminRouter.post(Paths.Admins.approveComic, AdminRoute.approveAComic as any);
+adminRouter.post(Paths.Admins.disaApproveComic, AdminRoute.disaApproveComic as any);
 apiRouter.use(Paths.Admins.Base, adminRouter);
 
 // **** Export default **** //
