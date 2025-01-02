@@ -9,7 +9,7 @@ const About = () => {
     >
       <div className=' h-full w-full bg-black bg-opacity-60 absolute top-0'></div>
       <div className=' absolute top-0 flex justify-center w-full'>
-        <div className="container mx-auto flex absolute flex-col mt-6 lg:mt-20 sm:mt-10 md:mt-12  max-480:mt-16 px-4 items-center justify-center">
+        <div className="container mx-auto flex absolute flex-col mt-6 lg:mt-20 sm:mt-10 md:mt-12  max-480:mt-10 px-4 items-center justify-center">
         <h3 className="font-semibold leading-relaxed tracking-wider text-lg sm:text-2xl md:text-2xl lg:text-4xl text-center">
           Sign up with NOMOMICS to get the latest and interesting comic
         </h3>
