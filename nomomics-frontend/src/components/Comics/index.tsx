@@ -109,7 +109,7 @@ const Comics = (props: { title: string }) => {
 			<div className=' w-[150px] mx-auto'>
 				<Button1
 					text='See more'
-					className=' w-full bg-primary py-2'
+					className=' w-full bg-secondary py-2'
 					onClickFunc={() =>
 						console.log('usee more')
 					}

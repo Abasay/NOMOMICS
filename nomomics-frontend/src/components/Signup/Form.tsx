@@ -206,7 +206,7 @@ const SignUpForm = (props: {
               onClick={() => {
                 setTogglePasswd((prev) => !prev);
               }}
-              className='absolute right-4 top-14 text-zinc-500 cursor-pointer'
+              className='absolute right-4 top-1/2 text-zinc-500 cursor-pointer'
             >
               {togglePasswd ? <FaEye size={24} /> : <FaEyeSlash size={24} />}
             </span>
@@ -231,7 +231,7 @@ const SignUpForm = (props: {
               onClick={() => {
                 setToggleConfirmPasswd((prev) => !prev);
               }}
-              className='absolute right-4 top-14 text-zinc-500 cursor-pointer'
+              className='absolute right-4 top-1/2 text-zinc-500 cursor-pointer'
             >
               {toggleConfirmPasswd ? (
                 <FaEye size={24} />

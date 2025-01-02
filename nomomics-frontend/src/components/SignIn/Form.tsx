@@ -171,7 +171,7 @@ const SignInForm = ({ setIsModalVisible }: { setIsModalVisible: any }) => {
 
 	return (
 		<div className='flex justify-center h-[80%]  items-center '>
-			<div className='bg-white  p-8 pt-16 rounded-[25px] shadow-lg w-[80%] px-16 min-w-md max-md:w-full max-md:px-8 '>
+			<div className='bg-white  p-8 pt-16 rounded-[25px] shadow-lg w-[80%] max-480:w-full px-16 min-w-md max-md:w-full max-md:px-8 '>
 				<SignupSectionHeader
 					title='Welcome back!'
 					subTitle='Log in to your account'
@@ -225,7 +225,7 @@ const SignInForm = ({ setIsModalVisible }: { setIsModalVisible: any }) => {
 								required
 							/>
 						</div>
-						<div className='mb-4 relative'>
+						<div className='mb-4 relative border border-green-400'>
 							<label className='block mb-2 font-bold'>
 								Password
 							</label>
@@ -250,13 +250,14 @@ const SignInForm = ({ setIsModalVisible }: { setIsModalVisible: any }) => {
 								onClick={
 									handleTogglePassword
 								}
-								className='absolute right-4 top-14 text-zinc-500 cursor-pointer'
+								className='absolute  right-4 top-1/2 text-zinc-500 cursor-pointer'
 							>
 								{showPassword ? (
 									<FaEye
 										size={
 											24
 										}
+										className=''
 									/>
 								) : (
 									<FaEyeSlash
@@ -278,7 +279,7 @@ const SignInForm = ({ setIsModalVisible }: { setIsModalVisible: any }) => {
 									onChange={
 										handleChange
 									}
-									className='mr-2 w-6 h-6 border  rounded-full'
+									className='mr-2 w-6 h-6 border max-md:w-4 max-md:h-4 max-480:h-3 max-480:w-3  rounded-full'
 									required
 								/>
 								Remember Me

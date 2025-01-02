@@ -7,7 +7,7 @@ import logo from '@/public/svgs/signup-logo-1.svg';
 const Footer = () => {
 	return (
 		<>
-			<footer className='relative z-10 bg-secondary font-inter text-white pt-10 dark:bg-gray-dark md:pt-16 lg:pt-16'>
+			<footer className='relative z-10 bg-[#ff8702] font-inter text-black pt-10 md:pt-16 lg:pt-16'>
 				<div className='container mx-auto'>
 					<div className=' flex flex-row flex-wrap gap-8 justify-between w-[90%] mx-auto'>
 						<div className=' max-w-[250px] px-4 '>
@@ -30,7 +30,8 @@ const Footer = () => {
 										}
 									/>
 								</Link>
-								<p className='mb-6 pl-3 font-roboto text-base flex items-center gap-3 leading-relaxed text-body-color dark:text-body-color-dark'>
+								{/* <a href="mailto:"></a> */}
+								<Link href={'mailto:nomomics@gmail.com'} className='mb-6 pl-3 font-roboto text-base flex items-center gap-3 leading-relaxed text-body-color dark:text-body-color-dark'>
 									<span>
 										<svg
 											width='24'
@@ -48,8 +49,8 @@ const Footer = () => {
 									<span>
 										Nomomics.Com
 									</span>
-								</p>
-								<p className='mb-6 font-roboto pl-3 flex items-center gap-3 text-base leading-relaxed text-body-color dark:text-body-color-dark'>
+								</Link>
+								<Link href={'tel:'} className='mb-6 font-roboto pl-3 flex items-center gap-3 text-base leading-relaxed text-body-color dark:text-body-color-dark'>
 									<span>
 										<svg
 											width='24'
@@ -73,14 +74,14 @@ const Footer = () => {
 										678
 										89
 									</span>
-								</p>
+								</Link>
 								<div className='flex pl-3 items-center'>
-									<a
+									<Link
 										href='/'
 										aria-label='social-link'
 										target='_blank'
 										rel='noopener noreferrer'
-										className='mr-6 text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary'
+										className='mr-6 text-body-color duration-300 hover:text-onHover dark:text-body-color-dark dark:hover:text-onHover'
 									>
 										<svg
 											width='40'
@@ -100,13 +101,13 @@ const Footer = () => {
 												fill='white'
 											/>
 										</svg>
-									</a>
+									</Link>
 									<a
 										href='/'
 										aria-label='social-link'
 										target='_blank'
 										rel='noopener noreferrer'
-										className='mr-6 text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary'
+										className='mr-6 text-body-color duration-300 hover:text-onHover dark:text-body-color-dark dark:hover:text-onHover'
 									>
 										<svg
 											width='41'
@@ -140,12 +141,12 @@ const Footer = () => {
 											</defs>
 										</svg>
 									</a>
-									<a
-										href='/'
+									<Link
+										href='https://www.instagram.com/nomomics_?igsh=MWI2MGZ6aTVlN2IxNA=='
 										aria-label='social-link'
 										target='_blank'
 										rel='noopener noreferrer'
-										className='mr-6 text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary'
+										className='mr-6 text-body-color duration-300 hover:text-onHover dark:text-body-color-dark dark:hover:text-onHover'
 									>
 										<svg
 											width='40'
@@ -166,13 +167,13 @@ const Footer = () => {
 												fill='white'
 											/>
 										</svg>
-									</a>
+									</Link>
 									<a
 										href='/'
 										aria-label='social-link'
 										target='_blank'
 										rel='noopener noreferrer'
-										className='text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary'
+										className='text-body-color duration-300 hover:text-onHover dark:text-body-color-dark dark:hover:text-onHover'
 									>
 										<svg
 											width='41'
@@ -200,14 +201,14 @@ const Footer = () => {
 
 						<div className=' mt-3'>
 							<div className='mb-12 lg:mb-16'>
-								<h2 className='mb-10 text-3xl  text-white dark:text-white'>
+								<h2 className='mb-10 text-3xl   dark:'>
 									Links
 								</h2>
 								<ul>
 									<li>
 										<Link
-											href='/blog'
-											className='mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary'
+											href='/'
+											className='mb-4 inline-block text-base text-body-color duration-300 hover:text-onHover dark:text-body-color-dark dark:hover:text-onHover'
 										>
 											Home
 										</Link>
@@ -215,7 +216,7 @@ const Footer = () => {
 									<li>
 										<Link
 											href='/about'
-											className='mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary'
+											className='mb-4 inline-block text-base text-body-color duration-300 hover:text-onHover dark:text-body-color-dark dark:hover:text-onHover'
 										>
 											About
 										</Link>
@@ -226,14 +227,14 @@ const Footer = () => {
 
 						<div className=' mt-3'>
 							<div className='mb-12 lg:mb-16'>
-								<h2 className='mb-10 text-3xl text-white  dark:text-white'>
+								<h2 className='mb-10 text-3xl   dark:'>
 									Legal
 								</h2>
 								<ul>
 									<li>
 										<Link
 											href='/'
-											className='mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary'
+											className='mb-4 inline-block text-base text-body-color duration-300 hover:text-onHover dark:text-body-color-dark dark:hover:text-onHover'
 										>
 											Terms
 											Of
@@ -243,7 +244,7 @@ const Footer = () => {
 									<li>
 										<Link
 											href='/'
-											className='mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary'
+											className='mb-4 inline-block text-base text-body-color duration-300 hover:text-onHover dark:text-body-color-dark dark:hover:text-onHover'
 										>
 											Privacy
 											Policy
@@ -255,14 +256,14 @@ const Footer = () => {
 
 						<div className=' mt-3'>
 							<div className='mb-12 lg:mb-16'>
-								<h2 className='mb-10 text-3xl text-white  dark:text-white'>
+								<h2 className='mb-10 text-3xl   dark:'>
 									Product
 								</h2>
 								<ul>
 									<li>
 										<Link
 											href='/contact'
-											className='mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary'
+											className='mb-4 inline-block text-base text-body-color duration-300 hover:text-onHover dark:text-body-color-dark dark:hover:text-onHover'
 										>
 											Categories
 										</Link>
@@ -270,7 +271,7 @@ const Footer = () => {
 									<li>
 										<Link
 											href='/'
-											className='mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary'
+											className='mb-4 inline-block text-base text-body-color duration-300 hover:text-onHover dark:text-body-color-dark dark:hover:text-onHover'
 										>
 											Customer
 											Support
@@ -279,27 +280,35 @@ const Footer = () => {
 								</ul>
 							</div>
 						</div>
-						<div className=' mt-3'>
-							<div className='mb-12 lg:mb-16'>
-								<h2 className='mb-10 text-3xl  text-white dark:text-white'>
-									NewsLetter
-								</h2>
-								<ul>
-									<li>
-										<input
-											type='text'
-											className='w-full py-4 rounded-md focus:outline-primary transition-all delay-0 duration-500 placeholder:font-clash placeholder:text-[#81848A] px-4'
-											placeholder='Your email'
-										/>
-									</li>
-								</ul>
-							</div>
+						<div className="mt-3">
+						<div className="mb-8 lg:mb-12 text-center">
+							<h2 className="mb-6 text-2xl lg:text-3xl font-semibold  ">
+							Stay Updated with Comic News!
+							</h2>
+							<p className="mb-8 text-sm lg:text-base">
+							Sign up for our newsletter to receive the latest updates and news.
+							</p>
+							<form className="flex flex-col items-center space-y-4 lg:space-y-0 lg:flex-row lg:space-x-4">
+							<input
+								type="email"
+								className="w-full lg:w-1/2 py-3 rounded-md border border-gray-300 focus:border-primary focus:outline-none transition duration-300 px-4 text-sm placeholder:text-gray-500"
+								placeholder="Enter your email"
+							/>
+							<button
+								type="submit"
+								className="w-full lg:w-auto px-6 py-3 bg-primary text-white rounded-md hover:bg-primary-dark transition duration-300 text-sm"
+							>
+								Subscribe
+							</button>
+							</form>
 						</div>
+						</div>
+
 					</div>
 
 					<div className='h-px w-full bg-gradient-to-r from-transparent via-[#D2D8E183] to-transparent dark:via-[#959CB183]'></div>
 					<div className='py-8'>
-						<p className='text-center  text-sm font-roboto font-extralight text-body-color dark:text-white tracking-wider'>
+						<p className='text-center  text-sm font-roboto font-extralight text-body-color dark: tracking-wider'>
 							Copyright{' '}
 							{new Date().getFullYear()}{' '}
 							Nomomics.com. All rights

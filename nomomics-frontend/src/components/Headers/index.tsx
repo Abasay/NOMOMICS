@@ -56,7 +56,7 @@ const Header = () => {
 	return (
 		<div className=' overflow-hidden'>
 			<nav
-				className={`header font-montserrat left-0 top-0 z-40 h-[92px] font-semibold max-480:text-sm text-[16px] text-white tracking-widest leading-6 flex w-full items-center ${
+				className={`header font-montserrat left-0 top-0 z-40 h-[92px] font-semibold max-480:text-sm text-[16px] text-black tracking-widest leading-6 flex w-full items-center ${
 					sticky
 						? 'fixed z-[9999] bg-secondary !bg-opacity-80 shadow-sticky backdrop-blur-sm transition dark:bg-gray-dark dark:shadow-sticky-dark'
 						: 'absolute bg-secondary'
@@ -96,7 +96,7 @@ const Header = () => {
 									}
 									id='navbarToggler'
 									aria-label='Mobile Menu'
-									className='absolute right-2 top-1/2 block translate-y-[-50%] rounded-lg px-3   focus:ring-2 lg:hidden'
+									className='absolute right-2 top-1/2 block translate-y-[-50%] rounded-lg px-3   lg:hidden'
 								>
 									<span
 										className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300  ${
@@ -149,7 +149,7 @@ const Header = () => {
 																usePathName ===
 																menuItem.path
 																	? '  border-b-4 border-white'
-																	: 'text-dark hover:text-primary /70 dark:hover:text-white'
+																	: 'text-dark hover:text-onHover max-1024:hover:text-secondary '
 															}`}
 														>
 															{
@@ -164,7 +164,7 @@ const Header = () => {
 																		index
 																	)
 																}
-																className='flex cursor-pointer items-center justify-between py-2 text-base max-480:text-sm text-dark group-hover:text-primary /70 dark:group-hover:text-white lg:mr-0 lg:inline-flex lg:px-0 lg:py-6'
+																className='flex cursor-pointer items-center justify-between py-2 text-base max-480:text-sm text-dark group-hover:text-onHover lg:mr-0 lg:inline-flex lg:px-0 lg:py-6'
 															>
 																{
 																	menuItem.title
@@ -184,8 +184,8 @@ const Header = () => {
 																	</svg>
 																</span>
 															</p>
-															<div
-																className={`submenu relative left-0 z-50 top-full rounded-sm bg-white transition-[top] duration-300 group-hover:opacity-100 dark:bg-dark lg:invisible lg:absolute lg:top-[110%] lg:block lg:w-[250px] lg:p-4 lg:opacity-0 lg:shadow-lg lg:group-hover:visible lg:group-hover:top-full text-black ${
+															{/* <div
+																className={`submenu relative left-0 z-50 top-full rounded-sm bg-white transition-[top] duration-300 group-hover:opacity-100  lg:invisible lg:absolute lg:top-[110%] lg:block lg:w-[250px] lg:p-4 lg:opacity-0 lg:shadow-lg lg:group-hover:visible lg:group-hover:top-full text-black ${
 																	openIndex ===
 																	index
 																		? 'block'
@@ -204,7 +204,7 @@ const Header = () => {
 																			key={
 																				index
 																			}
-																			className='block rounded py-2.5 text-sm text-dark hover:text-primary /70 dark:hover:text-white lg:px-3'
+																			className='block rounded py-2.5 text-sm text-dark hover:text-secondary /70  lg:px-3'
 																		>
 																			{
 																				submenuItem.title
@@ -212,7 +212,7 @@ const Header = () => {
 																		</Link>
 																	)
 																)}
-															</div>
+															</div> */}
 														</div>
 													)}
 												</li>
@@ -272,7 +272,7 @@ const Header = () => {
 											<div className='hidden max-md:flex max-1024:flex flex-col gap-4'>
 												<Link
 													href='/signin'
-													className=' py-2 text-base max-480:text-sm font-medium text-dark hover:opacity-70  md:block'
+													className=' py-2 text-base max-480:text-sm font-semibold text-dark hover:text-secondary  md:block'
 												>
 													Log
 													In
@@ -341,7 +341,7 @@ const Header = () => {
 								<div className='max-1280:hidden flex gap-4'>
 									<Link
 										href='/signin'
-										className='hidden py-2 text-base max-480:text-sm font-medium text-dark hover:opacity-70  md:block'
+										className='hidden py-2 text-base max-480:text-sm font-medium text-dark hover:text-secondary  md:block'
 									>
 										Log
 										In
@@ -356,28 +356,7 @@ const Header = () => {
 								</div>
 							)}
 
-							{/* <button
-                onClick={authToggleHandler}
-                id='authToggler'
-                aria-label='Mobile Menu'
-                className='absolute  right-2 top-1/2 translate-y-[-50%] rounded-lg px-3 md:hidden'
-              >
-                <span
-                  className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 ${
-                    authOpen ? 'top-[7px] rotate-45' : ''
-                  }`}
-                />
-                <span
-                  className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300 ${
-                    authOpen ? 'opacity-0' : ''
-                  }`}
-                />
-                <span
-                  className={`relative my-1.5 block h-0.5 w-[30px] bg-black transition-all duration-300  ${
-                    authOpen ? 'top-[-8px] -rotate-45' : ''
-                  }`}
-                />
-              </button> */}
+							
 
 							<button
 								onClick={
@@ -465,14 +444,14 @@ const Header = () => {
 										<>
 											<Link
 												href='/signin'
-												className='py-2 text-base max-480:text-sm hover:text-primary font-medium text-dark hover:opacity-70'
+												className='py-2 text-base max-480:text-sm font-medium text-dark hover:text-secondary'
 											>
 												Log
 												In
 											</Link>
 											<Link
 												href='/signup'
-												className='ease-in-up rounded-sm py-2 text-base max-480:text-sm font-medium shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover hover:text-primary'
+												className='ease-in-up rounded-sm py-2 text-base max-480:text-sm font-medium shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover hover:text-secondary'
 											>
 												Sign
 												Up
@@ -536,14 +515,14 @@ const Header = () => {
 										<>
 											<Link
 												href='/signin'
-												className='py-2 text-base max-480:text-sm hover:text-primary font-medium text-dark hover:opacity-70'
+												className='py-2 text-base max-480:text-sm hover:text-onHover font-medium text-dark hover:opacity-70'
 											>
 												Log
 												In
 											</Link>
 											<Link
 												href='/signup'
-												className='ease-in-up rounded-sm py-2 text-base max-480:text-sm font-medium shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover hover:text-primary'
+												className='ease-in-up rounded-sm py-2 text-base max-480:text-sm font-medium shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover hover:text-onHover'
 											>
 												Sign
 												Up

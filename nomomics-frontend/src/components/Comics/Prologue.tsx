@@ -91,7 +91,7 @@ const Prologue = () => {
 							{comic.title}
 						</h3>
 						<h4 className='text-3xl max-md:text-xl max-480:text-lg tracking-widest'>
-							Prologue
+							Synopsis
 						</h4>
 					</div>
 					<div>

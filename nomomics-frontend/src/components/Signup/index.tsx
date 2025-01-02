@@ -40,39 +40,6 @@ const SignUp = () => {
 
   const { updateProfile } = useProfile();
 
-  // React.useEffect(() => {
-  //   if (pathName.includes('/signup/verify') && !done) {
-  //     setVerifying(true);
-  //     (async () => {
-  //       const res = await fetch(
-  //         `${process.env.NEXT_PUBLIC_API_URL}/auth/verify-email`,
-  //         {
-  //           method: 'POST',
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //           },
-  //           body: JSON.stringify({ token }),
-  //         }
-  //       );
-
-  //       if (res.ok) {
-  //         setVerifying(false);
-  //         setVerified(true);
-  //         setDone(true); // Update done to prevent multiple calls
-  //         Cookies.set('isLoggedIn', 'true', { expires: 7 });
-  //         const response = await res.json();
-  //         console.log(response);
-  //         updateProfile(response.data.user);
-  //         Cookies.set('token', response.data.token, { expires: 7 });
-  //       } else {
-  //         toast.error('Invalid token');
-  //         router.push('/signup');
-  //       }
-  //     })();
-  //   } else if (!done) {
-  //     router.push('/signup');
-  //   }
-  // }, [pathName, done]); // Adding 'done' as a dependency
 
   const token = pathName.split('/').pop();
   console.log(token);

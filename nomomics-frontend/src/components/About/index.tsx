@@ -1,30 +1,35 @@
 import React from 'react';
 import styles from '@/styles/about.module.css';
+import Link from 'next/link';
 
 const About = () => {
   return (
     <div
-      className={`${styles.background} px-4 sm:px-8 md:px-16 lg:px-28 gap-6 md:gap-10 lg:gap-14 mx-auto w-[90%] text-white mt-10 md:mt-16 lg:mt-20 font-inter`}
+      className={`${styles.background} px-4 sm:px-8 md:px-16 lg:px-28 gap-6 relative md:gap-10 lg:gap-14 mx-auto  text-white mt-10 md:mt-16 lg:mt-20 font-inter`}
     >
-      <div className="container mx-auto flex flex-col items-center justify-center">
+      <div className=' h-full w-full bg-black bg-opacity-60 absolute top-0'></div>
+      <div className=' absolute top-0 flex justify-center w-full'>
+        <div className="container mx-auto flex absolute flex-col mt-6 lg:mt-20 sm:mt-10 md:mt-12  items-center justify-center">
         <h3 className="font-semibold leading-relaxed tracking-wider text-xl sm:text-2xl md:text-2xl lg:text-4xl text-center">
           Sign up with NOMOMICS to get the latest and interesting comic
         </h3>
 
         <div className="font-extralight text-[14px] sm:text-[15px] md:text-[16px] tracking-wide text-center mt-4 md:mt-6 space-y-6">
           <section>
-            <h4 className="font-medium text-lg mb-2">What&rsquo;s Nomomics?</h4>
-            <p>
+            <h4 className="font-medium text-lg ">WHO ARE WE?</h4>
+            <p className=' text-base text-white font-normal max-480:text-sm'>
               Nomomics is a platform that promotes African storytelling through comics, connecting people to authentic narratives, culture, and unique collectibles.
             </p>
           </section>
 
           <section>
-            <h4 className="font-medium text-lg mb-2">Who&rsquo;s Nomomics serving?</h4>
-            <p>
+            <h4 className="font-medium text-lg ">OUR TRIBE?</h4>
+            <p className=' text-base text-white font-normal max-480:text-sm'>
               Nomomics serves anyone passionate about authentic African storytelling, including comic enthusiasts, collectors, and those seeking to connect with African culture and creativity.
             </p>
           </section>
+
+          
 
           {/* <section>
             <h4 className="font-medium text-lg mb-2">What&rsquo;s Nomomics&rsquo; goal?</h4>
@@ -47,7 +52,15 @@ const About = () => {
             </p>
           </section> */}
         </div>
+        <Link
+            href='/signup'
+            className='ease-in-up  rounded-sm bg-primary px-8 py-3 mt-4 text-base max-480:text-sm font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover lg:px-6 xl:px-9'
+          >
+            Join Nomomics Now!
+          </Link>
       </div>
+      </div>
+      
     </div>
   );
 };

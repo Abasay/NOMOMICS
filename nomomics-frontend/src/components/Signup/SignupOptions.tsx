@@ -71,7 +71,7 @@ const SignUpOptions = () => {
 				/>{' '}
 				<div className='flex flex-col items-center justify-center gap-8 p-4 max-w-sm mx-auto'>
 					<button
-						className='flex items-center font-semibold text-base gap-12 justify-start pl-14 w-full border border-[#B3B3B3] rounded-[30px] py-2 shadow-sm hover:shadow-md'
+						className='flex items-center font-semibold text-base gap-12 max-400:pl-2 max-400:gap-4 max-400:justify-center justify-start pl-14 w-full border border-[#B3B3B3] rounded-[30px] py-2 shadow-sm hover:shadow-md'
 						onClick={() => {
 							setSignupMethod(
 								'email'
@@ -97,7 +97,7 @@ const SignUpOptions = () => {
 					</div>
 
 					<button
-						className='flex font-semibold text-base gap-12 items-center justify-start pl-14 w-full border border-[#B3B3B3] rounded-[30px] py-2 shadow-sm hover:shadow-md'
+						className='flex font-semibold text-base gap-12 items-center justify-start pl-14 w-full border border-[#B3B3B3] rounded-[30px] py-2 shadow-sm hover:shadow-md max-400:pl-2 max-400:gap-4 max-400:justify-center'
 						onClick={() => {
 							googleLogin();
 						}}
@@ -142,7 +142,7 @@ const SignUpOptions = () => {
 						<span>Sign up with Google</span>
 					</button>
 
-					<button className='flex font-semibold text-base gap-12 items-center justify-start pl-14 w-full border border-[#B3B3B3] rounded-[30px] py-2 shadow-sm hover:shadow-md'>
+					<button className='flex font-semibold text-base gap-12 items-center justify-start pl-14 w-full border border-[#B3B3B3] rounded-[30px] py-2 shadow-sm hover:shadow-md max-400:pl-2 max-400:gap-4 max-400:justify-center'>
 						<span className=' grid place-content-center h-[25px] w-[25px] rounded-full border border-gray-300 shadow-slate-600'>
 							<svg
 								width='17'
@@ -160,7 +160,7 @@ const SignUpOptions = () => {
 						<span>Sign up Apple</span>
 					</button>
 
-					<button className='flex font-semibold text-base gap-12 items-center justify-start pl-14 w-full border border-[#B3B3B3] rounded-[30px] py-2 shadow-sm hover:shadow-md'>
+					<button className='flex font-semibold text-base gap-12 items-center justify-start pl-14 w-full border border-[#B3B3B3] rounded-[30px] py-2 shadow-sm hover:shadow-md max-400:pl-2 max-400:gap-4 max-400:justify-center'>
 						<span className=' grid place-content-center h-[25px] w-[25px] rounded-full border border-gray-300 shadow-slate-600'>
 							<svg
 								width='17'

@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        comic: ['"Comic Sans MS"', 'cursive'],
+        comic: ['"Open Sans"', 'sans-serif cursive'],
         openSans: ['"Open Sans"', 'sans-serif'],
         montserrat: ['Montserrat', 'sans-serif'], // For Montserrat
         trebuchet: ['Trebuchet MS', 'Helvetica', 'Arial', 'sans-serif'],
@@ -81,6 +81,7 @@ const config: Config = {
         'min-1279': { min: '1279px' },
         'max-1281': { max: '1281px' },
         'max-480': { max: '480px' },
+        'max-400': { max: '400px' },
       },
     },
   },
