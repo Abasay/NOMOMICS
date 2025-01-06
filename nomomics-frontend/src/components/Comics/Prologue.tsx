@@ -68,24 +68,24 @@ const Prologue = () => {
   return (
     <>
       <div
-        className={`rounded-xl flex py-11 max-md:flex-col gap-10 bg-white dark:bg-gray-800 mx-auto w-[90%] font-comic ${styles['fade-in']} dark:text-secondary`}
+        className={`rounded-xl flex py-11 max-md:flex-col gap-10 bg-white dark:bg-gray-800 mx-auto w-[90%] font-comic ${styles['fade-in']} dark:text-white`}
       >
         <div className='w-[60%] max-md:px-8 max-md:w-full -mt-11 rounded-tl-xl drop-shadow-xl px-16 py-10 bg-[#FAE8E6] dark:bg-gray-700 flex flex-col gap-10 font-comic items-center justify-center'>
-          <div className='flex flex-col gap-5 items-center justify-center'>
+          <div className='flex flex-col gap-5 max-480:gap-3 items-center justify-center'>
             <h3 className='max-md:text-2xl text-center max-480:text-xl text-4xl tracking-widest dark:text-secondary'>
               {comic.title}
             </h3>
             <h4 className='text-3xl max-md:text-xl max-480:text-lg tracking-widest dark:text-secondary'>Synopsis</h4>
           </div>
           <div>
-            <p className='tracking-wide max-md:text-sm max-480:text-xs text-base text-[#5C5A5A] dark:text-secondary'>
+            <p className='tracking-wide max-md:text-sm max-480:text-sm text-base text-justify text-[#5C5A5A] dark:text-white'>
               {comic?.synopsis}
             </p>
           </div>
           <Link href={`/read/${comic._id}?episode=1`} className='w-36'>
             <Button1
               text='Episode 1'
-              className='bg-secondary dark:bg-indigo-600 hover:dark:bg-indigo-500 text-white w-32'
+              className='bg-secondary  text-white w-32'
               onClickFunc={() => console.log('U are good')}
             />
           </Link>
@@ -180,7 +180,7 @@ const Prologue = () => {
               <Link
                 href={`/read/${comic._id}?episode=${episode.episodeNumber}`}
                 key={idx}
-                className='flex gap-6 max-1280:flex-col items-center dark:bg-gray-700 rounded-lg'
+                className='flex gap-6 max-1280:flex-col items-center dark:bg-gray-700 rounded-lg rounded-r-none'
               >
                 <Image
                   src={episode.episodeCoverImage}
