@@ -43,7 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className={`${roboto} antialiased `}>
               {/* Your layout structure */}
               {/* <div className=' absolute top-0 z-50'> */}
-              <div className=' right-0 max-480:left-0 max-480:bg-white max-480:bg-opacity-35 max-480:w-14 max-480:h-14  max-480:grid max-480:place-content-center   sticky top-20 w-7 inset-20 z-50   dark:text-white'>
+              <div className=' right-0 max-480:left-0 max-480:bg-white max-480:bg-opacity-35 max-480:w-14 max-480:h-14 max-480:rounded-br-lg  max-480:grid max-480:place-content-center   sticky top-20 w-7 inset-20 z-50   dark:text-white'>
                 <ThemeSwitch />
               </div>
               <Toaster
