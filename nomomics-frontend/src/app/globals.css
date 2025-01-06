@@ -22,16 +22,22 @@
   --bg-error: #be2319;
   --tertiary: #7b0c0c;
   --text-market: #984408;
+  --border-color: #e5e7eb; /* Light mode border color */
+  --card-bg: #ffffff; /* Light mode card background */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --background: #1a1a1a;
+    --foreground: #ffffff;
     --primary: #fba700;
     --secondary: #f6b32a;
     --onHover: #03215f;
-    --backgroud: #fcfcfc;
-    --text-body: #363939;
+    --backgroud: #1a1a1a;
+    --text-body: #e5e7eb;
     --text-height: '150%';
+    --border-color: #374151; /* Dark mode border color */
+    --card-bg: #2d2d2d; /* Dark mode card background */
   }
 }
 
@@ -40,6 +46,8 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   scroll-behavior: smooth;
+  @apply dark:bg-slate-800 bg-gray-50;
+  @apply transition-colors duration-700 ease-in-out;
 }
 
 @layer utilities {

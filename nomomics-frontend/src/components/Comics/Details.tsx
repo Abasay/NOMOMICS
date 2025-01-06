@@ -65,7 +65,7 @@ const Details = () => {
     return notFound();
   }
   return (
-    <div className='relative mt-20'>
+    <div className='relative -mt-1'>
       <div className={`relative`}>
         <div className=' flex  absolute justify-end mr-10 right-10 top-72'>
           <Button1
@@ -74,6 +74,7 @@ const Details = () => {
             onClickFunc={() => console.log('Click detals')}
           />
         </div>
+        <div className=' max-480:block hidden absolute top-0 w-full h-[80%] bg-black bg-opacity-40 z-10'></div>
         <div className=' w-full h-[449px] '>
           <Image
             src={comic?.coverImage || heroDetail} //It should be nomomics logo tho

@@ -1,7 +1,7 @@
 const HeroLoadingSkeleton: React.FC = () => {
   return (
-    <div className='bg-tertiary h-auto mt-20 py-8 px-4 lg:px-16 md:px-8 sm:px-8'>
-      <div className='container mx-auto flex items-start w-full'>
+    <div className='bg-tertiary h-auto mt-0 py-8 px-4 lg:px-16 md:px-8 sm:px-8'>
+      <div className='container mx-auto flex items-start w-full pt-5'>
         <div className='flex flex-col max-md:gap-4 gap-8 lg:w-[67%] md:w-[80%] max-md:w-full text-white'>
           {/* Title Skeleton */}
           <div className='w-3/4 h-10 bg-gray-300 rounded-md animate-pulse max-md:h-8'></div>

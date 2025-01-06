@@ -1,6 +1,6 @@
+import { AuthProvider } from '@/app/contexts/Auth';
 import SignUp from '@/components/Signup';
 import React from 'react';
-import { AuthProvider } from '../contexts/Auth';
 
 const SignUpPage = () => {
   return (

@@ -190,18 +190,14 @@ export default function PDFViewer() {
   const [comic, setComic] = useState(
     comics
       .find((comic) => comic._id === comicId)
-      ?.episodes.find(
-        (episode) => episode.episodeNumber === Number(episodeNumber)
-      )
+      ?.episodes.find((episode) => episode.episodeNumber === Number(episodeNumber))
   );
 
   useEffect(() => {
     setComic(
       comics
         .find((comic) => comic._id === comicId)
-        ?.episodes.find(
-          (episode) => episode.episodeNumber === Number(episodeNumber)
-        )
+        ?.episodes.find((episode) => episode.episodeNumber === Number(episodeNumber))
     );
   }, [episodeNumber]);
   if (!comic) {
@@ -221,7 +217,7 @@ export default function PDFViewer() {
         <Worker workerUrl='https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js'>
           <div>
             {comic?.episodeFileUrl.map((url, index) => (
-              <Viewer fileUrl={url || ''} />
+              <Viewer fileUrl={url || ''} key={index} />
             ))}
           </div>
         </Worker>
@@ -232,13 +228,7 @@ export default function PDFViewer() {
       <main className=' rounded-lg'>
         {comic?.episodeFileUrl.map((fileUrl, index) => (
           <div key={index} className='flex justify-center border items-center'>
-            <Image
-              src={fileUrl}
-              alt={`Page ${index + 1}`}
-              width={600}
-              height={800}
-              className=' w-full h-full'
-            />
+            <Image src={fileUrl} alt={`Page ${index + 1}`} width={600} height={800} className=' w-full h-full' />
           </div>
         ))}
       </main>
