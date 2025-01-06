@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import menuData from './menuData';
 import logo from '@/public/svgs/signup-logo-1.svg';
@@ -28,6 +28,18 @@ const Header = () => {
     setAuthOpen(!authOpen);
   };
 
+  const params = useSearchParams();
+  const [fullScreenMode, setFullScreenMode] = useState<boolean>(false);
+  const pathName = usePathname();
+
+  useEffect(() => {
+    if (params.get('fullscreen') === 'true') {
+      setFullScreenMode(true);
+    } else {
+      setFullScreenMode(false);
+    }
+  }, [params]);
+
   // Sticky Navbar
   const [sticky, setSticky] = useState(false);
   const handleStickyNavbar = () => {
@@ -52,6 +64,10 @@ const Header = () => {
   };
 
   const usePathName = usePathname();
+
+  if (fullScreenMode) {
+    return null;
+  }
 
   return (
     <div className=' overflow-hidden'>

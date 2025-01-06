@@ -32,18 +32,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   //   return () => clearTimeout(timer);
   // }, []);
 
-  const params = useSearchParams();
-  const [fullScreenMode, setFullScreenMode] = useState<boolean>(false);
-  const router = useRouter();
-  const pathName = usePathname();
-
-  useEffect(() => {
-    if (params.get('fullscreen') === 'true') {
-      setFullScreenMode(true);
-    } else {
-      setFullScreenMode(false);
-    }
-  }, [params]);
   return (
     <html lang='en'>
       <body>
@@ -87,10 +75,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {/* </div> */}
               <ProfileProvider>
                 <ComicsProvider>
-                  {fullScreenMode ? null : <Header />}
+                  {<Header />}
 
                   {children}
-                  {fullScreenMode ? null : <Footer />}
+                  {<Footer />}
                 </ComicsProvider>
               </ProfileProvider>
             </div>
