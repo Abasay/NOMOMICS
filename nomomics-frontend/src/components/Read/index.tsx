@@ -116,7 +116,7 @@ const ReadComic = () => {
   return (
     <div className=' relative -mt-1'>
       {/* Header */}
-      <div className='bg-[#FAE8E6] w-full dark:bg-inherit dark:text-white'>
+      <div className='bg-[#FAE8E6] w-full dark:bg-inherit dark:text-gray-200'>
         <div className='container mx-auto relative'>
           <div className=' w-full py-12 max-md:text-sm   flex flex-col gap-10 font-comic items-center justify-center'>
             <div className=' flex flex-col gap-5 items-center justify-center'>

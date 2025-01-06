@@ -72,10 +72,10 @@ const Prologue = () => {
       >
         <div className='w-[60%] max-md:px-8 max-md:w-full -mt-11 rounded-tl-xl drop-shadow-xl px-16 py-10 bg-[#FAE8E6] dark:bg-gray-700 flex flex-col gap-10 font-comic items-center justify-center'>
           <div className='flex flex-col gap-5 max-480:gap-3 items-center justify-center'>
-            <h3 className='max-md:text-2xl text-center max-480:text-xl text-4xl tracking-widest dark:text-secondary'>
+            <h3 className='max-md:text-2xl text-center max-480:text-xl text-4xl tracking-widest dark:text-gray-200'>
               {comic.title}
             </h3>
-            <h4 className='text-3xl max-md:text-xl max-480:text-lg tracking-widest dark:text-secondary'>Synopsis</h4>
+            <h4 className='text-3xl max-md:text-xl max-480:text-lg tracking-widest dark:text-gray-200'>Synopsis</h4>
           </div>
           <div>
             <p className='tracking-wide max-md:text-sm max-480:text-sm text-base text-justify text-[#5C5A5A] dark:text-gray-200'>
