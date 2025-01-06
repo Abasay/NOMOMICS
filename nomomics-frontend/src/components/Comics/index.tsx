@@ -16,7 +16,7 @@ const Comics = (props: { title: string }) => {
     return <LoadingSkeleton />;
   }
   return (
-    <div className='container  dark:text-white mx-auto flex  flex-col gap-8 pt-10 '>
+    <div className='container  dark:text-gray-200 mx-auto flex  flex-col gap-8 pt-10 '>
       <h1 className='max-md:text-2xl max-480:text-xl text-4xl font-comic tracking-widest font-bold w-[90%] mx-auto'>
         {title}
       </h1>

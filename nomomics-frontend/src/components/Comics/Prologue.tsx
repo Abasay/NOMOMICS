@@ -68,7 +68,7 @@ const Prologue = () => {
   return (
     <>
       <div
-        className={`rounded-xl flex py-11 max-md:flex-col gap-10 bg-white dark:bg-gray-800 mx-auto w-[90%] font-comic ${styles['fade-in']} dark:text-white`}
+        className={`rounded-xl flex py-11 max-md:flex-col gap-10 bg-white dark:bg-gray-800 mx-auto w-[90%] font-comic ${styles['fade-in']} dark:text-gray-200`}
       >
         <div className='w-[60%] max-md:px-8 max-md:w-full -mt-11 rounded-tl-xl drop-shadow-xl px-16 py-10 bg-[#FAE8E6] dark:bg-gray-700 flex flex-col gap-10 font-comic items-center justify-center'>
           <div className='flex flex-col gap-5 max-480:gap-3 items-center justify-center'>
@@ -78,14 +78,14 @@ const Prologue = () => {
             <h4 className='text-3xl max-md:text-xl max-480:text-lg tracking-widest dark:text-secondary'>Synopsis</h4>
           </div>
           <div>
-            <p className='tracking-wide max-md:text-sm max-480:text-sm text-base text-justify text-[#5C5A5A] dark:text-white'>
+            <p className='tracking-wide max-md:text-sm max-480:text-sm text-base text-justify text-[#5C5A5A] dark:text-gray-200'>
               {comic?.synopsis}
             </p>
           </div>
           <Link href={`/read/${comic._id}?episode=1`} className='w-36'>
             <Button1
               text='Episode 1'
-              className='bg-secondary  text-white w-32'
+              className='bg-secondary  text-white w-32 dark:text-gray-200'
               onClickFunc={() => console.log('U are good')}
             />
           </Link>
@@ -93,7 +93,14 @@ const Prologue = () => {
           <div className='flex gap-3 justify-center'>
             <p className='flex gap-2 items-center dark:text-gray-300'>
               <span>
-                <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                <svg
+                  width='24'
+                  height='24'
+                  viewBox='0 0 24 24'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
+                  className='dark:text-gray-400 '
+                >
                   <path
                     d='M15.5799 11.9999C15.5799 13.9799 13.9799 15.5799 11.9999 15.5799C10.0199 15.5799 8.41992 13.9799 8.41992 11.9999C8.41992 10.0199 10.0199 8.41992 11.9999 8.41992C13.9799 8.41992 15.5799 10.0199 15.5799 11.9999Z'
                     stroke='currentColor'
@@ -114,7 +121,14 @@ const Prologue = () => {
             </p>
             <p className=' flex gap-2 items-center'>
               <span>
-                <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                <svg
+                  width='24'
+                  height='24'
+                  viewBox='0 0 24 24'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
+                  className='dark:text-gray-400  dark:fill-slate-400'
+                >
                   <path
                     d='M6.00002 15H4.00002C2.89545 15 2.00002 14.1046 2.00002 13V6C2.00002 4.89543 2.89545 4 4.00002 4H6.00002C7.10459 4 8.00002 4.89543 8.00002 6V13C8.00002 14.1046 7.10459 15 6.00002 15Z'
                     stroke='#28303F'
@@ -135,7 +149,14 @@ const Prologue = () => {
             </p>
             <p>
               <span>
-                <svg width='25' height='24' viewBox='0 0 25 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                <svg
+                  width='25'
+                  height='24'
+                  viewBox='0 0 25 24'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
+                  className='dark:text-gray-400  dark:fill-slate-400'
+                >
                   <path
                     d='M18.91 8.78414C20.8926 8.78414 22.4998 7.26546 22.4998 5.39207C22.4998 3.51868 20.8926 2 18.91 2C16.9275 2 15.3203 3.51868 15.3203 5.39207C15.3203 7.26546 16.9275 8.78414 18.91 8.78414Z'
                     stroke='#292D32'
@@ -190,14 +211,21 @@ const Prologue = () => {
                   className='max-1280:w-[80%] rounded-lg'
                 />
                 <div className='flex gap-2 flex-col items-start'>
-                  <p className='font-bold text-xl dark:text-white'>Episode {episode.episodeNumber}</p>
+                  <p className='font-bold text-xl dark:text-gray-200'>Episode {episode.episodeNumber}</p>
                   <span className='text-sm dark:text-gray-400'>
                     {new Date(episode.dateUploaded ? episode.dateUploaded : Date.now()).toLocaleDateString()}
                   </span>
                   <div className='flex gap-3'>
                     <p className='flex gap-2 items-center'>
                       <span>
-                        <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                        <svg
+                          width='24'
+                          height='24'
+                          viewBox='0 0 24 24'
+                          fill='none'
+                          xmlns='http://www.w3.org/2000/svg'
+                          className='dark:text-gray-400  dark:fill-slate-400'
+                        >
                           <path
                             d='M15.5799 11.9999C15.5799 13.9799 13.9799 15.5799 11.9999 15.5799C10.0199 15.5799 8.41992 13.9799 8.41992 11.9999C8.41992 10.0199 10.0199 8.41992 11.9999 8.41992C13.9799 8.41992 15.5799 10.0199 15.5799 11.9999Z'
                             stroke='currentColor'
