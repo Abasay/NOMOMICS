@@ -119,7 +119,7 @@ const ReadComic = () => {
       <div className='bg-[#FAE8E6] w-full dark:bg-inherit dark:text-gray-200'>
         <div className='container mx-auto relative'>
           <div className=' w-full py-12 max-md:text-sm   flex flex-col gap-10 font-comic items-center justify-center'>
-            <div className=' flex flex-col gap-5 items-center justify-center'>
+            <div className=' flex flex-col gap-5 max-480:gap-2.5 items-center justify-center'>
               <h3 className=' text-5xl font-semibold max-md:text-2xl max-480:text-xl max-md:text-center tracking-widest'>
                 {comic?.title}
               </h3>
