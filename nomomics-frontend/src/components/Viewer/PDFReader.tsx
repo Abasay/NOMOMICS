@@ -176,16 +176,26 @@
 import { useComics } from '@/app/contexts/Comics';
 import { Viewer, Worker } from '@react-pdf-viewer/core';
 import Image from 'next/image';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { IoCloseCircleOutline } from 'react-icons/io5';
 import Swal from 'sweetalert2';
 
 export default function PDFViewer() {
   const { comicId } = useParams();
 
-  const { comics } = useComics();
+  const { comics, fullScreenMode, setFullScreenMode } = useComics();
 
   const episodeNumber = useSearchParams().get('episode');
+
+  const router = useRouter();
+  const pathName = usePathname();
+  const params = useSearchParams();
+
+  const handleFullScreen = (value: string) => {
+    router.replace(`${pathName}?episode=${params.get('episode')}&fullscreen=${value}`, undefined);
+    setFullScreenMode(value === 'true' ? true : false);
+  };
 
   const [comic, setComic] = useState(
     comics
@@ -221,16 +231,34 @@ export default function PDFViewer() {
             ))}
           </div>
         </Worker>
+        {fullScreenMode && (
+          <span className='flex justify-end items-end w-full my-10 pr-5    text-white'>
+            <IoCloseCircleOutline
+              size={25}
+              className=' w-10 h-10 text-white cursor-pointer'
+              onClick={() => handleFullScreen('false')}
+            />
+          </span>
+        )}
       </main>
     );
   } else {
     return (
-      <main className=' rounded-lg'>
+      <main className=' rounded-lg relative'>
         {comic?.episodeFileUrl.map((fileUrl, index) => (
           <div key={index} className='flex justify-center border items-center'>
             <Image src={fileUrl} alt={`Page ${index + 1}`} width={600} height={800} className=' w-full h-full' />
           </div>
         ))}
+        {fullScreenMode && (
+          <span className='flex justify-end items-end w-full my-10 pr-5    text-white'>
+            <IoCloseCircleOutline
+              size={25}
+              className=' w-10 h-10 text-white cursor-pointer'
+              onClick={() => handleFullScreen('false')}
+            />
+          </span>
+        )}
       </main>
     );
   }

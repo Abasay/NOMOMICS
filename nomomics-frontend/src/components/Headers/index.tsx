@@ -9,6 +9,7 @@ import styles from '@/styles/common.module.css';
 import Cookies from 'js-cookie';
 import { useProfile } from '@/app/contexts/Profile';
 import defaultLogo from '@/public/images/default.jpg';
+import { useComics } from '@/app/contexts/Comics';
 
 const Header = () => {
   const isLoggedIn = Cookies.get('isLoggedIn');
@@ -29,7 +30,7 @@ const Header = () => {
   };
 
   const params = useSearchParams();
-  const [fullScreenMode, setFullScreenMode] = useState<boolean>(false);
+  const { fullScreenMode, setFullScreenMode } = useComics();
   const pathName = usePathname();
 
   useEffect(() => {

@@ -30,7 +30,7 @@ const Footer = () => {
             <div className=' max-w-[250px] px-4 '>
               <div className='mb-6'>
                 <Link href='/' className='mb-8 w-[150px] inline-block'>
-                  <Image src={logo} alt='logo' className='w-full dark:hidden' width={140} height={30} />
+                  <Image src={logo} alt='logo' className='w-full' width={140} height={30} />
                 </Link>
                 {/* <a href="mailto:"></a> */}
                 <Link

@@ -13,7 +13,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --primary: #fba700;
+  --primary: #ff8902;
   --secondary: #ff8702;
   --onHover: #ffffff;
   --backgroud: #fcfcfc;
@@ -30,8 +30,8 @@
   :root {
     --background: #1a1a1a;
     --foreground: #ffffff;
-    --primary: #fba700;
-    --secondary: #f6b32a;
+    --primary: #ff8902;
+    --secondary: #ff8902;
     --onHover: #03215f;
     --backgroud: #1a1a1a;
     --text-body: #e5e7eb;

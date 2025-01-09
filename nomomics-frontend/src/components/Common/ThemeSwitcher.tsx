@@ -18,7 +18,7 @@ export default function ThemeSwitch() {
     max-1280:h-16 max-1280:w-16 
     max-1024:h-14 max-1024:w-14 
     max-md:h-12 max-md:w-12 
-    max-480:h-10 max-480:w-10
+    max-480:h-8 max-480:w-8
     transition-transform duration-300 ease-in-out
   `;
 

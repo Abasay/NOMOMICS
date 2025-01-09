@@ -29,7 +29,7 @@ const Viewer = () => {
       {/* <PDFToImageViewer pdfUrl='https://arxiv.org/pdf/quant-ph/0410100.pdf' /> */}
       {/* <PDFViewer fileUrl='/text.pdf' /> */}
       {fullScreenMode ? (
-        <div className=' w-full -mt-20 pt-28 absolute z-[100] bg-opacity-80 inset-0 bg-black  top-0 grid place-items-center h-full'>
+        <div className=' w-full -mt-20 pt-28  absolute z-[100] bg-opacity-80 inset-0 bg-black  top-0 grid place-items-center h-full'>
           <button className='absolute top-8 right-5 text-white' onClick={() => handleFullScreen('false')}>
             <IoCloseCircleOutline size={25} className=' w-10 h-10 text-white' />
           </button>
