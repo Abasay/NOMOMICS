@@ -1,6 +1,7 @@
 'use client';
 import Cookies from 'js-cookie';
 import { headers } from 'next/headers';
+import { useRouter } from 'next/navigation';
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import Swal from 'sweetalert2';
 
@@ -133,6 +134,8 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
     }
   };
 
+  const router = useRouter();
+
   useEffect(() => {
     if (Cookies.get('token')) {
       (async () => {
@@ -147,9 +150,17 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
             setProfile(data.data.user);
             setFormData(data.data.user);
           } else {
-            if (data.error.includes('not authorized')) {
+            if (
+              data.error.includes('not authorized') ||
+              data.error.includes('invalid token') ||
+              data.error.includes('jwt expired') ||
+              data.error.includes('jwt malformed') ||
+              data.error.includes('jwt signature is invalid') ||
+              data.error.includes('JSON-web-token validation failed')
+            ) {
               Cookies.remove('token');
               Cookies.remove('isLoggedIn');
+              // router.push('/signin');
             }
           }
         } catch (error) {

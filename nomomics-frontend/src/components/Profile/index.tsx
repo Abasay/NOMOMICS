@@ -46,7 +46,7 @@ const Profile = () => {
   const { updateProfile } = useProfile();
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isLoggedIn || !token) {
       router.push('/signin');
     }
   }, []);
@@ -134,8 +134,8 @@ const Profile = () => {
         notificationCount={notificationCount}
         draftCount={draftCount}
       />
-      <div className=' flex max-md:flex-col gap-4 bg-[#ffffff]  border-teal-950'>
-        <div className=' w-full md:max-w-[300px] md:border-r-2 border-[#909090]'>
+      <div className=' flex max-md:flex-col gap-4 bg-[#ffffff] dark:bg-slate-600 dark:text-gray-200 border-teal-950'>
+        <div className=' w-full md:max-w-[300px] md:border-r-2 border-[#909090] dark:border-slate-200'>
           <Sidebar
             sideBarActive={sideBarActive}
             setSideBarActive={setSideBarActive}

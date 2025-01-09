@@ -9,6 +9,61 @@ import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import { imageToBase64 } from '@/libs/fileConvert';
 import Swal from 'sweetalert2';
 
+const AFRICA_COUNTRIES = [
+  'Algeria',
+  'Angola',
+  'Benin',
+  'Botswana',
+  'Burkina Faso',
+  'Burundi',
+  'Cabo Verde',
+  'Cameroon',
+  'Central African Republic',
+  'Chad',
+  'Comoros',
+  'Congo (Congo-Brazzaville)',
+  'Djibouti',
+  'Egypt',
+  'Equatorial Guinea',
+  'Eritrea',
+  'Eswatini (fmr. "Swaziland")',
+  'Ethiopia',
+  'Gabon',
+  'Gambia',
+  'Ghana',
+  'Guinea',
+  'Guinea-Bissau',
+  'Ivory Coast',
+  'Kenya',
+  'Lesotho',
+  'Liberia',
+  'Libya',
+  'Madagascar',
+  'Malawi',
+  'Mali',
+  'Mauritania',
+  'Mauritius',
+  'Morocco',
+  'Mozambique',
+  'Namibia',
+  'Niger',
+  'Nigeria',
+  'Rwanda',
+  'Sao Tome and Principe',
+  'Senegal',
+  'Seychelles',
+  'Sierra Leone',
+  'Somalia',
+  'South Africa',
+  'South Sudan',
+  'Sudan',
+  'Tanzania',
+  'Togo',
+  'Tunisia',
+  'Uganda',
+  'Zambia',
+  'Zimbabwe',
+];
 const ProfileSettings = ({ isCreator }: { isCreator: boolean }) => {
   const { profile, updateProfile, formData, setFormData } = useProfile();
 
@@ -31,17 +86,14 @@ const ProfileSettings = ({ isCreator }: { isCreator: boolean }) => {
         let image = await imageToBase64(files[0]);
         setUploading(true);
         setUploaded(false);
-        const imageUploadReq = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/users/user/upload-image`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ base64Image: image }),
-          }
-        );
+        const imageUploadReq = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/user/upload-image`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ base64Image: image }),
+        });
         const response = await imageUploadReq.json();
 
         if (response.success) {
@@ -107,17 +159,14 @@ const ProfileSettings = ({ isCreator }: { isCreator: boolean }) => {
     }
     setLoading(true);
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/user/update-details`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${Cookies.get('token')}`,
-          },
-          body: JSON.stringify({ ...formData }),
-        }
-      );
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/user/update-details`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+        body: JSON.stringify({ ...formData }),
+      });
 
       const data = await res.json();
       setLoading(false);
@@ -156,18 +205,12 @@ const ProfileSettings = ({ isCreator }: { isCreator: boolean }) => {
             height={100}
             // className=' w-[100px] h-[100px] rounded-full'
             // alt='login'
-            className={
-              uploading
-                ? 'imgUpload w-full h-full rounded-full'
-                : 'w-full h-full rounded-full'
-            }
+            className={uploading ? 'imgUpload w-full h-full rounded-full' : 'w-full h-full rounded-full'}
           />
           {editing && (
             <label htmlFor='profileImg'>
               <div className='absolute bottom-0 right-[2px] mx-auto h-1/3 w-full overflow-hidden bg-gray-400  opacity-70'>
-                <p className='pl-2 text-xs font-bold text-black opacity-100'>
-                  {uploading ? 'Uploading...' : 'Change'}
-                </p>
+                <p className='pl-2 text-xs font-bold text-black opacity-100'>{uploading ? 'Uploading...' : 'Change'}</p>
               </div>
               <input
                 type='file'
@@ -185,7 +228,7 @@ const ProfileSettings = ({ isCreator }: { isCreator: boolean }) => {
         <div className='  justify-between flex w-full'>
           <div className='flex gap-3 flex-col'>
             <h1 className=' tracking-wider font-bold'>{profile.fullName}</h1>
-            <h3 className=' text-[#909090] tracking-wider'>{profile.email}</h3>
+            <h3 className=' text-[#909090] dark:text-gray-200 tracking-wider'>{profile.email}</h3>
           </div>
           <div className=' w-20'>
             {editing ? (
@@ -195,11 +238,7 @@ const ProfileSettings = ({ isCreator }: { isCreator: boolean }) => {
                 className=' w-10'
               />
             ) : (
-              <Button
-                text='Edit'
-                onClickFunc={() => setEditing((prev) => !prev)}
-                className=' min-w-10'
-              />
+              <Button text='Edit' onClickFunc={() => setEditing((prev) => !prev)} className=' min-w-10' />
             )}
           </div>
         </div>
@@ -207,10 +246,7 @@ const ProfileSettings = ({ isCreator }: { isCreator: boolean }) => {
       <div className=' flex flex-col gap-8 w-full overflow-auto scrollbar-hide'>
         <div className=' flex gap-8 justify-between w-full items-center'>
           <div className=' flex flex-col gap-2 w-full min-w-40'>
-            <label
-              htmlFor='firstName'
-              className=' text-base max-md:text-xs leading-6 '
-            >
+            <label htmlFor='firstName' className=' text-base max-md:text-xs leading-6 dark:text-gray-200'>
               Full Name
             </label>
             <input
@@ -220,14 +256,11 @@ const ProfileSettings = ({ isCreator }: { isCreator: boolean }) => {
               value={formData.fullName}
               onChange={handleChange}
               placeholder={profile.fullName || 'Your Full Name'}
-              className=' w-full outline-none py-2 px-2 bg-[#F9F9F9] rounded-md placeholder:text-[#bdbdbd]'
+              className=' w-full outline-none py-2 px-2 bg-[#F9F9F9] dark:bg-gray-700 rounded-md placeholder:text-[#bdbdbd] dark:placeholder:text-gray-400'
             />
           </div>
           <div className='flex flex-col gap-2 w-full min-w-40'>
-            <label
-              htmlFor='nickName'
-              className=' text-base max-md:text-xs leading-6'
-            >
+            <label htmlFor='nickName' className=' text-base max-md:text-xs leading-6 dark:text-gray-200'>
               Nick Name
             </label>
             <input
@@ -237,16 +270,13 @@ const ProfileSettings = ({ isCreator }: { isCreator: boolean }) => {
               onChange={handleChange}
               value={formData.nickName}
               placeholder={profile.nickName || 'Your Nick Name'}
-              className=' w-full outline-none py-2 px-2 bg-[#F9F9F9] rounded-md placeholder:text-[#bdbdbd]'
+              className=' w-full outline-none py-2 px-2 bg-[#F9F9F9] dark:bg-gray-700 rounded-md placeholder:text-[#bdbdbd] dark:placeholder:text-gray-400'
             />
           </div>
         </div>
         <div className=' flex gap-8 justify-between w-full items-center'>
           <div className=' flex flex-col gap-2 w-full min-w-40'>
-            <label
-              htmlFor='gender'
-              className=' text-base max-md:text-xs leading-6 '
-            >
+            <label htmlFor='gender' className=' text-base max-md:text-xs leading-6 dark:text-gray-200'>
               Gender
             </label>
 
@@ -256,24 +286,21 @@ const ProfileSettings = ({ isCreator }: { isCreator: boolean }) => {
               disabled={!editing}
               value={formData.gender}
               onChange={handleChange}
-              className=' w-full  outline-none py-3 px-2 bg-[#F9F9F9] rounded-md placeholder:text-[#bdbdbd]'
+              className=' w-full  outline-none py-3 px-2 bg-[#F9F9F9] dark:bg-gray-700 rounded-md placeholder:text-[#bdbdbd] dark:placeholder:text-gray-400'
             >
-              <option value='' className='text-[#bdbdbd]' disabled>
+              <option value='' className='text-[#bdbdbd] dark:text-gray-400' disabled>
                 Select your gender
               </option>
-              <option value='male' className=' text-black'>
+              <option value='male' className=' text-black dark:text-white'>
                 Male
               </option>
-              <option value='female' className=' text-black'>
+              <option value='female' className=' text-black dark:text-white'>
                 Female
               </option>
             </select>
           </div>
           <div className='flex flex-col gap-2 w-full min-w-40'>
-            <label
-              htmlFor='country'
-              className=' text-base max-md:text-xs leading-6 '
-            >
+            <label htmlFor='country' className=' text-base max-md:text-xs leading-6 dark:text-gray-200'>
               Country
             </label>
 
@@ -283,26 +310,22 @@ const ProfileSettings = ({ isCreator }: { isCreator: boolean }) => {
               disabled={!editing}
               value={formData.country}
               onChange={handleChange}
-              className=' w-full  outline-none py-3 px-2 bg-[#F9F9F9] rounded-md placeholder:text-[#bdbdbd]'
+              className=' w-full  outline-none py-3 px-2 bg-[#F9F9F9] dark:bg-gray-700 rounded-md placeholder:text-[#bdbdbd] dark:placeholder:text-gray-400'
             >
-              <option value='' className=' text-[#bdbdbd]' disabled>
+              <option value='' className=' text-[#bdbdbd] dark:text-gray-400' disabled>
                 Select your country
               </option>
-              <option value='nigeria' className=' text-black'>
-                Nigeria
-              </option>
-              <option value='ghana' className=' text-black'>
-                Ghana
-              </option>
+              {AFRICA_COUNTRIES.map((country, index) => (
+                <option key={index} value={country} className=' text-black dark:text-white'>
+                  {country}
+                </option>
+              ))}
             </select>
           </div>
         </div>
         <div className=' flex gap-8 justify-between w-full items-center'>
           <div className=' flex flex-col gap-2 w-full min-w-40'>
-            <label
-              htmlFor='language'
-              className=' text-base max-md:text-xs leading-6 '
-            >
+            <label htmlFor='language' className=' text-base max-md:text-xs leading-6 dark:text-gray-200'>
               Language
             </label>
 
@@ -312,27 +335,24 @@ const ProfileSettings = ({ isCreator }: { isCreator: boolean }) => {
               disabled={!editing}
               value={formData.language}
               onChange={handleChange}
-              className=' w-full  outline-none py-3 px-2 bg-[#F9F9F9] rounded-md placeholder:text-[#bdbdbd]'
+              className=' w-full  outline-none py-3 px-2 bg-[#F9F9F9] dark:bg-gray-700 rounded-md placeholder:text-[#bdbdbd] dark:placeholder:text-gray-400'
             >
-              <option value='' disabled className='text-[#bdbdbd]'>
+              <option value='' disabled className='text-[#bdbdbd] dark:text-gray-400'>
                 Select your language
               </option>
-              <option value='English' className=' text-black'>
+              <option value='English' className=' text-black dark:text-white'>
                 English
               </option>
-              <option value='Igbo' className=' text-black'>
+              <option value='Igbo' className=' text-black dark:text-white'>
                 Igbo
               </option>
-              <option value='Yoruba' className=' text-black'>
+              <option value='Yoruba' className=' text-black dark:text-white'>
                 Yoruba
               </option>
             </select>
           </div>
           <div className='flex flex-col gap-2 w-full min-w-40'>
-            <label
-              htmlFor='country'
-              className=' text-base max-md:text-xs leading-6 '
-            >
+            <label htmlFor='country' className=' text-base max-md:text-xs leading-6 dark:text-gray-200'>
               Email Address
             </label>
 
@@ -342,23 +362,19 @@ const ProfileSettings = ({ isCreator }: { isCreator: boolean }) => {
               name='email'
               value={formData.email}
               placeholder={profile.email || 'Your Email Address'}
-              className=' w-full outline-none py-2 px-2 bg-[#F9F9F9] rounded-md placeholder:text-[#bdbdbd]'
+              className=' w-full outline-none py-2 px-2 bg-[#F9F9F9] dark:bg-gray-700 rounded-md placeholder:text-[#bdbdbd] dark:placeholder:text-gray-400'
             />
           </div>
         </div>
 
         {isCreator && (
           <>
-            <p className='text-sm text-gray-500'>
-              Please complete the following information to be fully onboarded as
-              a creator.
+            <p className='text-sm text-gray-500 dark:text-gray-400'>
+              Please complete the following information to be fully onboarded as a creator.
             </p>
             <div className=' flex gap-8 justify-between w-full items-center'>
               <div className=' flex flex-col gap-2 w-full min-w-40'>
-                <label
-                  htmlFor='dob'
-                  className=' text-base max-md:text-xs leading-6 '
-                >
+                <label htmlFor='dob' className=' text-base max-md:text-xs leading-6 dark:text-gray-200'>
                   Date of Birth
                 </label>
 
@@ -368,17 +384,14 @@ const ProfileSettings = ({ isCreator }: { isCreator: boolean }) => {
                   name='dob'
                   value={formData.dob}
                   placeholder={profile.dob || 'Your Date of Birth'}
-                  className=' w-full outline-none py-2 px-2 bg-[#F9F9F9] rounded-md placeholder:text-[#bdbdbd]'
+                  className=' w-full outline-none py-2 px-2 bg-[#F9F9F9] dark:bg-gray-700 rounded-md placeholder:text-[#bdbdbd] dark:placeholder:text-gray-400'
                 />
               </div>
             </div>
             <div className=' flex flex-col gap-2 w-full min-w-40'></div>
             <div className=' flex gap-8 justify-between w-full items-center'>
               <div className='flex flex-col gap-2 w-full min-w-40'>
-                <label
-                  htmlFor='language'
-                  className=' text-base max-md:text-xs leading-6 '
-                >
+                <label htmlFor='language' className=' text-base max-md:text-xs leading-6 dark:text-gray-200'>
                   Phone Number
                 </label>
 
@@ -388,14 +401,11 @@ const ProfileSettings = ({ isCreator }: { isCreator: boolean }) => {
                   name='phoneNumber'
                   value={formData.phoneNumber}
                   placeholder={profile.phoneNumber || 'Your Phone Number'}
-                  className=' w-full outline-none py-2 px-2 bg-[#F9F9F9] rounded-md placeholder:text-[#bdbdbd]'
+                  className=' w-full outline-none py-2 px-2 bg-[#F9F9F9] dark:bg-gray-700 rounded-md placeholder:text-[#bdbdbd] dark:placeholder:text-gray-400'
                 />
               </div>
               <div className=' flex flex-col gap-2 w-full min-w-40'>
-                <label
-                  htmlFor='location'
-                  className=' text-base max-md:text-xs leading-6 '
-                >
+                <label htmlFor='location' className=' text-base max-md:text-xs leading-6 dark:text-gray-200'>
                   Location
                 </label>
 
@@ -406,7 +416,7 @@ const ProfileSettings = ({ isCreator }: { isCreator: boolean }) => {
                   value={formData.location}
                   onChange={handleChange}
                   placeholder={profile.location || 'Your Location'}
-                  className=' w-full outline-none py-2 px-2 bg-[#F9F9F9] rounded-md placeholder:text-[#bdbdbd]'
+                  className=' w-full outline-none py-2 px-2 bg-[#F9F9F9] dark:bg-gray-700 rounded-md placeholder:text-[#bdbdbd] dark:placeholder:text-gray-400'
                 />
               </div>
             </div>
